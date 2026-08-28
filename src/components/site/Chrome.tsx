@@ -1,8 +1,16 @@
 import Link from "next/link";
 
-import { enlaces, img } from "./content";
+import { reserva } from "./analytics";
+import { enlaces, img, pruebaGlobal } from "./content";
 
-/** Nav fija: marca a la izquierda, MENÚ a la derecha. */
+/**
+ * Nav fija: marca a la izquierda, el CTA de reserva en el centro y MENU a la
+ * derecha.
+ *
+ * El CTA del header solo sale de escritorio: de tablet hacia abajo `.menu-w`
+ * ocupa el ancho entero y no queda hueco para el. Ahi la reserva vive dentro
+ * del menu desplegado.
+ */
 export function Nav() {
   return (
     <nav opacity="" no-scroll="" className="nav-boiler">
@@ -11,9 +19,18 @@ export function Nav() {
         <img src={img.marcaGradiente} alt="" className="nav-marca" />
         <img src={img.logo} alt="The AI Business" className="nav-logo-completo" />
       </Link>
+      <a
+        href={enlaces.agenda}
+        target="_blank"
+        rel="noreferrer"
+        onClick={reserva("nav_book_call", "nav")}
+        className="nav-cta hide-tablet"
+      >
+        Book a call
+      </a>
       <div className="menu-w">
         <div className="menu-btn">
-          <div className="menu-btn-text">menú</div>
+          <div className="menu-btn-text">menu</div>
           <svg width="100%" viewBox="0 0 6 6" fill="none" className="menu-svg">
             <rect y="4" width="2" height="2" fill="currentColor" />
             <rect x="4" y="4" width="2" height="2" fill="currentColor" />
@@ -22,9 +39,9 @@ export function Nav() {
           </svg>
         </div>
         <div className="menu-links-w">
-          <a href="#casos" className="link-boiler">casos</a>
-          <a href="#metodo" className="link-boiler">método</a>
-          <a href="#contacto" className="link-boiler">contacto</a>
+          <a href="#works" className="link-boiler">works</a>
+          <a href="#approach" className="link-boiler">approach</a>
+          <a href="#contact" className="link-boiler">contact</a>
         </div>
       </div>
     </nav>
@@ -38,12 +55,18 @@ export function MenuWrapper() {
       <div className="fake-el-menu" />
       <div className="div-block-10">
         <div className="link-menu">
-          <a href="#casos" className="link-mob w-inline-block"><div>casos</div></a>
-          <a href="#metodo" className="link-mob w-inline-block"><div>método</div></a>
+          <a href="#works" className="link-mob w-inline-block"><div>works</div></a>
+          <a href="#approach" className="link-mob w-inline-block"><div>approach</div></a>
         </div>
         <div className="link-btn-menu">
-          <a href={enlaces.diagnostico} target="_blank" rel="noreferrer" className="btn mob-menu w-inline-block">
-            <div className="btn__text"><p className="btn__text-p">Diagnóstico en 72h</p></div>
+          <a
+            href={enlaces.agenda}
+            target="_blank"
+            rel="noreferrer"
+            onClick={reserva("nav_book_call", "nav")}
+            className="btn mob-menu w-inline-block"
+          >
+            <div className="btn__text"><p className="btn__text-p">Book a call</p></div>
             <div className="arrow-w">
               <div className="arrow black-blend">
                 <div className="line-arrow" />
@@ -58,14 +81,14 @@ export function MenuWrapper() {
         </div>
       </div>
       <div className="link-hero-bottom-w">
-        <div delay="1.5" line="" no-scroll="">Firma de ejecución de IA · Madrid</div>
+        <div delay="1.5" line="" no-scroll="">{pruebaGlobal}</div>
         <div delay="1.5" opacity="" no-scroll="" className="link-hero-lang-w">
           <div className="link-hero-w">
             <a href={enlaces.linkedin} target="_blank" rel="noreferrer" className="link w-inline-block"><div>LinkedIn</div></a>
             <a href="#" className="link pointer-none w-inline-block"><div>/</div></a>
             <a href={enlaces.web} target="_blank" rel="noreferrer" className="link w-inline-block"><div>theaibusiness.com</div></a>
           </div>
-          <a href="#" className="link-lang mob w-inline-block"><div>ES</div></a>
+          <a href="#" className="link-lang mob w-inline-block"><div>EN</div></a>
         </div>
       </div>
     </div>

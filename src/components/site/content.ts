@@ -72,58 +72,149 @@ export const video = {
   manifiestoReflejo: `${VIDEO}/manifiesto-reflejo.mp4`,
 } as const;
 
+/**
+ * Destinos.
+ *
+ * `agenda` es el unico destino de reserva: el handoff exige que los tres CTA
+ * —nav, hero y cierre— resuelvan al mismo sitio. Sigue apuntando a la pagina
+ * de diagnostico porque todavia no hay URL de scheduler; cuando la haya, se
+ * cambia AQUI y cambian los tres.
+ */
 export const enlaces = {
-  diagnostico: "https://theaibusiness.com/diagnostico",
+  agenda: "https://theaibusiness.com/diagnostico",
   email: "mailto:info@theaibusiness.com",
   linkedin: "https://www.linkedin.com/company/the-ai-business",
   web: "https://theaibusiness.com",
 } as const;
 
-/**
- * Casos. El dato va primero — la cifra es la que sostiene la credibilidad,
- * la descripción solo la explica.
- */
 const CASO = `${MEDIA}/casos`;
 
 /**
- * Los seis trabajos reales. El titular es el nombre del proyecto; `resultado`
- * y `roi` quedan sin rellenar a proposito en los que no tengo la cifra: no se
- * inventan metricas y menos aun atribuidas a un cliente con nombre y logotipo.
- * La ficha se maqueta igual con o sin ellas.
+ * Los cinco trabajos, en el orden del handoff: Santander, Audi, SANGI,
+ * FuertaFit y BidFuse.
+ *
+ * `titular`, `descriptor` y `resultados` salen del handoff de copy del 28 de
+ * agosto de 2026; las cifras son las de su pagina de "Proof control" y solo se
+ * tocan con visto bueno de marketing. BidFuse va a proposito sin cifra: no hay
+ * metrica atribuible a la casa.
  */
 export type Caso = {
   nombre: string;
   href: string;
   media: string;
+  alt: string;
   video: boolean;
-  /** Lo que se abre en la ventana. Los campos vacios no se pintan. */
-  sector?: string;
-  reto?: string;
-  solucion?: string;
+  /** Cliente / sector, encima del nombre. */
+  sector: string;
+  /** El titular del caso. */
+  titular: string;
+  /** Contexto de lo construido. No es una metrica. */
+  descriptor?: string;
+  /** Prueba visible sin hover, tanto en la tarjeta como en la ficha. */
+  prueba?: string;
+  /** Texto del enlace: los casos sin case study aprobado van como proyecto. */
+  enlace: string;
   resultados?: { cifra: string; concepto: string }[];
+  /** Nombre del evento de analitica. */
+  evento: string;
 };
 
-/**
- * Los cinco trabajos. `reto`, `solucion` y `resultados` los rellena el cliente:
- * no se inventan ni el planteamiento ni las cifras de un caso con nombre y
- * logotipo reales. La ventana se maqueta sola con los campos que haya.
- */
 export const casos: Caso[] = [
-  { nombre: "Santander", href: "/casos/santander", media: `${CASO}/santander.mp4`, video: true },
-  { nombre: "Bidfuse",   href: "/casos/bidfuse",   media: `${CASO}/bidfuse.jpg`,   video: false },
-  { nombre: "Sangi",     href: "/casos/sangi",     media: `${CASO}/sangi.mp4`,     video: true },
-  { nombre: "Audi",      href: "/casos/audi",      media: `${CASO}/audi.mp4`,      video: true },
-  { nombre: "App",       href: "/casos/app",       media: `${CASO}/app-verde.jpg`, video: false },
+  {
+    nombre: "Santander",
+    href: "/works/santander",
+    media: `${CASO}/santander.mp4`,
+    video: true,
+    alt: "Santander — mapa de oportunidades de IA sobre procesos de banca.",
+    sector: "Santander / Banking",
+    titular: "Finding the AI opportunities worth building.",
+    prueba: "+5% estimated operational efficiency",
+    enlace: "View case",
+    evento: "case_santander_open",
+    resultados: [
+      { cifra: "4", concepto: "Audited areas" },
+      { cifra: "12", concepto: "Mapped processes" },
+      { cifra: "€2.1M", concepto: "Estimated impact" },
+      { cifra: "+5%", concepto: "Estimated operational efficiency" },
+    ],
+  },
+  {
+    nombre: "Audi",
+    href: "/works/audi",
+    media: `${CASO}/audi.mp4`,
+    video: true,
+    alt: "Audi — software interno a medida para operaciones de fabricacion premium.",
+    sector: "Audi / Automotive",
+    titular: "Specialized software for premium internal operations.",
+    prueba: "+30% process efficiency · −25% cycle time",
+    enlace: "View case",
+    evento: "case_audi_open",
+    resultados: [
+      { cifra: "+30%", concepto: "Process efficiency" },
+      { cifra: "−25%", concepto: "Cycle time" },
+    ],
+  },
+  {
+    nombre: "Sangi",
+    href: "/works/sangi",
+    media: `${CASO}/sangi.mp4`,
+    video: true,
+    alt: "Sangi — buscador con IA y panel de gestion del Luxury Shoe Observatory.",
+    sector: "Sangi / Retail B2B",
+    titular: "Making an entire industry searchable.",
+    descriptor: "Luxury Shoe Observatory · AI search · Management dashboard",
+    prueba: "−90% cataloging time · +40% publishing speed",
+    enlace: "View case",
+    evento: "case_sangi_open",
+    resultados: [
+      { cifra: "−90%", concepto: "Cataloging time" },
+      { cifra: "+40%", concepto: "Publishing speed" },
+    ],
+  },
+  {
+    nombre: "FuertaFit",
+    href: "/works/fuertafit",
+    media: `${CASO}/app-verde.jpg`,
+    video: false,
+    alt: "FuertaFit — aplicacion de fitness de consumo construida para escalar.",
+    sector: "FuertaFit / Fitness",
+    titular:
+      "Technology built to scale with the audience, while rebuilding trust in outsourcing as a driver of operational efficiency.",
+    prueba: "+200K users · 4.8 App Store",
+    enlace: "View case",
+    evento: "case_fuertafit_open",
+    resultados: [
+      { cifra: "+200K", concepto: "Users" },
+      { cifra: "4.8", concepto: "App Store rating" },
+    ],
+  },
+  {
+    nombre: "BidFuse",
+    href: "/works/bidfuse",
+    media: `${CASO}/bidfuse.jpg`,
+    video: false,
+    alt: "BidFuse — infraestructura programatica de puja en tiempo real.",
+    sector: "BidFuse / Adtech",
+    titular: "Intelligence where milliseconds matter.",
+    descriptor: "Programmatic infrastructure · Real-time bidding · AI",
+    /* Sin `prueba` ni `resultados` a proposito: el handoff prohibe presentar
+       una cifra de BidFuse como resultado propio mientras no haya fuente. */
+    enlace: "View project",
+    evento: "project_bidfuse_open",
+  },
 ];
 
+/** Cinco lineas, sin descripciones debajo. */
 export const servicios = [
-  "Estrategia y hoja de ruta",
-  "Infraestructura de datos",
-  "Automatización de procesos",
-  "Inteligencia operacional",
-  "Desarrollo de producto IA",
-  "Revenue Intelligence",
+  "AI Strategy & Advisory",
+  "Custom Software & AI Agents",
+  "AI Products & MVPs",
+  "Automation & Integrations",
+  "AI Act & Governance",
 ] as const;
 
 export const equipo = ["Brian Greenwalt — CEO", "Alejandro Rios Calera — CTO"] as const;
-export const sedes = ["Madrid", "Miami", "Dubái"] as const;
+export const sedes = ["Madrid", "Miami", "Dubai"] as const;
+
+/** Prueba global del hero. */
+export const pruebaGlobal = "200+ companies audited · 7+ industries";

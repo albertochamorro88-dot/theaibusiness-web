@@ -37,15 +37,16 @@ export function CasoVentana({ caso, onCerrar }: Props) {
 
   if (!caso) return null;
 
-  const { nombre, media, video, sector, reto, solucion, resultados } = caso;
-  const hayTexto = Boolean(reto || solucion || resultados?.length);
+  const { nombre, media, video, alt, sector, titular, descriptor, resultados } = caso;
+  /* BidFuse va sin cifras a proposito: el handoff no permite atribuirle una
+     metrica de rendimiento. La ficha se maqueta igual sin el bloque. */
 
   return (
     <div className="caso-ventana" role="dialog" aria-modal="true" aria-label={nombre}>
       <div className="caso-ventana__fondo" onClick={onCerrar} />
 
       <div className="caso-ventana__panel" ref={panel} tabIndex={-1}>
-        <button type="button" className="caso-ventana__cerrar" onClick={onCerrar} aria-label="Cerrar">
+        <button type="button" className="caso-ventana__cerrar" onClick={onCerrar} aria-label="Close">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
             <path d="M1 1l16 16M17 1L1 17" stroke="currentColor" strokeWidth="1.4" />
           </svg>
@@ -55,7 +56,7 @@ export function CasoVentana({ caso, onCerrar }: Props) {
           {video ? (
             <video src={media} autoPlay loop muted playsInline controls={false} />
           ) : (
-            <img src={media} alt={nombre} />
+            <img src={media} alt={alt} />
           )}
         </div>
 
@@ -63,23 +64,13 @@ export function CasoVentana({ caso, onCerrar }: Props) {
           {sector && <div className="caso-ventana__sector">{sector}</div>}
           <h2 className="caso-ventana__titulo">{nombre}</h2>
 
-          {reto && (
-            <div className="caso-ventana__bloque">
-              <div className="caso-ventana__etiqueta">( El reto )</div>
-              <p>{reto}</p>
-            </div>
-          )}
+          <p className="caso-ventana__titular">{titular}</p>
 
-          {solucion && (
-            <div className="caso-ventana__bloque">
-              <div className="caso-ventana__etiqueta">( Lo que construimos )</div>
-              <p>{solucion}</p>
-            </div>
-          )}
+          {descriptor && <div className="caso-ventana__descriptor">{descriptor}</div>}
 
           {resultados?.length ? (
             <div className="caso-ventana__bloque">
-              <div className="caso-ventana__etiqueta">( Resultados )</div>
+              <div className="caso-ventana__etiqueta">( Results )</div>
               <div className="caso-ventana__cifras">
                 {resultados.map((r) => (
                   <div key={r.concepto} className="caso-ventana__cifra">
@@ -91,10 +82,6 @@ export function CasoVentana({ caso, onCerrar }: Props) {
             </div>
           ) : null}
 
-          {/* Sin copy todavia, el panel no se queda mudo. */}
-          {!hayTexto && (
-            <p className="caso-ventana__pendiente">Ficha en preparación.</p>
-          )}
         </div>
       </div>
     </div>

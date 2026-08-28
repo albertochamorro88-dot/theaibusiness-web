@@ -1021,3 +1021,54 @@ body{font-weight:400}
   .cargando-letra{height:11vh}
   .cargando-hueco{left:calc(50% + 4.18vh);width:13vh;height:13vh}
 }
+
+
+/* --- copy del handoff: titular y prueba visibles sin hover ---------------- */
+
+/* El handoff exige que la cifra se lea sin pasar el raton: en movil no hay
+   puntero y la prueba es lo unico que sostiene el caso. */
+.work-titular{
+  max-width:26ch;margin-bottom:1rem;font-size:1rem;line-height:1.3;
+  letter-spacing:-.01em;font-weight:500;color:var(--white);text-wrap:balance
+}
+.work-pie{
+  display:flex;flex-direction:column;gap:.375rem;
+  margin-top:.875rem;font-size:.75rem;line-height:1.4
+}
+.work-descriptor{color:var(--gris);letter-spacing:.01em}
+.work-prueba{color:var(--white);font-weight:500;letter-spacing:.01em}
+.work-ver{
+  align-self:flex-start;margin-top:.25rem;padding:0;border:0;background:none;
+  color:var(--gris);font:inherit;font-size:.75rem;letter-spacing:.06em;
+  text-transform:uppercase;cursor:pointer;transition:color .25s
+}
+.work-ver:hover{color:var(--white)}
+.work-ver span{display:inline-block;transition:transform .25s}
+.work-ver:hover span{transform:translateX(.25rem)}
+
+/* El CTA fijo del header. `.nav-boiler` no deja pasar el puntero para que el
+   hero siga siendo interactivo debajo, asi que hay que devolverselo aqui. */
+.nav-cta{
+  pointer-events:auto;color:var(--white);text-decoration:none;
+  font-size:.75rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;
+  line-height:1;opacity:.85;transition:opacity .25s
+}
+.nav-cta:hover{opacity:1}
+
+.cierre-linea{max-width:34ch;color:var(--gris)}
+.riesgo-linea{
+  font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)
+}
+
+.caso-ventana__titular{
+  font-size:1.375rem;line-height:1.25;letter-spacing:-.02em;font-weight:500;
+  color:var(--white);text-wrap:balance
+}
+.caso-ventana__descriptor{
+  font-size:.875rem;line-height:1.4;color:var(--gris)
+}
+
+@media screen and (max-width:991px){
+  .work-titular{font-size:.9375rem;max-width:34ch}
+  .caso-ventana__titular{font-size:1.125rem}
+}
