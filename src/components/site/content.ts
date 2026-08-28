@@ -51,6 +51,8 @@ export const img = {
   tele: `${IMG}/formas/tele.webp`,
   candado: `${IMG}/formas/candado.webp`,
   pompon: `${IMG}/formas/pompon.webp`,
+  brujula: `${IMG}/cargando/brujula.webp`,
+  esfera: `${IMG}/cargando/esfera.webp`,
   letraA: `${IMG}/formas/letra-a.png${V}`,
   letraI: `${IMG}/formas/letra-i.png${V}`,
 
@@ -240,34 +242,252 @@ export const casos: Caso[] = [
 export const casoPorSlug = (slug: string) => casos.find((c) => c.slug === slug);
 
 /**
- * Que construimos. Sin descripciones debajo.
+ * La oferta: que construimos y como se contrata.
+ *
+ * Cada linea tiene su propia ficha, con el mismo formato que las de caso. El
+ * texto sale de `_context/Product_Offerings.md`, que es la fuente de la casa;
+ * las dos lineas que ese documento NO recoge van marcadas con `sinFuente` y
+ * estan escritas al nivel de principio, sin prometer entregables concretos ni
+ * cifras. No se publican metricas aqui: las unicas aprobadas son las del
+ * handoff y viven en las fichas de caso.
+ */
+export type Oferta = {
+  slug: string;
+  nombre: string;
+  numero: string;
+  tipo: "servicio" | "modelo";
+  /** El objeto del collage que ilustra la ficha. */
+  objeto: string;
+  alt: string;
+  epigrafe: string;
+  titular: string;
+  contexto: string;
+  planteamiento: string;
+  incluye: string[];
+  entregable: string;
+  /** Sin respaldo en `_context`: requiere visto bueno antes de publicar. */
+  sinFuente?: boolean;
+};
+
+export const ofertas: Oferta[] = [
+  {
+    slug: "estrategia-ia",
+    nombre: "Estrategia y asesoría en IA",
+    numero: "S'01",
+    tipo: "servicio",
+    objeto: img.brujula,
+    alt: "Brújula metalizada sobre fondo oscuro.",
+    epigrafe: "Servicio / Estrategia",
+    titular: "La mayoría invierte en IA a ciegas. Primero hay que saber dónde.",
+    contexto:
+      "Para empresas que arrancan en IA, que no tienen claras sus prioridades de inversión o que ya han visto fracasar una iniciativa anterior.",
+    planteamiento:
+      "El orden importa más que la herramienta. Se audita el negocio —procesos, datos y estrategia—, se identifican las áreas donde la IA puede intervenir y se ordenan por impacto frente a complejidad de implantación. Las que no sostienen un caso económico se descartan ahí, antes de gastar nada.",
+    incluye: [
+      "Auditoría de procesos, datos y estrategia",
+      "Identificación de oportunidades de IA",
+      "Priorización por impacto y viabilidad",
+      "Hoja de ruta con calendario y arquitectura",
+      "Caso de negocio y alineación de responsables",
+    ],
+    entregable: "Una hoja de ruta de iniciativas ordenada por retorno y viabilidad.",
+  },
+  {
+    slug: "software-y-agentes",
+    nombre: "Software a medida y agentes de IA",
+    numero: "S'02",
+    tipo: "servicio",
+    objeto: img.raton,
+    alt: "Ratón de ordenador de papel de aluminio arrugado.",
+    epigrafe: "Servicio / Construcción",
+    titular: "El software se adapta a tu operación. No al revés.",
+    contexto:
+      "Sistemas y agentes construidos sobre los procesos que ya existen, en lugar de obligar a la organización a encajar en una herramienta de catálogo.",
+    planteamiento:
+      "Un producto de catálogo impone su manera de trabajar, y cuando la operación es específica esa manera cuesta más de lo que ahorra. Aquí se construye a medida, se integra con lo que ya está en marcha y se entrega documentado. El código es vuestro y vuestro equipo puede mantenerlo sin nosotros.",
+    incluye: [
+      "Diseño del sistema sobre procesos reales",
+      "Agentes de IA dentro del flujo de trabajo",
+      "Integración con ERP, CRM y sistemas existentes",
+      "Documentación y traspaso al equipo",
+      "Propiedad íntegra del código",
+    ],
+    entregable: "Un sistema en producción, documentado y en propiedad.",
+  },
+  {
+    slug: "productos-y-mvps",
+    nombre: "Productos de IA y MVPs",
+    numero: "S'03",
+    tipo: "servicio",
+    objeto: img.tele,
+    alt: "Televisor hinchable azul.",
+    epigrafe: "Servicio / Producto",
+    titular: "Un producto con IA dentro, no una demo con IA encima.",
+    contexto:
+      "Para empresas de software, plataformas y productos digitales que necesitan incorporar capacidades de IA sin comprometer lo que ya funciona.",
+    planteamiento:
+      "Incorporar IA a un producto no es añadir un chat en una esquina. Hay que decidir qué capacidad aporta valor real —conversacional, analítica o predictiva—, elegir y ajustar el modelo que la sostiene, y diseñar una experiencia de uso que aguante los fallos del sistema, porque los va a tener.",
+    incluye: [
+      "Estrategia de producto con IA",
+      "Diseño de la funcionalidad y del modelo que la sostiene",
+      "Selección y ajuste de modelos",
+      "Experiencia de uso pensada para IA",
+      "Lanzamiento y soporte de adopción",
+    ],
+    entregable: "Un producto o una funcionalidad en el mercado, con su estrategia de adopción.",
+  },
+  {
+    slug: "automatizacion-e-integraciones",
+    nombre: "Automatización e integraciones",
+    numero: "S'04",
+    tipo: "servicio",
+    objeto: img.engranaje,
+    alt: "Engranaje de vidrio translúcido.",
+    epigrafe: "Servicio / Operaciones",
+    titular: "El proceso manual no escala. El error, sí.",
+    contexto:
+      "Para operaciones con mucho volumen manual, aprobaciones lentas o cuellos de botella en la entrada de datos. Y para los datos repartidos en sistemas que no se hablan.",
+    planteamiento:
+      "Antes de automatizar hay que rediseñar: automatizar un proceso malo solo consigue que falle más rápido. Se audita, se rediseña el flujo, se construye, se prueba contra la realidad y se entrena al equipo que se queda con él. Si los datos están dispersos, la capa de datos entra en el alcance — sin datos limpios no hay IA que funcione.",
+    incluye: [
+      "Auditoría de procesos y candidatos a automatizar",
+      "Rediseño del flujo de trabajo",
+      "Consolidación e integración de datos",
+      "Construcción, pruebas e iteración",
+      "Formación del equipo y traspaso",
+    ],
+    entregable: "Procesos automatizados en marcha y un equipo formado para operarlos.",
+  },
+  {
+    slug: "ciberseguridad",
+    nombre: "Ciberseguridad",
+    numero: "S'05",
+    tipo: "servicio",
+    objeto: img.candado,
+    alt: "Candado de papel de aluminio arrugado.",
+    epigrafe: "Servicio / Seguridad",
+    titular: "Un sistema que decide solo amplía la superficie de ataque.",
+    contexto:
+      "La seguridad no es una capa que se añade al final. Entra en el diseño, junto con los accesos, la trazabilidad y el tratamiento del dato.",
+    planteamiento:
+      "Cada sistema que se pone en producción abre una puerta: consume datos, toma decisiones y se conecta con lo que ya había. Tratar eso como un trámite posterior es lo que convierte un proyecto de IA en un incidente. La revisión va desde el primer diseño, no desde la auditoría final.",
+    incluye: [
+      "Diseño seguro desde el primer día",
+      "Control de accesos y trazabilidad de decisiones",
+      "Tratamiento del dato conforme a normativa",
+      "Revisión de la superficie que abre cada sistema",
+    ],
+    entregable: "Sistemas en producción con su seguridad documentada y revisable.",
+    sinFuente: true,
+  },
+  {
+    slug: "ai-act-y-gobernanza",
+    nombre: "AI Act y gobernanza",
+    numero: "S'06",
+    tipo: "servicio",
+    objeto: img.asterisco,
+    alt: "Asterisco de globo metalizado en rojo y azul.",
+    epigrafe: "Servicio / Cumplimiento",
+    titular: "La norma no frena el proyecto. Llegar tarde a ella, sí.",
+    contexto:
+      "Qué sistemas de IA hay en uso, qué obligaciones les aplican y cómo cumplirlas sin parar lo que ya está en producción.",
+    planteamiento:
+      "El AI Act clasifica por riesgo, y de esa clasificación cuelga todo lo demás: qué hay que documentar, qué hay que poder explicar y qué no se puede desplegar. Lo primero es saber qué se tiene, porque en la mayoría de las organizaciones ya hay más IA en marcha de la que el comité cree.",
+    incluye: [
+      "Inventario y clasificación de los sistemas en uso",
+      "Obligaciones aplicables por nivel de riesgo",
+      "Gobernanza del dato y trazabilidad",
+      "Plan de adecuación con calendario",
+      "Documentación exigible",
+    ],
+    entregable: "Un plan de adecuación con calendario y la documentación que exige la norma.",
+    sinFuente: true,
+  },
+  {
+    slug: "proyecto-cerrado",
+    nombre: "Proyecto cerrado",
+    numero: "M'01",
+    tipo: "modelo",
+    objeto: img.esfera,
+    alt: "Esfera metalizada sobre fondo oscuro.",
+    epigrafe: "Modelo / Alcance cerrado",
+    titular: "Alcance, plazo y precio cerrados antes de empezar.",
+    contexto:
+      "El encargo se define en el diagnóstico y se firma con precio cerrado. No se factura por horas ni por persona.",
+    planteamiento:
+      "Facturar por horas premia la lentitud. Cerrar el alcance obliga a decidir antes de construir: qué entra, qué no, con qué hitos y con qué criterio se da por terminado. Al final del recorrido el sistema se transfiere, con su documentación, para que la organización pueda operarlo por su cuenta.",
+    incluye: [
+      "Diagnóstico y alcance definidos antes de firmar",
+      "Precio cerrado, no por horas ni por persona",
+      "Calendario con hitos y criterio de cierre",
+      "Transferencia del sistema y de su documentación",
+    ],
+    entregable: "Un sistema entregado, transferido y en vuestra propiedad.",
+  },
+  {
+    slug: "ingenieros-en-tu-equipo",
+    nombre: "Ingenieros de IA en tu equipo",
+    numero: "M'02",
+    tipo: "modelo",
+    objeto: img.perro,
+    alt: "Perro de globos rojo.",
+    epigrafe: "Modelo / Equipo integrado",
+    titular: "A veces no necesitas un proveedor. Necesitas el equipo dentro.",
+    contexto:
+      "Perfiles de IA, software y ciberseguridad integrados en tu organización, con tus tiempos, tus procesos y tus prioridades.",
+    planteamiento:
+      "Hay trabajo que no cabe en un proyecto cerrado: el que cambia de dirección cada trimestre, el que depende de decisiones que aún no están tomadas o el que hay que sostener durante años. Ahí lo que hace falta no es un entregable, es capacidad — y perfiles que no existían hace tres años, porque el mercado todavía los está definiendo.",
+    incluye: [
+      "Perfiles multidisciplinares: IA, software y ciberseguridad",
+      "Integración en vuestros procesos y vuestra cadencia",
+      "Continuidad más allá de un entregable concreto",
+      "Transferencia de criterio, no solo de código",
+    ],
+    entregable: "Capacidad de ingeniería dentro de tu organización.",
+    sinFuente: true,
+  },
+  {
+    slug: "consultoria-y-acompanamiento",
+    nombre: "Consultoría y acompañamiento",
+    numero: "M'03",
+    tipo: "modelo",
+    objeto: img.bombilla,
+    alt: "Bombilla de papel de aluminio arrugado.",
+    epigrafe: "Modelo / Acompañamiento",
+    titular: "El sistema entra en producción. La decisión sigue siendo tuya.",
+    contexto:
+      "Acompañamiento continuo para las organizaciones que ya tienen equipo y lo que necesitan es criterio: qué construir, qué comprar y qué no hacer.",
+    planteamiento:
+      "Terminado el traspaso, la relación no tiene por qué terminar. Cambia de forma: de construir a decidir. Revisar arquitectura antes de comprometerla, contrastar la propuesta de un proveedor, decidir si una iniciativa merece la inversión o si conviene pararla a tiempo.",
+    incluye: [
+      "Revisión de arquitectura y de decisiones técnicas",
+      "Contraste de propuestas de terceros",
+      "Priorización de la inversión en IA",
+      "Cadencia acordada, sin proyecto abierto",
+    ],
+    entregable: "Criterio disponible cuando hay que decidir.",
+  },
+];
+
+export const ofertaPorSlug = (slug: string) => ofertas.find((o) => o.slug === slug);
+
+/**
+ * Que construimos.
  *
  * OJO: el handoff fija un maximo de cinco lineas y aqui hay seis. La sexta es
  * ciberseguridad, que faltaba y es una capacidad real de la casa. Si marketing
  * quiere respetar el limite, hay que fusionar dos, no quitar esta.
  */
-export const servicios = [
-  "Estrategia y asesoría en IA",
-  "Software a medida y agentes de IA",
-  "Productos de IA y MVPs",
-  "Automatización e integraciones",
-  "Ciberseguridad",
-  "AI Act y gobernanza",
-] as const;
+export const servicios = ofertas.filter((o) => o.tipo === "servicio");
 
 /**
  * Como se contrata.
  *
  * La lista de arriba responde a "que construimos"; esta responde a "como
  * trabajamos", que es un eje distinto. Sin ella la web se lee como si solo
- * hubiera proyectos cerrados, y se pierde a quien busca equipo en casa o
- * acompanamiento continuo.
+ * hubiera proyectos cerrados.
  */
-export const modelos = [
-  "Proyecto cerrado",
-  "Ingenieros de IA en tu equipo",
-  "Consultoría y acompañamiento",
-] as const;
+export const modelos = ofertas.filter((o) => o.tipo === "modelo");
 
 export const equipo = ["Brian Greenwalt — CEO", "Alejandro Rios Calera — CTO"] as const;
 export const sedes = ["Madrid", "Miami", "Dubái"] as const;

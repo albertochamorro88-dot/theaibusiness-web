@@ -1117,3 +1117,37 @@ body:has(.caso-pagina){background:var(--white)}
 .bloque-modelos{grid-area:span 1/span 2/span 1/span 2;margin-top:3.5rem}
 .bloque-modelos-etiqueta{grid-area:span 1/span 1/span 1/span 1;place-self:start end}
 .modelos-linea-mob{margin-top:1.5rem}
+
+/* Cada linea de la oferta abre su ficha. Se subraya al pasar, para que se lea
+   como enlace sin romper la sobriedad de la lista. */
+.list-enlace{
+  color:inherit;text-decoration:none;background-image:linear-gradient(currentColor,currentColor);
+  background-repeat:no-repeat;background-position:0 100%;background-size:0 1px;
+  transition:background-size .35s ease
+}
+.list-enlace:hover{background-size:100% 1px}
+
+/* --- ficha de una linea de la oferta -------------------------------------- */
+
+/* Los nombres de servicio son mucho mas largos que "Audi" o "Sangi": al mismo
+   cuerpo que un caso se comerian la pantalla y chocarian con el ordinal. */
+.ficha-nombre{font-size:clamp(2.5rem,6vw,5.5rem);max-width:16ch;letter-spacing:-.04em}
+
+/* El objeto del collage va recortado sobre transparente: se centra en la placa
+   oscura en vez de recortarse a sangre como una foto. */
+.ficha-medio{display:flex;align-items:center;justify-content:center}
+.ficha-objeto{
+  display:block;width:auto;max-width:min(38rem,70%);
+  height:clamp(14rem,42vh,26rem);object-fit:contain
+}
+
+.ficha-lista{margin:0;padding:0;list-style:none;display:flex;flex-direction:column}
+.ficha-lista-item{
+  font-size:clamp(1rem,1.35vw,1.25rem);line-height:1.4;padding:.875rem 0;
+  border-top:1px solid rgba(0,0,0,.12)
+}
+.ficha-lista-item:last-child{border-bottom:1px solid rgba(0,0,0,.12)}
+.ficha-entregable{
+  font-size:clamp(1.25rem,2.1vw,1.875rem);line-height:1.25;letter-spacing:-.02em;
+  font-weight:500;margin:0;max-width:24ch;text-wrap:balance
+}

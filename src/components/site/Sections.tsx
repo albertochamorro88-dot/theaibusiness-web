@@ -258,10 +258,10 @@ export function Firma() {
             <div className="info-grid-right">
               <div className="div-block-4">
                 <div className="list">
-                  {servicios.map((s) => (
-                    <div key={s} className="list-item">
+                  {servicios.map((o) => (
+                    <div key={o.slug} className="list-item">
                       <div delay="0.5" scale="" className="list-dot" />
-                      <div line="">{s}</div>
+                      <Link href={`/servicios/${o.slug}`} line="" className="list-enlace">{o.nombre}</Link>
                     </div>
                   ))}
                 </div>
@@ -284,10 +284,10 @@ export function Firma() {
             <div className="info-grid-right">
               <div className="div-block-4">
                 <div className="list">
-                  {modelos.map((m) => (
-                    <div key={m} className="list-item">
+                  {modelos.map((o) => (
+                    <div key={o.slug} className="list-item">
                       <div delay="0.5" scale="" className="list-dot" />
-                      <div line="">{m}</div>
+                      <Link href={`/servicios/${o.slug}`} line="" className="list-enlace">{o.nombre}</Link>
                     </div>
                   ))}
                 </div>
