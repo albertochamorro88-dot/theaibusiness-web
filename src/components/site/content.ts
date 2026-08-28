@@ -154,19 +154,22 @@ export const casos: Caso[] = [
   },
   {
     slug: "audi",
-    nombre: "Audi",
+    nombre: "Audi España",
     numero: "C'02",
     media: `${CASO}/audi.mp4`,
     video: true,
     alt: "Audi — software interno a medida para operaciones de fabricación premium.",
-    sector: "Audi / Automoción",
-    categoria: "Software / Operaciones",
-    titular: "Software especializado para operaciones internas premium.",
+    sector: "Audi España / Automoción premium",
+    categoria: "Software especializado / Partnership estratégico",
+    titular: "Un fabricante premium no baja el listón. El software tampoco.",
+    descriptor: "Automoción premium · Partnership estratégico · Confidencial",
     prueba: "+30% de eficiencia de proceso · −25% de tiempo de ciclo",
     enlace: "Ver caso",
     evento: "case_audi_open",
     contexto:
-      "Software a medida para la operación interna de un fabricante premium, construido sobre sus procesos reales en lugar de obligarles a adaptarse a una herramienta de catálogo.",
+      "Desarrollo tecnológico con Audi España en software especializado para la industria del automóvil. El alcance técnico y funcional no se detalla aquí: lo protege un acuerdo de confidencialidad.",
+    concepto:
+      "Entrar en una organización de este tamaño no se gana por precio. Se gana por estándar: la exigencia, la seguridad y la calidad tienen un mínimo que no se negocia, y que además se audita. Es la referencia que mejor mide lo que la casa es capaz de sostener dentro de una corporación grande, con sus tiempos, sus controles y su margen de error.",
     resultados: [
       { cifra: "+30%", concepto: "Eficiencia de proceso" },
       { cifra: "−25%", concepto: "Tiempo de ciclo" },
