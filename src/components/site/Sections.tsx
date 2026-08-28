@@ -1,11 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
 
-import { CasoVentana } from "./CasoVentana";
 import { evento, reserva } from "./analytics";
 import { casos, enlaces, equipo, img, pruebaGlobal, sedes, servicios, video } from "./content";
-import type { Caso } from "./content";
 
 /* ------------------------------------------------------------------ hero */
 
@@ -15,7 +13,7 @@ export function Hero() {
       <div className="section-fake-hero">
         <div className="div-block">
           <div delay="1.5" line="" no-scroll="" className="p-l">
-            Not AI for the sake of AI.<br />AI that earns its place in the business.
+            No IA por hacer IA.<br />IA que se gana su sitio en el negocio.
           </div>
           <div className="space-24" />
           <a
@@ -24,7 +22,7 @@ export function Hero() {
             onClick={reserva("hero_book_call", "hero")}
             className="btn black-blend w-inline-block"
           >
-            <div className="btn__text"><p className="btn__text-p">Book a call</p></div>
+            <div className="btn__text"><p className="btn__text-p">Reservar llamada</p></div>
             <div className="arrow-w">
               <div className="arrow black-blend">
                 <div className="line-arrow" />
@@ -43,7 +41,7 @@ export function Hero() {
               <a href={enlaces.email} className="link hide-tablet w-inline-block"><div>info@theaibusiness.com</div></a>
               <a href={enlaces.email} className="link hide-desk w-inline-block"><div>email</div></a>
             </div>
-            <a href="#" className="link-lang w-inline-block"><div>EN</div></a>
+            <a href="#" className="link-lang w-inline-block"><div>ES</div></a>
           </div>
         </div>
       </div>
@@ -70,7 +68,7 @@ export function Showreel() {
       <div className="container showreel">
         <div className="space-150 mob-50" />
         <h2 line="" className="h1-home balance">
-          Most companies are testing AI.<br />We put it into production.
+          La mayoría de las empresas prueba la IA.<br />Nosotros la ponemos en producción.
         </h2>
         <div className="space-65" />
         <div className="video-showreel-w">
@@ -78,10 +76,10 @@ export function Showreel() {
             <video src={video.showreel} autoPlay loop muted playsInline className="showreel-light" />
           </div>
           <div className="video-showreel-flip p-m">
-            <div delay="0.2" line="">( The approach )</div>
+            <div delay="0.2" line="">( El enfoque )</div>
             <div delay="0.2" line="" className="text-block-2">
-              We start with the business, not the technology. If AI creates leverage,
-              we build it. If it doesn&rsquo;t, we won&rsquo;t sell it.
+              Empezamos por el negocio, no por la tecnología. Si la IA crea ventaja,
+              la construimos. Si no, no te la vendemos.
             </div>
           </div>
         </div>
@@ -93,17 +91,15 @@ export function Showreel() {
 /* ----------------------------------------------------------------- casos */
 
 export function Casos() {
-  const [abierto, setAbierto] = useState<Caso | null>(null);
-
   return (
-    <section id="works" className="section works">
+    <section id="casos" className="section works">
       <div className="container works">
         <div className="works-word-w">
           <div className="div-block-2">
-            <div className="works-word-block-state1"><div className="works-word">w</div></div>
-            <div className="works-word-block-state1"><div className="works-word o">o</div></div>
-            <div className="works-word-block-state1"><div className="works-word r">r</div></div>
-            <div className="works-word-block-state1"><div className="works-word k">k</div></div>
+            <div className="works-word-block-state1"><div className="works-word">c</div></div>
+            <div className="works-word-block-state1"><div className="works-word o">a</div></div>
+            <div className="works-word-block-state1"><div className="works-word r">s</div></div>
+            <div className="works-word-block-state1"><div className="works-word k">o</div></div>
             <div className="works-word-block-state1"><div className="works-word">s</div></div>
           </div>
           <div className="div-block-2 hide-tablet">
@@ -114,7 +110,7 @@ export function Casos() {
         <div className="space-87" />
         <div className="titile-section-work">
           <h2 line="" className="h3-style">
-            AI gets attention. <br />Results earn trust.
+La IA llama la atención. <br />Los resultados dan confianza.
           </h2>
         </div>
 
@@ -126,10 +122,10 @@ export function Casos() {
                     lo que sostiene el caso y en movil no hay puntero que la saque. */}
                 <h2 line="" className="title-work">{caso.sector}</h2>
                 <div line="" className="work-titular">{caso.titular}</div>
-                <a
-                  href={caso.href}
+                <Link
+                  href={`/casos/${caso.slug}`}
                   className="work-link w-inline-block"
-                  onClick={(e) => { e.preventDefault(); evento(caso.evento); setAbierto(caso); }}
+                  onClick={() => evento(caso.evento)}
                 >
                   <div className="img-work-w">
                     {caso.video ? (
@@ -147,17 +143,17 @@ export function Casos() {
                       </svg>
                     </div>
                   </div>
-                </a>
+                </Link>
                 <div className="work-pie">
                   {caso.descriptor && <div line="" className="work-descriptor">{caso.descriptor}</div>}
                   {caso.prueba && <div line="" className="work-prueba">{caso.prueba}</div>}
-                  <button
-                    type="button"
+                  <Link
+                    href={`/casos/${caso.slug}`}
                     className="work-ver"
-                    onClick={() => { evento(caso.evento); setAbierto(caso); }}
+                    onClick={() => evento(caso.evento)}
                   >
                     {caso.enlace} <span aria-hidden="true">&rarr;</span>
-                  </button>
+                  </Link>
                 </div>
               </div>
             ))}
@@ -168,15 +164,15 @@ export function Casos() {
         <div className="space-150 mob-100" />
 
         <div opacity="" className="work-view-all-w">
-          <a href="/casos" className="btn view-all-btn w-inline-block">
-            <div>View all</div>
+          <Link href={`/casos/${casos[0].slug}`} className="btn view-all-btn w-inline-block">
+            <div>Ver todos</div>
             <div className="code-embed-2 w-embed">
               <svg className="arrow-icon" width="24" height="12" viewBox="-8 -1 26 14" fill="none">
                 <polyline className="arrow-shaft" points="0.5,0 0.5,7.5 15.5,7.5" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinejoin="round" />
                 <polyline className="arrow-head" points="12,4 15.5,7.5 12,11" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
-          </a>
+          </Link>
           <div className="nbr-works-w">
             <div className="div-block-3"><div>(</div><div>{String(casos.length).padStart(2, "0")}</div><div>)</div></div>
           </div>
@@ -185,8 +181,6 @@ export function Casos() {
 
         <div className="space-150 mob-100" />
       </div>
-
-      <CasoVentana caso={abierto} onCerrar={() => setAbierto(null)} />
     </section>
   );
 }
@@ -195,7 +189,7 @@ export function Casos() {
 
 export function SalaJuntas() {
   return (
-    <section id="approach" className="section video">
+    <section id="enfoque" className="section video">
       <div className="container video">
         <div className="musee-w">
           <img src={img.salaJuntas} loading="lazy" alt="" className="musee-bg" />
@@ -206,7 +200,7 @@ export function SalaJuntas() {
             <video src={video.manifiestoReflejo} autoPlay loop muted playsInline className="video-reflet" />
           </div>
           <div className="btn-sound">
-            <div>Sound</div>
+            <div>Sonido</div>
             <div className="toggle-sound"><div className="tick-sound" /></div>
           </div>
         </div>
@@ -225,10 +219,10 @@ export function Firma() {
         <div className="space-87" />
 
         <div className="info-w p-l">
-          <div line="">( In the room )</div>
+          <div line="">( En la sala )</div>
           <div line="" id="w-node-_3bffa28f-e2c9-e1ae-1640-a1877cc8ebf8-78a9d1a3" className="text-block-7">
-            We don&rsquo;t talk about AI from the outside. We&rsquo;re in the rooms where
-            founders, investors and industry leaders decide what gets built next.
+            No hablamos de IA desde fuera. Estamos en las salas donde fundadores,
+            inversores y responsables de sector deciden qué se construye después.
           </div>
           <div className="space-24 hide-landscape" />
           <div className="space-24 hide-landscape" />
@@ -240,7 +234,7 @@ export function Firma() {
               <div className="img-block-left-w">
                 <img className="image" src={img.proyectoAutointel} alt="" parallax-img="" parallax-img-scrub="3" parallax-img-y="-8" loading="lazy" />
               </div>
-              <div className="text-block-4">Featured by<br />Emprendedores.</div>
+              <div className="text-block-4">Publicado en<br />Emprendedores.</div>
             </div>
             <div parallax-scrub="2" parallax-y="-60" parallax="" className="img-block-right-w">
               <img className="image" src={img.proyectoDermai} alt="" parallax-img="" parallax-img-scrub="3" parallax-img-y="10" loading="lazy" />
@@ -251,14 +245,14 @@ export function Firma() {
         <div className="space-150 hide-landscape" />
         <div className="space-87" />
 
-        <h2 line="" className="h1-home">If AI can move the business, <br /><span className="acento">we&rsquo;ll find where.</span></h2>
+        <h2 line="" className="h1-home">Si la IA puede mover el negocio, <br /><span className="acento">encontramos dónde.</span></h2>
 
         <div className="space-87" />
 
         <div className="infobusiness-grid">
           <div id="w-node-_873b8711-445d-2907-3f1f-fca36caf4d24-78a9d1a3" className="img-block-grid">
             <div id="w-node-_873b8711-445d-2907-3f1f-fca36caf4d25-78a9d1a3" className="info-grid-left">
-              <div line="" className="text-block-4">We work across :</div>
+              <div line="" className="text-block-4">Trabajamos en :</div>
               <div className="fake-img" />
             </div>
             <div className="info-grid-right">
@@ -295,19 +289,19 @@ export function Firma() {
         <div className="infobusiness-grid">
           <div id="w-node-_5df3fb26-e0d9-a608-cc8d-469d5b5a1816-78a9d1a3" className="img-block-grid p-s">
             <div id="w-node-_5df3fb26-e0d9-a608-cc8d-469d5b5a1817-78a9d1a3" className="info-grid-left">
-              <div line="" className="text-block-4 marg-40">Who builds it :</div>
+              <div line="" className="text-block-4 marg-40">Quién lo construye :</div>
               <div className="fake-img" />
             </div>
             <div className="info-grid-right second">
               <div className="div-block-4">
                 <div className="list">
-                  <h2 line="" className="title-work info-team">founders</h2>
+                  <h2 line="" className="title-work info-team">fundadores</h2>
                   {equipo.map((n) => (
                     <div key={n} className="list-item"><div line="">{n}</div></div>
                   ))}
                 </div>
                 <div>
-                  <h2 line="" className="title-work info-team">where we operate</h2>
+                  <h2 line="" className="title-work info-team">dónde operamos</h2>
                   {sedes.map((n) => (
                     <div key={n} className="list-item"><div line="">{n}</div></div>
                   ))}
@@ -326,7 +320,7 @@ export function Firma() {
 /* ------------------------------------------------------------- la brecha */
 
 const LINEA = (
-  <>strategy · build · deploy · measure<br />strategy · build · deploy · measure<br />strategy · build · deploy · measure<br />30 min · no commitment · 100% confidential</>
+  <>estrategia · construcción · despliegue · medición<br />estrategia · construcción · despliegue · medición<br />estrategia · construcción · despliegue · medición<br />30 min · sin compromiso · 100% confidencial</>
 );
 
 export function Brecha() {
@@ -343,7 +337,7 @@ export function Brecha() {
             </div>
           ))}
           <div className="finaltext">
-Strategy. <br />Build. <br />Deploy. <br />Measure.
+Estrategia. <br />Construcción. <br />Despliegue. <br />Medición.
           </div>
         </div>
         <div className="img-glitch-w">
@@ -363,13 +357,13 @@ Strategy. <br />Build. <br />Deploy. <br />Measure.
 
 export function Footer() {
   return (
-    <footer id="contact" className="section-footer">
+    <footer id="contacto" className="section-footer">
       <div className="container footer-c">
         <div>
-          <h2 line="" className="h1-home">Start with <br />the problem.</h2>
+          <h2 line="" className="h1-home">Empecemos por <br />el problema.</h2>
           <div className="space-24" />
           <div line="" className="p-l cierre-linea">
-            In one call, we&rsquo;ll identify the opportunity, feasibility and next step.
+            En una llamada identificamos la oportunidad, la viabilidad y el siguiente paso.
           </div>
           <div className="space-24" />
           <div className="div-block-7">
@@ -379,7 +373,7 @@ export function Footer() {
                 onClick={reserva("final_book_strategy_call", "final")}
                 className="btn w-inline-block"
               >
-                <div className="btn__text"><p className="btn__text-p">Book a strategy call</p></div>
+                <div className="btn__text"><p className="btn__text-p">Reservar llamada estratégica</p></div>
                 <div className="arrow-w">
                   <div className="arrow">
                     <div className="line-arrow" />
@@ -399,7 +393,7 @@ export function Footer() {
             </div>
           </div>
           <div className="space-12" />
-          <div className="riesgo-linea">30 min &middot; no commitment &middot; 100% confidential</div>
+          <div className="riesgo-linea">30 min &middot; sin compromiso &middot; 100% confidencial</div>
           <div className="space-150 mob-100" />
           <div className="footer-svg-w">
             <img src={img.logo} alt="The AI Business" className="marca-footer" />
@@ -408,10 +402,10 @@ export function Footer() {
         </div>
         <div className="footer-info-w">
           <h2 className="footer-info">©2026 — The AI Business</h2>
-          <h2 className="footer-info hide-tablet">Madrid · Miami · Dubai</h2>
+          <h2 className="footer-info hide-tablet">Madrid · Miami · Dubái</h2>
           <div className="lang-footer">
-            <h2 className="footer-info hide-tablet">No commitment</h2>
-            <a href="#" className="link-lang hide-tablet w-inline-block"><div>EN</div></a>
+            <h2 className="footer-info hide-tablet">Sin compromiso</h2>
+            <a href="#" className="link-lang hide-tablet w-inline-block"><div>ES</div></a>
           </div>
         </div>
       </div>

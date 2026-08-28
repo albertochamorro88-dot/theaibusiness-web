@@ -26,11 +26,11 @@ export function Nav() {
         onClick={reserva("nav_book_call", "nav")}
         className="nav-cta hide-tablet"
       >
-        Book a call
+        Reservar llamada
       </a>
       <div className="menu-w">
         <div className="menu-btn">
-          <div className="menu-btn-text">menu</div>
+          <div className="menu-btn-text">menú</div>
           <svg width="100%" viewBox="0 0 6 6" fill="none" className="menu-svg">
             <rect y="4" width="2" height="2" fill="currentColor" />
             <rect x="4" y="4" width="2" height="2" fill="currentColor" />
@@ -39,9 +39,9 @@ export function Nav() {
           </svg>
         </div>
         <div className="menu-links-w">
-          <a href="#works" className="link-boiler">works</a>
-          <a href="#approach" className="link-boiler">approach</a>
-          <a href="#contact" className="link-boiler">contact</a>
+          <Link href="/#casos" className="link-boiler">casos</Link>
+          <Link href="/#enfoque" className="link-boiler">enfoque</Link>
+          <Link href="/#contacto" className="link-boiler">contacto</Link>
         </div>
       </div>
     </nav>
@@ -55,8 +55,8 @@ export function MenuWrapper() {
       <div className="fake-el-menu" />
       <div className="div-block-10">
         <div className="link-menu">
-          <a href="#works" className="link-mob w-inline-block"><div>works</div></a>
-          <a href="#approach" className="link-mob w-inline-block"><div>approach</div></a>
+          <Link href="/#casos" className="link-mob w-inline-block"><div>casos</div></Link>
+          <Link href="/#enfoque" className="link-mob w-inline-block"><div>enfoque</div></Link>
         </div>
         <div className="link-btn-menu">
           <a
@@ -66,7 +66,7 @@ export function MenuWrapper() {
             onClick={reserva("nav_book_call", "nav")}
             className="btn mob-menu w-inline-block"
           >
-            <div className="btn__text"><p className="btn__text-p">Book a call</p></div>
+            <div className="btn__text"><p className="btn__text-p">Reservar llamada</p></div>
             <div className="arrow-w">
               <div className="arrow black-blend">
                 <div className="line-arrow" />
@@ -88,7 +88,7 @@ export function MenuWrapper() {
             <a href="#" className="link pointer-none w-inline-block"><div>/</div></a>
             <a href={enlaces.web} target="_blank" rel="noreferrer" className="link w-inline-block"><div>theaibusiness.com</div></a>
           </div>
-          <a href="#" className="link-lang mob w-inline-block"><div>EN</div></a>
+          <a href="#" className="link-lang mob w-inline-block"><div>ES</div></a>
         </div>
       </div>
     </div>

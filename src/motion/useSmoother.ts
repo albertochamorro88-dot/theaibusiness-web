@@ -16,7 +16,7 @@ import { HERO_REVEALED } from "./useLoader";
  * Config lifted from the bundle: duration 1.2 with an exponential-out easing,
  * vertical only, no touch smoothing.
  */
-export function useSmoother(enabled: boolean) {
+export function useSmoother(enabled: boolean, esperarLoader = true) {
   const ref = useRef<Lenis | null>(null);
 
   useEffect(() => {
@@ -47,7 +47,10 @@ export function useSmoother(enabled: boolean) {
     // Held still until the loader has finished uncovering the hero.
     const start = () => { lenis.start(); ScrollTrigger.refresh(); };
 
-    if ((window as unknown as Record<string, boolean>)[HERO_REVEALED]) {
+    /* Las fichas de caso no llevan pantalla de carga: si esperasen al evento
+       que solo emite el loader de la portada, Lenis se quedaria parado para
+       siempre y la pagina no haria scroll. */
+    if (!esperarLoader || (window as unknown as Record<string, boolean>)[HERO_REVEALED]) {
       // El loader ya termino antes de que montaramos: arrancar sin esperar el
       // evento, que ya se emitio y no se va a repetir.
       ScrollTrigger.refresh();
@@ -73,7 +76,7 @@ export function useSmoother(enabled: boolean) {
       lenis.destroy();
       ref.current = null;
     };
-  }, [enabled]);
+  }, [enabled, esperarLoader]);
 
   return ref;
 }

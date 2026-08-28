@@ -380,7 +380,7 @@
 .papier-form.word{top:22%}
 .menu_wrapper{display:none}}#w-node-_4052a9ed-bc85-74d6-2f8d-4f251e3cf60d-78a9d1a3{align-self:end}#w-node-_3bffa28f-e2c9-e1ae-1640-a1877cc8ebf8-78a9d1a3{grid-area:span 2/span 1/span 2/span 1}#w-node-_8c8bfc91-8576-abe0-d854-49082250bec5-78a9d1a3{grid-area:span 1/span 2/span 1/span 2}#w-node-_01baddd9-d465-59de-ee3e-5a9211c9095b-78a9d1a3{grid-area:span 1/span 1/span 1/span 1;place-self:end}#w-node-_873b8711-445d-2907-3f1f-fca36caf4d24-78a9d1a3{grid-area:span 1/span 2/span 1/span 2}#w-node-_873b8711-445d-2907-3f1f-fca36caf4d25-78a9d1a3{grid-area:span 1/span 1/span 1/span 1;place-self:start end}#w-node-_5df3fb26-e0d9-a608-cc8d-469d5b5a1816-78a9d1a3{grid-area:span 1/span 2/span 1/span 2}#w-node-_5df3fb26-e0d9-a608-cc8d-469d5b5a1817-78a9d1a3{grid-area:span 1/span 1/span 1/span 1;place-self:start end}#w-node-_92fe2b40-7a92-f80a-554b-04fcd6a444e3-d6a444d6{grid-area:1/10/2/13}@media screen and (max-width:991px){#w-node-_873b8711-445d-2907-3f1f-fca36caf4d24-78a9d1a3{grid-area:span 1/span 2/span 1/span 2}#w-node-_92fe2b40-7a92-f80a-554b-04fcd6a444e3-d6a444d6{grid-area:span 1/span 5/span 1/span 5;justify-self:end}}@media screen and (max-width:479px){#w-node-_6684bafa-bc0c-93bc-385e-a867f46e25c6-78a9d1a3{grid-area:span 1/span 2/span 1/span 2}#w-node-_92fe2b40-7a92-f80a-554b-04fcd6a444e3-d6a444d6{grid-column:span 1/span 1}}
 
-/* ===== inline <style> blocks from the document head ===== */
+/* ===== inline \3c style> blocks from the document head ===== */
 /* ===== inline style block 0 ===== */
 * {
   -webkit-font-smoothing: antialiased;
@@ -893,66 +893,7 @@ body{font-weight:400}
    pero no hace falta llegar a 700. */
 .works-word{font-weight:500}
 
-/* ================== ventana de caso ================== */
-
-.caso-ventana{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center}
-.caso-ventana__fondo{position:absolute;inset:0;background:rgba(0,0,0,.86);backdrop-filter:blur(6px)}
-
-.caso-ventana__panel{
-  position:relative;
-  display:grid;
-  grid-template-columns:1.15fr .85fr;
-  width:min(96vw,88rem);
-  height:min(88vh,52rem);
-  background:var(--black);
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:.5rem;
-  overflow:hidden;
-  outline:none;
-}
-
-.caso-ventana__media{position:relative;background:#000;overflow:hidden}
-.caso-ventana__media video,
-.caso-ventana__media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-
-.caso-ventana__texto{
-  display:flex;
-  flex-direction:column;
-  gap:2rem;
-  padding:3.5rem 3rem;
-  overflow-y:auto;
-  color:var(--white);
-}
-.caso-ventana__sector{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}
-.caso-ventana__titulo{font-size:3rem;font-weight:500;letter-spacing:-.03em;line-height:1}
-.caso-ventana__bloque{display:flex;flex-direction:column;gap:.75rem}
-.caso-ventana__bloque p{font-size:1rem;line-height:1.45;color:rgba(255,255,255,.82)}
-.caso-ventana__etiqueta{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}
-.caso-ventana__cifras{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
-.caso-ventana__cifra .dato{font-size:2.25rem;line-height:1}
-.caso-ventana__concepto{margin-top:.35rem;font-size:.8125rem;color:rgba(255,255,255,.62);line-height:1.3}
-.caso-ventana__pendiente{font-size:.9375rem;color:rgba(255,255,255,.45)}
-
-.caso-ventana__cerrar{
-  position:absolute;top:1.25rem;right:1.25rem;z-index:2;
-  width:2.75rem;height:2.75rem;
-  display:flex;align-items:center;justify-content:center;
-  color:var(--white);
-  background:rgba(0,0,0,.55);
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:50%;
-  cursor:pointer;
-  transition:background .25s,transform .25s;
-}
-.caso-ventana__cerrar:hover{background:rgba(255,255,255,.14);transform:rotate(90deg)}
-
 /* En vertical el medio pasa arriba y el texto debajo, con scroll propio. */
-@media screen and (max-width:991px){
-  .caso-ventana__panel{grid-template-columns:1fr;grid-template-rows:14rem 1fr;width:94vw;height:90vh}
-  .caso-ventana__texto{padding:2rem 1.5rem;gap:1.5rem}
-  .caso-ventana__titulo{font-size:2.25rem}
-  .caso-ventana__cifras{grid-template-columns:1fr}
-}
 
 /* ================== pantalla de carga ================== */
 
@@ -1060,15 +1001,103 @@ body{font-weight:400}
   font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)
 }
 
-.caso-ventana__titular{
-  font-size:1.375rem;line-height:1.25;letter-spacing:-.02em;font-weight:500;
-  color:var(--white);text-wrap:balance
-}
-.caso-ventana__descriptor{
-  font-size:.875rem;line-height:1.4;color:var(--gris)
-}
-
 @media screen and (max-width:991px){
   .work-titular{font-size:.9375rem;max-width:34ch}
-  .caso-ventana__titular{font-size:1.125rem}
+}
+
+/* --- ficha propia de cada caso ------------------------------------------- */
+
+/* Las fichas son el tramo claro de la alternancia blanco/negro de la
+   referencia. El `body` esta en negro para la portada, asi que aqui hay que
+   repintarlo o asoma por el rebote del scroll. */
+body:has(.caso-pagina){background:var(--white)}
+
+.caso-pagina{
+  background:var(--white);color:var(--black);
+  min-height:100vh;padding:9rem 1.25rem 0;
+  display:flex;flex-direction:column;gap:7.5rem
+}
+
+.caso-portada{display:flex;align-items:baseline;justify-content:space-between;gap:2rem}
+.caso-nombre,.caso-numero{
+  font-size:clamp(3.5rem,11vw,10rem);line-height:.9;font-weight:500;
+  letter-spacing:-.045em;margin:0
+}
+.caso-numero{font-variant-numeric:lining-nums}
+
+/* El texto arranca a media pagina, como en la referencia: la columna
+   izquierda se deja vacia a proposito. */
+.caso-entrada{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:-2rem}
+.caso-entrada > *{grid-column:2}
+.caso-titular{
+  font-size:clamp(1.25rem,2.1vw,1.875rem);line-height:1.25;letter-spacing:-.02em;
+  font-weight:500;margin:0;text-wrap:balance
+}
+.caso-contexto{
+  font-size:clamp(1rem,1.35vw,1.25rem);line-height:1.45;margin:0;
+  color:rgba(0,0,0,.72);max-width:46ch
+}
+.caso-descriptor{
+  font-size:.8125rem;letter-spacing:.06em;text-transform:uppercase;
+  color:rgba(0,0,0,.5);margin:0
+}
+
+.caso-medio{margin:0;border-radius:.25rem;overflow:hidden;background:#0b0b0f}
+.caso-medio-img{display:block;width:100%;height:clamp(20rem,62vh,44rem);object-fit:cover}
+
+.caso-meta{
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;
+  font-size:.8125rem;letter-spacing:.04em;color:rgba(0,0,0,.6);margin-top:-5.5rem
+}
+.caso-meta-sector{text-align:right;text-transform:uppercase;letter-spacing:.08em}
+
+.caso-bloque{display:grid;grid-template-columns:1fr 2fr 1fr;gap:2rem}
+.caso-etiqueta{font-size:.9375rem;color:rgba(0,0,0,.55)}
+.caso-parrafo{font-size:clamp(1rem,1.35vw,1.25rem);line-height:1.45;margin:0;max-width:52ch}
+.caso-cifras{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2.5rem 3rem}
+.caso-cifra-dato{
+  font-size:clamp(2.25rem,4.5vw,3.75rem);line-height:1;font-weight:500;
+  letter-spacing:-.03em;
+  background:linear-gradient(90deg,var(--rojo),var(--azul));
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.caso-cifra-concepto{margin-top:.5rem;font-size:.875rem;color:rgba(0,0,0,.6);line-height:1.3}
+
+.caso-cierre{
+  display:flex;flex-direction:column;align-items:center;gap:1.5rem;
+  padding:5rem 0;text-align:center
+}
+.caso-cierre-titulo{
+  font-size:clamp(1.5rem,3vw,2.25rem);font-weight:500;letter-spacing:-.03em;margin:0
+}
+.caso-cierre-botones{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center}
+/* Los botones son los de la portada, pensados sobre negro: aqui hay que
+   devolverles el borde y las flechas en oscuro. */
+.caso-pagina .btn{border-color:rgba(0,0,0,.25)}
+.caso-pagina .btn:hover{border-color:var(--black)}
+.caso-riesgo{
+  font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(0,0,0,.45)
+}
+
+.caso-pie{
+  display:flex;align-items:center;justify-content:space-between;gap:2rem;
+  padding-bottom:3rem;font-size:clamp(1.125rem,2vw,1.75rem);font-weight:500;
+  letter-spacing:-.02em
+}
+.caso-pie-enlace{color:var(--black);text-decoration:none;transition:opacity .25s}
+.caso-pie-enlace:hover{opacity:.55}
+.caso-pie-siguiente{font-size:.875rem;letter-spacing:.04em;color:rgba(0,0,0,.6);font-weight:400}
+
+.caso-marca{padding-bottom:2rem}
+.caso-marca img{display:block;width:100%;height:auto;filter:invert(1)}
+
+@media screen and (max-width:991px){
+  .caso-pagina{padding-top:7rem;gap:4.5rem}
+  .caso-entrada{grid-template-columns:1fr;margin-top:0}
+  .caso-entrada > *{grid-column:1}
+  .caso-meta{grid-template-columns:1fr 1fr;margin-top:-2.5rem}
+  .caso-meta-sector{grid-column:1 / -1;text-align:left}
+  .caso-bloque{grid-template-columns:1fr}
+  .caso-cifras{grid-template-columns:1fr 1fr}
+  .caso-pie{flex-direction:column;align-items:flex-start;gap:.75rem}
 }

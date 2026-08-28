@@ -71,7 +71,6 @@ export const video = {
   manifiesto: `${VIDEO}/manifiesto.mp4`,
   manifiestoReflejo: `${VIDEO}/manifiesto-reflejo.mp4`,
 } as const;
-
 /**
  * Destinos.
  *
@@ -90,22 +89,29 @@ export const enlaces = {
 const CASO = `${MEDIA}/casos`;
 
 /**
- * Los cinco trabajos, en el orden del handoff: Santander, Audi, SANGI,
- * FuertaFit y BidFuse.
+ * Un caso.
  *
- * `titular`, `descriptor` y `resultados` salen del handoff de copy del 28 de
- * agosto de 2026; las cifras son las de su pagina de "Proof control" y solo se
- * tocan con visto bueno de marketing. BidFuse va a proposito sin cifra: no hay
- * metrica atribuible a la casa.
+ * `titular`, `descriptor` y las cifras salen del handoff de copy del 28 de
+ * agosto de 2026 —las cifras, en concreto, de su pagina de "Proof control"— y
+ * solo se tocan con visto bueno de marketing.
+ *
+ * `contexto` y `concepto` son los dos bloques largos de la ficha propia. Van
+ * vacios en los casos cuyo relato todavia no ha aprobado el cliente: la ficha
+ * se maqueta sola con los bloques que haya, y es preferible una pagina corta a
+ * una inventada.
  */
 export type Caso = {
+  slug: string;
   nombre: string;
-  href: string;
+  /** El ordinal grande de la ficha: W'01, W'02... */
+  numero: string;
   media: string;
   alt: string;
   video: boolean;
   /** Cliente / sector, encima del nombre. */
   sector: string;
+  /** Disciplina, en el pie de la ficha. */
+  categoria: string;
   /** El titular del caso. */
   titular: string;
   /** Contexto de lo construido. No es una metrica. */
@@ -114,6 +120,10 @@ export type Caso = {
   prueba?: string;
   /** Texto del enlace: los casos sin case study aprobado van como proyecto. */
   enlace: string;
+  /** Bloque de apertura de la ficha propia. */
+  contexto?: string;
+  /** Bloque "( El planteamiento )" de la ficha propia. */
+  concepto?: string;
   resultados?: { cifra: string; concepto: string }[];
   /** Nombre del evento de analitica. */
   evento: string;
@@ -121,100 +131,122 @@ export type Caso = {
 
 export const casos: Caso[] = [
   {
+    slug: "santander",
     nombre: "Santander",
-    href: "/works/santander",
+    numero: "C'01",
     media: `${CASO}/santander.mp4`,
     video: true,
     alt: "Santander — mapa de oportunidades de IA sobre procesos de banca.",
-    sector: "Santander / Banking",
-    titular: "Finding the AI opportunities worth building.",
-    prueba: "+5% estimated operational efficiency",
-    enlace: "View case",
+    sector: "Santander / Banca",
+    categoria: "Estrategia / Auditoría",
+    titular: "Encontrar las oportunidades de IA que merece la pena construir.",
+    prueba: "+5% de eficiencia operativa estimada",
+    enlace: "Ver caso",
     evento: "case_santander_open",
+    contexto:
+      "Una auditoría de IA sobre la operación del banco: cuatro áreas revisadas y doce procesos mapeados para separar dónde la IA crea ventaja real de dónde solo añade ruido.",
     resultados: [
-      { cifra: "4", concepto: "Audited areas" },
-      { cifra: "12", concepto: "Mapped processes" },
-      { cifra: "€2.1M", concepto: "Estimated impact" },
-      { cifra: "+5%", concepto: "Estimated operational efficiency" },
+      { cifra: "4", concepto: "Áreas auditadas" },
+      { cifra: "12", concepto: "Procesos mapeados" },
+      { cifra: "2,1 M€", concepto: "Impacto estimado" },
+      { cifra: "+5%", concepto: "Eficiencia operativa estimada" },
     ],
   },
   {
+    slug: "audi",
     nombre: "Audi",
-    href: "/works/audi",
+    numero: "C'02",
     media: `${CASO}/audi.mp4`,
     video: true,
-    alt: "Audi — software interno a medida para operaciones de fabricacion premium.",
-    sector: "Audi / Automotive",
-    titular: "Specialized software for premium internal operations.",
-    prueba: "+30% process efficiency · −25% cycle time",
-    enlace: "View case",
+    alt: "Audi — software interno a medida para operaciones de fabricación premium.",
+    sector: "Audi / Automoción",
+    categoria: "Software / Operaciones",
+    titular: "Software especializado para operaciones internas premium.",
+    prueba: "+30% de eficiencia de proceso · −25% de tiempo de ciclo",
+    enlace: "Ver caso",
     evento: "case_audi_open",
+    contexto:
+      "Software a medida para la operación interna de un fabricante premium, construido sobre sus procesos reales en lugar de obligarles a adaptarse a una herramienta de catálogo.",
     resultados: [
-      { cifra: "+30%", concepto: "Process efficiency" },
-      { cifra: "−25%", concepto: "Cycle time" },
+      { cifra: "+30%", concepto: "Eficiencia de proceso" },
+      { cifra: "−25%", concepto: "Tiempo de ciclo" },
     ],
   },
   {
+    slug: "sangi",
     nombre: "Sangi",
-    href: "/works/sangi",
+    numero: "C'03",
     media: `${CASO}/sangi.mp4`,
     video: true,
-    alt: "Sangi — buscador con IA y panel de gestion del Luxury Shoe Observatory.",
+    alt: "Sangi — buscador con IA y panel de gestión del Luxury Shoe Observatory.",
     sector: "Sangi / Retail B2B",
-    titular: "Making an entire industry searchable.",
-    descriptor: "Luxury Shoe Observatory · AI search · Management dashboard",
-    prueba: "−90% cataloging time · +40% publishing speed",
-    enlace: "View case",
+    categoria: "Producto / Búsqueda con IA",
+    titular: "Hacer que un sector entero se pueda buscar.",
+    descriptor: "Luxury Shoe Observatory · Búsqueda con IA · Panel de gestión",
+    prueba: "−90% de tiempo de catalogación · +40% de velocidad de publicación",
+    enlace: "Ver caso",
     evento: "case_sangi_open",
+    contexto:
+      "El Luxury Shoe Observatory: un buscador con IA y un panel de gestión que convierten un catálogo disperso en un sector consultable, con la catalogación resuelta por el sistema y no a mano.",
     resultados: [
-      { cifra: "−90%", concepto: "Cataloging time" },
-      { cifra: "+40%", concepto: "Publishing speed" },
+      { cifra: "−90%", concepto: "Tiempo de catalogación" },
+      { cifra: "+40%", concepto: "Velocidad de publicación" },
     ],
   },
   {
+    slug: "fuertafit",
     nombre: "FuertaFit",
-    href: "/works/fuertafit",
+    numero: "C'04",
     media: `${CASO}/app-verde.jpg`,
     video: false,
-    alt: "FuertaFit — aplicacion de fitness de consumo construida para escalar.",
+    alt: "FuertaFit — aplicación de fitness de consumo construida para escalar.",
     sector: "FuertaFit / Fitness",
+    categoria: "Producto / Consumo",
     titular:
-      "Technology built to scale with the audience, while rebuilding trust in outsourcing as a driver of operational efficiency.",
-    prueba: "+200K users · 4.8 App Store",
-    enlace: "View case",
+      "Tecnología construida para escalar con la audiencia, devolviendo la confianza en la externalización como palanca de eficiencia operativa.",
+    prueba: "+200K usuarios · 4,8 en App Store",
+    enlace: "Ver caso",
     evento: "case_fuertafit_open",
+    contexto:
+      "Un producto de consumo que tenía que aguantar el crecimiento de su audiencia sin rehacerse por el camino, y demostrar que externalizar la construcción puede ser una palanca de eficiencia y no una renuncia.",
     resultados: [
-      { cifra: "+200K", concepto: "Users" },
-      { cifra: "4.8", concepto: "App Store rating" },
+      { cifra: "+200K", concepto: "Usuarios" },
+      { cifra: "4,8", concepto: "Valoración en App Store" },
     ],
   },
   {
+    slug: "bidfuse",
     nombre: "BidFuse",
-    href: "/works/bidfuse",
+    numero: "C'05",
     media: `${CASO}/bidfuse.jpg`,
     video: false,
-    alt: "BidFuse — infraestructura programatica de puja en tiempo real.",
+    alt: "BidFuse — infraestructura programática de puja en tiempo real.",
     sector: "BidFuse / Adtech",
-    titular: "Intelligence where milliseconds matter.",
-    descriptor: "Programmatic infrastructure · Real-time bidding · AI",
+    categoria: "Infraestructura / Adtech",
+    titular: "Inteligencia donde los milisegundos importan.",
+    descriptor: "Infraestructura programática · Puja en tiempo real · IA",
     /* Sin `prueba` ni `resultados` a proposito: el handoff prohibe presentar
        una cifra de BidFuse como resultado propio mientras no haya fuente. */
-    enlace: "View project",
+    enlace: "Ver proyecto",
     evento: "project_bidfuse_open",
+    contexto:
+      "Infraestructura programática de puja en tiempo real, donde la decisión se toma en milisegundos y el margen de error es el propio presupuesto del anunciante.",
   },
 ];
 
+export const casoPorSlug = (slug: string) => casos.find((c) => c.slug === slug);
+
 /** Cinco lineas, sin descripciones debajo. */
 export const servicios = [
-  "AI Strategy & Advisory",
-  "Custom Software & AI Agents",
-  "AI Products & MVPs",
-  "Automation & Integrations",
-  "AI Act & Governance",
+  "Estrategia y asesoría en IA",
+  "Software a medida y agentes de IA",
+  "Productos de IA y MVPs",
+  "Automatización e integraciones",
+  "AI Act y gobernanza",
 ] as const;
 
 export const equipo = ["Brian Greenwalt — CEO", "Alejandro Rios Calera — CTO"] as const;
-export const sedes = ["Madrid", "Miami", "Dubai"] as const;
+export const sedes = ["Madrid", "Miami", "Dubái"] as const;
 
 /** Prueba global del hero. */
-export const pruebaGlobal = "200+ companies audited · 7+ industries";
+export const pruebaGlobal = "+200 empresas auditadas · 7+ sectores";

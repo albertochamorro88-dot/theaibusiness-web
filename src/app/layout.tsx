@@ -14,20 +14,20 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "The AI Business — AI that earns its place in the business",
+  title: "The AI Business — IA que se gana su sitio en el negocio",
   description:
-    "Most companies are testing AI. We put it into production. 200+ companies audited across 7+ industries. Book a call.",
+    "La mayoría de las empresas está probando IA. Nosotros la ponemos en producción. +200 empresas auditadas en 7+ sectores.",
   openGraph: {
-    title: "The AI Business — AI that earns its place in the business",
+    title: "The AI Business — IA que se gana su sitio en el negocio",
     description:
-      "AI execution firm in Madrid, Miami and Dubai. Systems in production, measured outcomes, named clients.",
+      "Firma de ejecución de IA en Madrid, Miami y Dubái. Sistemas en producción, resultados medidos, clientes con nombre.",
     type: "website",
   },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="es" className={inter.variable}>
       <body>{children}</body>
     </html>
   );
