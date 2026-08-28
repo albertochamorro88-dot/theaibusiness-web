@@ -79,5 +79,7 @@ componentes.
 
 La estructura y la hoja de estilos derivan de un clon de **noth.in** hecho como
 estudio de la técnica de animación; el GLSL del hero está tomado literalmente de
-su bundle. Es material de terceros: mantener el repositorio privado y sustituir
-lo que quede antes de cualquier publicación.
+su bundle (`src/motion/shaders.ts`). Es material de terceros y este repositorio
+es público: conviene sustituirlo antes de que el sitio salga a producción.
+
+Los vídeos de `public/media/casos/` son trabajo de clientes reales.
