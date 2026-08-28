@@ -1,7 +1,15 @@
-/** Rutas locales de los assets de marca. */
-const MEDIA = "/media";
-const IMG = "/media/img";
-const VIDEO = "/media/video";
+/**
+ * Rutas locales de los assets de marca.
+ *
+ * `BASE` es el prefijo de la ruta cuando el sitio no cuelga de la raiz del
+ * dominio — en GitHub Pages vive en `/<repo>/`. Next reescribe solo lo suyo;
+ * estas rutas las escribimos nosotros, asi que hay que prefijarlas a mano o
+ * desplegado darian 404. En local la variable no existe y queda vacio.
+ */
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const MEDIA = `${BASE}/media`;
+const IMG = `${BASE}/media/img`;
+const VIDEO = `${BASE}/media/video`;
 
 /**
  * Version de los archivos de marca.
