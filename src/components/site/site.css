@@ -1106,3 +1106,14 @@ body:has(.caso-pagina){background:var(--white)}
   .caso-cifras{grid-template-columns:1fr 1fr;gap:2.5rem 1.5rem}
   .caso-pie{flex-direction:column;align-items:flex-start;gap:.75rem}
 }
+
+/* --- como trabajamos ------------------------------------------------------ */
+
+/* Mismo encaje en la reticula que los otros dos bloques de la firma. Ahi la
+   colocacion la dan ids `w-node-` de Webflow, que no se pueden repetir en el
+   DOM, asi que este va por clase con las mismas reglas. */
+/* Sin este aire las dos listas se leen como una sola de nueve puntos: los
+   bullets son identicos y los bloques se apilan sin separacion. */
+.bloque-modelos{grid-area:span 1/span 2/span 1/span 2;margin-top:3.5rem}
+.bloque-modelos-etiqueta{grid-area:span 1/span 1/span 1/span 1;place-self:start end}
+.modelos-linea-mob{margin-top:1.5rem}

@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 import { evento, reserva } from "./analytics";
-import { casos, enlaces, equipo, img, pruebaGlobal, sedes, servicios, video } from "./content";
+import { casos, enlaces, equipo, img, modelos, pruebaGlobal, sedes, servicios, video } from "./content";
 
 /* ------------------------------------------------------------------ hero */
 
@@ -269,6 +269,41 @@ export function Firma() {
             </div>
           </div>
         </div>
+        {/* "Trabajamos en" contesta que construimos; esto contesta como se
+            contrata, que es lo que la pagina no decia. Repite el patron de los
+            otros dos bloques —etiqueta a la izquierda, lista a la derecha— en
+            lugar de inventar una seccion nueva. Los ids `w-node-` de Webflow no
+            se pueden duplicar, asi que la colocacion en la reticula va por
+            clase. */}
+        <div className="infobusiness-grid">
+          <div className="img-block-grid bloque-modelos">
+            <div className="info-grid-left bloque-modelos-etiqueta">
+              <div line="" className="text-block-4">Cómo trabajamos :</div>
+              <div className="fake-img" />
+            </div>
+            <div className="info-grid-right">
+              <div className="div-block-4">
+                <div className="list">
+                  {modelos.map((m) => (
+                    <div key={m} className="list-item">
+                      <div delay="0.5" scale="" className="list-dot" />
+                      <div line="">{m}</div>
+                    </div>
+                  ))}
+                </div>
+                <div line="" className="hide-tablet">
+                  Unas empresas quieren el proyecto cerrado. <br />Otras, el equipo dentro de casa.
+                  <br />Perfiles multidisciplinares: IA, software <br />y ciberseguridad en la misma mesa.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div line="" className="hide-desk modelos-linea-mob">
+          Unas empresas quieren el proyecto cerrado. Otras, el equipo dentro de casa.
+          Perfiles multidisciplinares: IA, software y ciberseguridad en la misma mesa.
+        </div>
+
         <div className="space-87" />
 
         {/* Collage flotante: ocho objetos recortados sobre el negro, con la A

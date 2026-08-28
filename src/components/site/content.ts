@@ -239,13 +239,34 @@ export const casos: Caso[] = [
 
 export const casoPorSlug = (slug: string) => casos.find((c) => c.slug === slug);
 
-/** Cinco lineas, sin descripciones debajo. */
+/**
+ * Que construimos. Sin descripciones debajo.
+ *
+ * OJO: el handoff fija un maximo de cinco lineas y aqui hay seis. La sexta es
+ * ciberseguridad, que faltaba y es una capacidad real de la casa. Si marketing
+ * quiere respetar el limite, hay que fusionar dos, no quitar esta.
+ */
 export const servicios = [
   "Estrategia y asesoría en IA",
   "Software a medida y agentes de IA",
   "Productos de IA y MVPs",
   "Automatización e integraciones",
+  "Ciberseguridad",
   "AI Act y gobernanza",
+] as const;
+
+/**
+ * Como se contrata.
+ *
+ * La lista de arriba responde a "que construimos"; esta responde a "como
+ * trabajamos", que es un eje distinto. Sin ella la web se lee como si solo
+ * hubiera proyectos cerrados, y se pierde a quien busca equipo en casa o
+ * acompanamiento continuo.
+ */
+export const modelos = [
+  "Proyecto cerrado",
+  "Ingenieros de IA en tu equipo",
+  "Consultoría y acompañamiento",
 ] as const;
 
 export const equipo = ["Brian Greenwalt — CEO", "Alejandro Rios Calera — CTO"] as const;
