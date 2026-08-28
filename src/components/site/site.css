@@ -1054,14 +1054,19 @@ body:has(.caso-pagina){background:var(--white)}
 .caso-bloque{display:grid;grid-template-columns:1fr 2fr 1fr;gap:2rem}
 .caso-etiqueta{font-size:.9375rem;color:rgba(0,0,0,.55)}
 .caso-parrafo{font-size:clamp(1rem,1.35vw,1.25rem);line-height:1.45;margin:0;max-width:52ch}
-.caso-cifras{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2.5rem 3rem}
+/* Los resultados son la prueba que sostiene el caso: se les da el ancho
+   entero del bloque, no la columna central estrecha del resto. */
+.caso-bloque-cifras{grid-template-columns:1fr 5fr}
+.caso-cifras{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3.5rem 3rem}
 .caso-cifra-dato{
-  font-size:clamp(2.25rem,4.5vw,3.75rem);line-height:1;font-weight:500;
-  letter-spacing:-.03em;
-  background:linear-gradient(90deg,var(--rojo),var(--azul));
-  -webkit-background-clip:text;background-clip:text;color:transparent
+  font-size:clamp(3.5rem,8.5vw,8rem);line-height:.88;font-weight:500;
+  letter-spacing:-.05em;color:var(--black);
+  font-variant-numeric:lining-nums tabular-nums
 }
-.caso-cifra-concepto{margin-top:.5rem;font-size:.875rem;color:rgba(0,0,0,.6);line-height:1.3}
+.caso-cifra-concepto{
+  margin-top:.875rem;font-size:.9375rem;color:rgba(0,0,0,.55);line-height:1.3;
+  letter-spacing:.01em
+}
 
 .caso-cierre{
   display:flex;flex-direction:column;align-items:center;gap:1.5rem;
@@ -1097,7 +1102,7 @@ body:has(.caso-pagina){background:var(--white)}
   .caso-entrada > *{grid-column:1}
   .caso-meta{grid-template-columns:1fr 1fr;margin-top:-2.5rem}
   .caso-meta-sector{grid-column:1 / -1;text-align:left}
-  .caso-bloque{grid-template-columns:1fr}
-  .caso-cifras{grid-template-columns:1fr 1fr}
+  .caso-bloque,.caso-bloque-cifras{grid-template-columns:1fr}
+  .caso-cifras{grid-template-columns:1fr 1fr;gap:2.5rem 1.5rem}
   .caso-pie{flex-direction:column;align-items:flex-start;gap:.75rem}
 }

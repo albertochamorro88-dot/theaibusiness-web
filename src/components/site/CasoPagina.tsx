@@ -8,6 +8,7 @@ import { reserva } from "./analytics";
 import { casos, enlaces, img } from "./content";
 import type { Caso } from "./content";
 
+import { useCifras } from "@/motion/useCifras";
 import { useHoverFx } from "@/motion/useHoverFx";
 import { useMenu } from "@/motion/useMenu";
 import { useNavLogo } from "@/motion/useNavLogo";
@@ -42,6 +43,7 @@ export function CasoPagina({ caso }: { caso: Caso }) {
   useMenu(true);
   useNavLogo(true);
   useHoverFx(true);
+  useCifras(true);
 
   /* La hoja de estilos deja en `opacity:0` todo lo que lleva `line`, `letter`
      u `opacity`, y quien los descubre es el final del loader. En esta ruta no
@@ -91,12 +93,12 @@ export function CasoPagina({ caso }: { caso: Caso }) {
         )}
 
         {caso.resultados?.length ? (
-          <section className="caso-bloque">
+          <section className="caso-bloque caso-bloque-cifras">
             <div className="caso-etiqueta">( Resultados )</div>
             <div className="caso-cifras">
               {caso.resultados.map((r) => (
                 <div key={r.concepto} className="caso-cifra">
-                  <div className="caso-cifra-dato">{r.cifra}</div>
+                  <div className="caso-cifra-dato" data-cifra={r.cifra}>{r.cifra}</div>
                   <div className="caso-cifra-concepto">{r.concepto}</div>
                 </div>
               ))}
