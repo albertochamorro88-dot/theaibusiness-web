@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 import { MenuWrapper, Nav } from "./Chrome";
 import { reserva } from "./analytics";
-import { enlaces, webs997 as c } from "./content";
+import { enlaces, img, video, webs997 as c } from "./content";
 
 import { useEagerImages } from "@/motion/useEagerImages";
 import { useHoverFx } from "@/motion/useHoverFx";
@@ -12,8 +12,7 @@ import { useMenu } from "@/motion/useMenu";
 import { useNavLogo } from "@/motion/useNavLogo";
 import { useReveals, playIntroReveals } from "@/motion/useReveals";
 import { useSmoother } from "@/motion/useSmoother";
-import { useVideos } from "@/motion/useVideos";
-import { useAurora, useCarrusel, usePila, usePrecio, useTachado, useTinte } from "@/motion/useWebs";
+import { useCarrusel, usePila, usePrecio, useTachado, useTinte } from "@/motion/useWebs";
 
 import "lenis/dist/lenis.css";
 import "./webflow-base.css";
@@ -38,13 +37,11 @@ import "./site.css";
 export default function Webs997() {
   useEagerImages(true);
   useReveals(true);
-  useVideos(true);
   useHoverFx(true);
   useMenu(true);
   useNavLogo(true);
   useSmoother(true, false);
 
-  useAurora(true);
   useTinte(true);
   useTachado(true);
   usePila(true);
@@ -61,52 +58,50 @@ export default function Webs997() {
       <MenuWrapper />
 
       {/* --------------------------------------------------------- hero */}
-      {/* Sin video y sin la disolucion de fluido de la portada: aqui no hay
-          nada debajo que descubrir. El titular es texto real —se puede
-          seleccionar, indexar y partir por lineas— y el movimiento lo pone el
-          fondo, que deriva solo y sigue al cursor. */}
-      <header className="hero-webs" data-fondo="#000000" data-tinta="#FFFFFF">
-        <div className="aurora" aria-hidden="true">
-          <span className="aurora-mancha aurora-roja" />
-          <span className="aurora-mancha aurora-azul" />
-          <span className="aurora-grano" />
+      {/* Una sola composicion a pantalla completa: video a sangre, la marca
+          arriba a la izquierda, el titular en el tercio superior y la banda de
+          condiciones dentro del fundido de abajo. Nada mas: ni tarjetas, ni
+          chips, ni bloques secundarios.
+
+          Las medidas van en `--u`, que es 1/1058 del ALTO de la ventana. Atar
+          el ritmo vertical al alto —y no al ancho— es lo que hace que la
+          composicion llene la pantalla igual en un portatil que en un monitor
+          panoramico, sin recolocar nada a mano. */}
+      <header className="hero-video" data-fondo="#050505" data-tinta="#FAFAFA">
+        <div className="plate">
+          <video
+            className="plate-video"
+            src={video.webHero}
+            poster={img.webHeroPoster}
+            autoPlay loop muted playsInline preload="auto" aria-hidden="true"
+          />
         </div>
 
-        <div className="container hero-webs-c">
-          <div delay="0.2" line="" className="etiqueta hero-epigrafe">{c.epigrafe}</div>
-
-          <h1 className="hero-h">
-            <span delay="0.35" line="" className="hero-linea">{c.titularA}</span>
-            <span delay="0.45" line="" className="hero-linea">{c.titularB}</span>
-            <span delay="0.6" line="" className="hero-linea hero-linea-precio">
-              {c.titularC} <em className="hero-precio">{c.titularPrecio}</em>
-            </span>
+        <div className="hero-copy">
+          <h1 className="hv-h">
+            <span>{c.titularA}</span>
+            <span>{c.titularB} <em className="hv-precio">{c.titularPrecio}</em></span>
           </h1>
 
-          {/* Sin `<br>`: cada salto se convierte en una linea con su mascara y
-              el hueco entre las dos frases se leia como dos parrafos. Se deja
-              que envuelva sola contra su ancho maximo. */}
-          <div delay="0.9" line="" className="hero-entrada">
-            {c.entrada.replace("\n", " ")}
-          </div>
+          <p className="hv-sub">
+            <span>{c.subA}</span>
+            <span>{c.subB}</span>
+          </p>
 
-          <a
-            delay="1.1" opacity=""
-            href={enlaces.email}
-            onClick={reserva("webs_contacto", "hero")}
-            className="hero-cta"
-          >
-            Cuéntanos tu caso
-            <svg width="15" height="10" viewBox="0 0 15 10" fill="none" aria-hidden="true">
-              <path d="M9.5 0.5L14 5L9.5 9.5" stroke="currentColor" strokeWidth="1.2" />
-              <line y1="5" x2="14" y2="5" stroke="currentColor" strokeWidth="1.2" />
-            </svg>
-          </a>
-
-          <div delay="1.2" opacity="" className="hero-pie">
-            <span>{c.pie}</span>
-            <a href={enlaces.email} className="hero-pie-mail">info@theaibusiness.com</a>
+          <div className="hv-acciones">
+            <a
+              href={enlaces.email}
+              onClick={reserva("webs_contacto", "hero")}
+              className="hv-pill"
+            >
+              <span>Cuéntanos tu caso</span>
+            </a>
+            <a href="#incluye" className="hv-ghost">{c.ghost}</a>
           </div>
+        </div>
+
+        <div className="hv-banda">
+          {c.banda.map((b) => <span key={b}>{b}</span>)}
         </div>
       </header>
 
@@ -136,7 +131,7 @@ export default function Webs997() {
       </section>
 
       {/* -------------------------------------------------------- la pila */}
-      <section className="section pila" data-fondo="#F2F2F5" data-tinta="#0B0B0F">
+      <section id="incluye" className="section pila" data-fondo="#F2F2F5" data-tinta="#0B0B0F">
         <div className="pila-w">
           <div className="pila-texto">
             <div line="" className="etiqueta">{c.pilaEtiqueta}</div>

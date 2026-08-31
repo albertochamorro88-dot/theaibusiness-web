@@ -52,6 +52,7 @@ export const img = {
   candado: `${IMG}/formas/candado.webp`,
   pompon: `${IMG}/formas/pompon.webp`,
   marca997: `${IMG}/webs/marca-997.png`,
+  webHeroPoster: `${IMG}/webs/hero-poster.jpg`,
   brujula: `${IMG}/cargando/brujula.webp`,
   esfera: `${IMG}/cargando/esfera.webp`,
   letraA: `${IMG}/formas/letra-a.png${V}`,
@@ -70,6 +71,7 @@ export const img = {
 
 export const video = {
   heroFondo: `${VIDEO}/hero-fondo.mp4`,
+  webHero: `${VIDEO}/webs/hero.mp4`,
   showreel: `${VIDEO}/showreel.mp4`,
   manifiesto: `${VIDEO}/manifiesto.mp4`,
   manifiestoReflejo: `${VIDEO}/manifiesto-reflejo.mp4`,
@@ -509,12 +511,17 @@ export const webs997 = {
   /* El titular es el del PDF del servicio, literal. Un "997" suelto no dice
      nada por si mismo: la promesa es que la web convierte, y el precio es la
      condicion que la hace creible. */
-  titularA: "Webs que",
-  titularB: "convierten.",
-  titularC: "Precio cerrado:",
+  titularA: "Webs que convierten.",
+  titularB: "Precio cerrado:",
   titularPrecio: "997 €",
-  entrada: "Diseño, copy y desarrollo en una sola pieza.\nSin sorpresas, sin cuotas ocultas.",
-  pie: "Precio cerrado · sin cuotas ocultas",
+  subA: "Diseño, copy y desarrollo en una sola pieza.",
+  subB: "Sin sorpresas, sin cuotas ocultas.",
+  ghost: "Ver qué incluye",
+  /* La banda del pie ocupa el sitio donde el original pone logotipos de
+     cliente. Aqui van las condiciones de la oferta: los clientes de la casa
+     —Santander, Audi— son de otra linea y ademas estan bajo confidencialidad,
+     asi que no pintan nada vendiendo webs de 997 €. */
+  banda: ["Diseño a medida", "Copy que vende", "Desarrollo completo", "Dominio y hosting"],
 
   /* La negacion es el angulo que mejor funciona en campana: se conserva
      literal, incluida la palabra tachada. */
