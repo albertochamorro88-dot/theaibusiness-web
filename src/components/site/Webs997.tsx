@@ -4,17 +4,16 @@ import { useEffect } from "react";
 
 import { MenuWrapper, Nav } from "./Chrome";
 import { reserva } from "./analytics";
-import { enlaces, img, video, webs997 as c } from "./content";
+import { enlaces, webs997 as c } from "./content";
 
 import { useEagerImages } from "@/motion/useEagerImages";
-import { useHero } from "@/motion/useHero";
 import { useHoverFx } from "@/motion/useHoverFx";
 import { useMenu } from "@/motion/useMenu";
 import { useNavLogo } from "@/motion/useNavLogo";
 import { useReveals, playIntroReveals } from "@/motion/useReveals";
 import { useSmoother } from "@/motion/useSmoother";
 import { useVideos } from "@/motion/useVideos";
-import { useCarrusel, usePila, usePrecio, useTachado, useTinte } from "@/motion/useWebs";
+import { useAurora, useCarrusel, usePila, usePrecio, useTachado, useTinte } from "@/motion/useWebs";
 
 import "lenis/dist/lenis.css";
 import "./webflow-base.css";
@@ -43,9 +42,9 @@ export default function Webs997() {
   useHoverFx(true);
   useMenu(true);
   useNavLogo(true);
-  useHero(true);
   useSmoother(true, false);
 
+  useAurora(true);
   useTinte(true);
   useTachado(true);
   usePila(true);
@@ -62,51 +61,54 @@ export default function Webs997() {
       <MenuWrapper />
 
       {/* --------------------------------------------------------- hero */}
-      <div className="section-w" data-fondo="#000000" data-tinta="#FFFFFF">
-        <div className="section-fake-hero">
-          <div className="div-block">
-            <div delay="1.5" line="" no-scroll="" className="p-l">
-              {c.entrada.split("\n").map((l, i) => (
-                <span key={l}>{i > 0 && <br />}{l}</span>
-              ))}
-            </div>
-            <div className="space-24" />
-            <a
-              delay="2" opacity="" no-scroll=""
-              href={enlaces.email}
-              onClick={reserva("webs_contacto", "hero")}
-              className="btn black-blend w-inline-block"
-            >
-              <div className="btn__text"><p className="btn__text-p">Cuéntanos tu caso</p></div>
-              <div className="arrow-w">
-                <div className="arrow black-blend">
-                  <div className="line-arrow" />
-                  <div className="shape-arrow" />
-                </div>
-              </div>
-            </a>
-          </div>
-          <div className="link-hero-bottom-w">
-            <div delay="1.5" line="" no-scroll="">{c.pie}</div>
-            <div delay="1.5" opacity="" no-scroll="" className="link-hero-lang-w">
-              <div className="link-hero-w">
-                <a href={enlaces.email} className="link w-inline-block"><div>info@theaibusiness.com</div></a>
-              </div>
-              <a href="#" className="link-lang w-inline-block"><div>ES</div></a>
-            </div>
-          </div>
+      {/* Sin video y sin la disolucion de fluido de la portada: aqui no hay
+          nada debajo que descubrir. El titular es texto real —se puede
+          seleccionar, indexar y partir por lineas— y el movimiento lo pone el
+          fondo, que deriva solo y sigue al cursor. */}
+      <header className="hero-webs" data-fondo="#000000" data-tinta="#FFFFFF">
+        <div className="aurora" aria-hidden="true">
+          <span className="aurora-mancha aurora-roja" />
+          <span className="aurora-mancha aurora-azul" />
+          <span className="aurora-grano" />
         </div>
 
-        <video src={video.heroFondo} autoPlay loop muted playsInline className="video-hero-bg" />
+        <div className="container hero-webs-c">
+          <div delay="0.2" line="" className="etiqueta hero-epigrafe">{c.epigrafe}</div>
 
-        <section className="section hero-home">
-          <div className="container hero-home">
-            <div className="nothin-hero-w">
-              <img src={img.marca997} alt="997 €" className="marca-hero marca-997" />
-            </div>
+          <h1 className="hero-h">
+            <span delay="0.35" line="" className="hero-linea">{c.titularA}</span>
+            <span delay="0.45" line="" className="hero-linea">{c.titularB}</span>
+            <span delay="0.6" line="" className="hero-linea hero-linea-precio">
+              {c.titularC} <em className="hero-precio">{c.titularPrecio}</em>
+            </span>
+          </h1>
+
+          {/* Sin `<br>`: cada salto se convierte en una linea con su mascara y
+              el hueco entre las dos frases se leia como dos parrafos. Se deja
+              que envuelva sola contra su ancho maximo. */}
+          <div delay="0.9" line="" className="hero-entrada">
+            {c.entrada.replace("\n", " ")}
           </div>
-        </section>
-      </div>
+
+          <a
+            delay="1.1" opacity=""
+            href={enlaces.email}
+            onClick={reserva("webs_contacto", "hero")}
+            className="hero-cta"
+          >
+            Cuéntanos tu caso
+            <svg width="15" height="10" viewBox="0 0 15 10" fill="none" aria-hidden="true">
+              <path d="M9.5 0.5L14 5L9.5 9.5" stroke="currentColor" strokeWidth="1.2" />
+              <line y1="5" x2="14" y2="5" stroke="currentColor" strokeWidth="1.2" />
+            </svg>
+          </a>
+
+          <div delay="1.2" opacity="" className="hero-pie">
+            <span>{c.pie}</span>
+            <a href={enlaces.email} className="hero-pie-mail">info@theaibusiness.com</a>
+          </div>
+        </div>
+      </header>
 
       {/* ---------------------------------------------------- la negacion */}
       <section className="section negacion" data-fondo="#FA4D4D" data-tinta="#0B0B0F">

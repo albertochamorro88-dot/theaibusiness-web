@@ -505,6 +505,14 @@ export const pruebaGlobal = "+200 empresas auditadas · 7+ sectores";
  * `ads/webs-997/` desde el 9 de agosto—, asi que no se publica aqui.
  */
 export const webs997 = {
+  epigrafe: "The AI Business · Webs",
+  /* El titular es el del PDF del servicio, literal. Un "997" suelto no dice
+     nada por si mismo: la promesa es que la web convierte, y el precio es la
+     condicion que la hace creible. */
+  titularA: "Webs que",
+  titularB: "convierten.",
+  titularC: "Precio cerrado:",
+  titularPrecio: "997 €",
   entrada: "Diseño, copy y desarrollo en una sola pieza.\nSin sorpresas, sin cuotas ocultas.",
   pie: "Precio cerrado · sin cuotas ocultas",
 

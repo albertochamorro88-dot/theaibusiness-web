@@ -1169,13 +1169,60 @@ body:has(.webs){background:var(--fondo)}
 .webs .nav-cta{color:var(--tinta)}
 
 /* --- hero --- */
-/* La marca AI es casi cuadrada y domina desbordando por arriba y por abajo.
-   "997 €" es una banda ancha: no puede llenar el alto sin cortar digitos —y el
-   precio tiene que leerse entero—, asi que ocupa el ancho completo. */
-.marca-hero.marca-997{
-  height:auto;width:100vw;max-width:none;transform:none;
-  margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw)
+
+.hero-webs{
+  position:relative;min-height:100svh;display:flex;align-items:flex-end;
+  padding:8rem 0 4rem;overflow:hidden
 }
+.hero-webs-c{position:relative;z-index:1;width:100%}
+
+/* El fondo vivo. Dos manchas de color muy desenfocadas que derivan solas y
+   siguen al cursor: es lo que sustituye a la disolucion de fluido de la
+   portada, que aqui no tendria nada debajo que descubrir. */
+.aurora{position:absolute;inset:0;z-index:0;pointer-events:none}
+.aurora-mancha{
+  position:absolute;display:block;border-radius:50%;
+  width:min(78vw,60rem);aspect-ratio:1;
+  filter:blur(90px);opacity:.5;will-change:transform
+}
+.aurora-roja{top:-22%;left:-14%;background:radial-gradient(circle,var(--rojo) 0%,transparent 68%)}
+.aurora-azul{bottom:-30%;right:-16%;background:radial-gradient(circle,var(--azul) 0%,transparent 68%)}
+/* Un grano finisimo por encima: sin el, dos degradados tan grandes se cortan
+   en bandas visibles en pantallas de 8 bits. */
+.aurora-grano{
+  position:absolute;inset:0;display:block;opacity:.16;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")
+}
+
+.hero-epigrafe{margin-bottom:2.5rem}
+.hero-h{
+  margin:0;font-size:clamp(3rem,10.5vw,11rem);line-height:.92;letter-spacing:-.05em;
+  font-weight:500
+}
+.hero-linea{display:block}
+.hero-linea-precio{font-size:.42em;letter-spacing:-.035em;margin-top:1.25rem;opacity:.9}
+.hero-precio{
+  font-style:normal;
+  background:var(--degradado);-webkit-background-clip:text;background-clip:text;color:transparent
+}
+.hero-entrada{
+  margin-top:3rem;font-size:clamp(1rem,1.4vw,1.25rem);line-height:1.45;
+  max-width:34ch;opacity:.72
+}
+.hero-cta{
+  display:inline-flex;align-items:center;gap:.875rem;margin-top:2.5rem;
+  padding:1.125rem 2rem;border-radius:6.25rem;border:1px solid rgba(255,255,255,.28);
+  font-size:.8125rem;letter-spacing:.08em;text-transform:uppercase;
+  transition:border-color .35s,background-color .35s
+}
+.hero-cta:hover{border-color:transparent;background:var(--degradado)}
+.hero-cta svg{transition:transform .35s}
+.hero-cta:hover svg{transform:translateX(.25rem)}
+.hero-pie{
+  display:flex;flex-wrap:wrap;gap:.5rem 2.5rem;margin-top:5rem;
+  font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;opacity:.5
+}
+.hero-pie-mail{text-transform:none;letter-spacing:.02em}
 
 .webs .etiqueta{font-size:.9375rem;opacity:.6;margin-bottom:1.5rem}
 
@@ -1300,7 +1347,15 @@ body:has(.webs){background:var(--fondo)}
 }
 
 @media screen and (max-width:991px){
-  .marca-hero.marca-997{width:100vw}
+  .hero-webs{padding:7rem 0 3rem}
+  .hero-epigrafe{margin-bottom:1.5rem}
+  .hero-entrada{margin-top:2rem}
+  .hero-pie{margin-top:3rem;gap:.5rem 1.5rem}
+  /* En movil el hero es estrecho y alto: con el ancho de escritorio las
+     manchas se quedan en dos puntos y el fondo se ve muerto. */
+  .aurora-mancha{width:min(150vw,34rem);filter:blur(64px);opacity:.6}
+  .aurora-roja{top:-8%;left:-30%}
+  .aurora-azul{bottom:-8%;right:-30%}
   .pila-w{grid-template-columns:1fr;gap:3rem;min-height:0}
   .pila-mazo{height:auto;display:flex;flex-direction:column;gap:1rem}
   .pila-carta{position:relative;width:100%}
