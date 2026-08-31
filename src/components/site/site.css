@@ -1151,3 +1151,72 @@ body:has(.caso-pagina){background:var(--white)}
   font-size:clamp(1.25rem,2.1vw,1.875rem);line-height:1.25;letter-spacing:-.02em;
   font-weight:500;margin:0;max-width:24ch;text-wrap:balance
 }
+
+/* --- landing de la linea de webs ----------------------------------------- */
+
+/* La placa del hero. La marca AI se registra con el glifo del video que corre
+   debajo y por eso lleva alto en vh y un desplazamiento medido; esta es una
+   pieza de texto y solo tiene que ocupar el ancho, asi que se anula todo eso. */
+/* La marca AI es casi cuadrada y domina el hero desbordando por arriba y por
+   abajo. "997 €" es una banda ancha: no puede llenar el alto sin cortar
+   digitos —y el precio tiene que leerse entero—, asi que su equivalente es
+   ocupar el ancho completo, de borde a borde, saliendose del padding del
+   contenedor. */
+.marca-hero.marca-997{
+  height:auto;width:100vw;max-width:none;transform:none;
+  margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw)
+}
+
+.incluye-lista{display:flex;flex-direction:column}
+.incluye-fila{
+  display:grid;grid-template-columns:1fr 2fr;gap:2rem;
+  padding:2rem 0;border-top:1px solid rgba(255,255,255,.14)
+}
+.incluye-fila:last-child{border-bottom:1px solid rgba(255,255,255,.14)}
+.incluye-nombre{
+  margin:0;font-size:clamp(1.5rem,3vw,2.5rem);line-height:1.05;font-weight:500;
+  letter-spacing:-.03em
+}
+.incluye-detalle{
+  font-size:clamp(1rem,1.35vw,1.25rem);line-height:1.45;color:var(--gris);max-width:44ch
+}
+
+/* Las cifras vienen de las fichas de caso, que van sobre blanco. */
+/* Cuatro cifras en una fila: al cuerpo de las fichas de caso —una o dos por
+   fila— "997 €" no cabe en su columna. */
+.cifras-webs{grid-template-columns:repeat(4,minmax(0,1fr));gap:3rem 2rem}
+.cifras-webs .caso-cifra-dato{font-size:clamp(2.25rem,4.6vw,4.25rem)}
+.cifras-webs .caso-cifra-dato{color:var(--white)}
+.cifras-webs .caso-cifra-concepto{color:var(--gris)}
+
+.porque-linea{max-width:46ch;color:var(--gris)}
+.pasos-w{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2rem}
+.paso-n{
+  font-size:.8125rem;letter-spacing:.1em;
+  background:var(--degradado);-webkit-background-clip:text;background-clip:text;color:transparent
+}
+.paso-nombre{
+  margin:.75rem 0 .5rem;font-size:clamp(1.125rem,1.8vw,1.5rem);font-weight:500;
+  letter-spacing:-.02em;line-height:1.1
+}
+.paso-detalle{font-size:.9375rem;line-height:1.45;color:var(--gris);max-width:26ch}
+
+@media screen and (max-width:991px){
+  .marca-hero.marca-997{width:92vw}
+  .incluye-fila{grid-template-columns:1fr;gap:.625rem;padding:1.5rem 0}
+  .cifras-webs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pasos-w{grid-template-columns:1fr 1fr;gap:2rem 1.5rem}
+}
+@media screen and (max-width:479px){
+  .pasos-w{grid-template-columns:1fr}
+}
+
+/* En la portada este bloque se coloca a la derecha con un id `w-node-` de
+   Webflow, que no se puede repetir en el DOM. Misma regla, por clase. */
+.social-links-w.social-webs{grid-area:1/10/2/13}
+@media screen and (max-width:991px){
+  .social-links-w.social-webs{grid-area:span 1/span 5/span 1/span 5;justify-self:end}
+}
+@media screen and (max-width:479px){
+  .social-links-w.social-webs{grid-column:span 1/span 1}
+}
