@@ -42,7 +42,11 @@ export function useMarquesina(ready: boolean) {
       if (!via) return null;
       const mitad = () => via.scrollWidth / 2;
       /* Velocidad en pixeles por segundo, no en segundos totales: si no, una
-         cinta con mas texto iria mas rapida que otra con menos. */
+         cinta con mas texto iria mas rapida que otra con menos.
+         105 px/s es el valor MEDIDO sobre la referencia siguiendo la posicion
+         en pantalla de sus copias con el scroll congelado: se desplazaban ~44
+         px cada 430 ms. Va con reloj propio y no depende del scroll — se
+         comprobo moviendo la pagina y la cadencia no cambio. */
       const vel = Number(cinta.dataset.cinta) || 90;
       const dir = cinta.dataset.cintaDir === "-1" ? 1 : -1;
       return gsap.to(via, {
@@ -75,7 +79,10 @@ export function useParalaje(ready: boolean) {
 
     const piezas = [...document.querySelectorAll<HTMLElement>("[data-paralaje]")];
     const tweens = piezas.map((el) => {
-      const pct = Number(el.dataset.paralaje) || 12;
+      /* 10 es el valor medido en las capas grandes de la referencia: -0,1000
+         px por cada px de scroll, en sentido contrario. Sus bloques de texto
+         van al 5,75 %. */
+      const pct = Number(el.dataset.paralaje) || 10;
       return gsap.fromTo(
         el,
         { yPercent: pct },

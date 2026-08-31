@@ -68,7 +68,7 @@ export default function Donut() {
       <header className="dsec dhero">
         <p className="dhero-sup">{c.heroSuperior}</p>
         <div className="dhero-nucleo">
-          <img src={c.heroNucleo} alt={c.heroNucleoAlt} data-paralaje="6" />
+          <img src={c.heroNucleo} alt={c.heroNucleoAlt} data-paralaje="10" />
         </div>
         <p className="dhero-inf">{c.heroInferior}</p>
         {/* La marca gigante, cortada por el borde inferior: el corte es lo que
@@ -93,7 +93,7 @@ export default function Donut() {
 
         {/* La cinta: el contenido va duplicado y el tween recorre justo la
             mitad, asi que el salto de vuelta a cero cae donde no se ve. */}
-        <div className="cinta" data-cinta="70" aria-hidden="true">
+        <div className="cinta" data-cinta="105" aria-hidden="true">
           <div className="cinta-via">
             {Array.from({ length: 8 }, (_, i) => (
               <span key={i} className="cinta-pieza">{c.casosCinta}</span>
@@ -182,7 +182,7 @@ export default function Donut() {
       <footer id="contacto" className="dsec dcierre">
         <Epigrafe texto={c.cierreEpigrafe} num={c.cierreNumero} cat={c.cierreCategoria} />
 
-        <div className="cinta dtira" data-cinta="45" data-cinta-dir="-1" aria-hidden="true">
+        <div className="cinta dtira" data-cinta="105" data-cinta-dir="-1" aria-hidden="true">
           <div className="cinta-via">
             {[...c.tira, ...c.tira].map((p, i) => (
               <img key={i} src={p.src} alt="" loading="lazy"
