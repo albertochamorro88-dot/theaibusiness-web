@@ -1538,3 +1538,177 @@ body:has(.webs){background:var(--fondo)}
   .muestras-par{grid-template-columns:1fr;gap:2rem;margin-top:6vh}
   .muestra:nth-child(2){margin-top:0}
 }
+
+/* =====================================================================
+   PROPUESTA DE PORTADA — /donut
+   El armazon viene de una referencia externa; el color y el tono, no. Su
+   paleta es amarillo sobre rosa con un cuarto tramo naranja: aqui el
+   recorrido es el de la casa (negro, rojo, azul, gris) y el naranja esta
+   prohibido por guia de marca.
+   ===================================================================== */
+.donut{background:#0B0B0F;color:#FAFAFA}
+.donut .dsec{position:relative;background:var(--dfondo);color:var(--dtinta);overflow:hidden}
+.dhero,.dcierre{--dfondo:#0B0B0F;--dtinta:#FAFAFA}
+.dmanifiesto,.dcasos,.dservicios{--dfondo:#FA4D4D;--dtinta:#0B0B0F}
+.denfoque{--dfondo:#5A70FA;--dtinta:#FFFFFF}
+.dmodelos{--dfondo:#D7D9E6;--dtinta:#0B0B0F}
+.donut .dcont{width:100%;max-width:100rem;margin:0 auto;padding:0 clamp(1.25rem,3vw,3rem)}
+
+/* --- el epigrafe numerado de cada seccion --- */
+.depi{
+  display:flex;gap:1.5rem;align-items:baseline;flex-wrap:wrap;
+  max-width:100rem;margin:0 auto;padding:clamp(4rem,8vh,7rem) clamp(1.25rem,3vw,3rem) clamp(2rem,4vh,3.5rem);
+  font-size:.8125rem;letter-spacing:.08em;text-transform:uppercase;opacity:.7
+}
+.depi-n{margin-left:auto}
+.depi-c{font-weight:600;opacity:1}
+
+/* --- hero --- */
+.dhero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8rem 1.25rem 0}
+@supports (height:100svh){ .dhero{min-height:100svh} }
+.dhero-sup,.dhero-inf{margin:0;font-size:.9375rem;letter-spacing:.02em;opacity:.75;text-align:center}
+.dhero-nucleo{width:min(46vw,32rem);aspect-ratio:1;margin:clamp(2rem,5vh,4rem) 0;display:grid;place-items:center}
+.dhero-nucleo img{width:100%;height:100%;object-fit:contain}
+/* La marca a sangre, cortada por el borde de abajo: el corte es lo que pide
+   seguir bajando. `clamp` sobre vw para que llene igual en cualquier ancho. */
+.dhero-marca{
+  margin-top:auto;width:100%;text-align:center;font-weight:800;
+  /* Ajustado para que las trece letras quepan justas de borde a borde. Con
+     14,5vw la ultima S se salia y se leia como fallo, no como recorte
+     deliberado: un corte solo funciona si es evidente que es intencionado. */
+  font-size:12.1vw;line-height:.78;letter-spacing:-.05em;white-space:nowrap;
+  transform:translateY(24%);color:#FAFAFA;user-select:none;pointer-events:none
+}
+
+/* La barra fija hereda la tinta de la seccion que tiene detras: sin esto
+   quedaba azul sobre rojo, ilegible en tres de los siete tramos. */
+.donut .nav-boiler,.donut .nav-cta,.donut .menu-boton,.donut .nav-menu-abrir{
+  mix-blend-mode:normal;color:var(--nav-ink,#FAFAFA)
+}
+.donut .nav-cta{border-color:currentColor}
+
+/* --- manifiesto --- */
+.dniega{margin:0;display:flex;flex-direction:column;gap:.2em;
+  font-size:clamp(1.9rem,5.2vw,4.75rem);line-height:1.02;letter-spacing:-.04em;font-weight:500}
+.dafirma{margin:clamp(2rem,5vh,3.5rem) 0 clamp(5rem,10vh,8rem);
+  font-size:clamp(1rem,1.5vw,1.375rem);line-height:1.45;max-width:52ch;opacity:.9}
+
+/* --- la cinta infinita --- */
+.cinta{width:100%;overflow:hidden;user-select:none}
+.cinta-via{display:flex;width:max-content;will-change:transform}
+.cinta-pieza{
+  flex:0 0 auto;padding-right:.28em;font-weight:500;
+  font-size:clamp(3.5rem,14vw,12.7rem);line-height:.96;letter-spacing:-.04em;white-space:pre
+}
+.dtira .cinta-via{gap:clamp(.75rem,1.5vw,1.5rem);align-items:center}
+.dtira img{flex:0 0 auto;object-fit:cover;border-radius:.375rem;display:block}
+
+/* --- rejilla de casos, descompensada a proposito --- */
+.dcasos-intro{display:flex;gap:2rem;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;
+  margin-top:clamp(2rem,5vh,3.5rem)}
+.dcasos-apoyo{margin:0;font-size:clamp(1rem,1.4vw,1.25rem);line-height:1.45;max-width:44ch}
+.dgrid{
+  display:grid;grid-template-columns:repeat(12,1fr);
+  gap:clamp(1.5rem,3vw,3rem) clamp(1rem,2vw,2rem);
+  max-width:100rem;margin:clamp(3rem,7vh,5rem) auto clamp(5rem,10vh,8rem);
+  padding:0 clamp(1.25rem,3vw,3rem);align-items:start
+}
+.dcarta-1{grid-column:1 / 7}
+.dcarta-2{grid-column:8 / 13;margin-top:clamp(-6rem,-7vw,-2rem)}
+.dcarta-3{grid-column:4 / 10}
+.dcarta-4{grid-column:1 / 7}
+.dcarta-5{grid-column:8 / 13;margin-top:clamp(2rem,5vw,5rem)}
+.dcarta-a{display:block;color:inherit;text-decoration:none}
+.dcarta-marco{overflow:hidden;border-radius:.5rem;background:rgba(11,11,15,.12)}
+.dcarta-marco img,.dcarta-marco video{
+  display:block;width:100%;height:100%;object-fit:cover;
+  transition:transform .6s cubic-bezier(.22,1,.36,1)
+}
+.dcarta-1 .dcarta-marco,.dcarta-4 .dcarta-marco{aspect-ratio:1.21}
+.dcarta-2 .dcarta-marco,.dcarta-3 .dcarta-marco{aspect-ratio:.99}
+.dcarta-5 .dcarta-marco{aspect-ratio:1.25}
+.dcarta-a:hover .dcarta-marco img,.dcarta-a:hover .dcarta-marco video{transform:scale(1.04)}
+.dcarta-pie{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+  margin-top:.875rem;font-size:1rem;letter-spacing:-.01em}
+.dcarta-i{opacity:.6;font-variant-numeric:tabular-nums}
+
+/* --- acordeon --- */
+.dtitulo{margin:0 0 clamp(2rem,4vh,3rem);font-size:clamp(2rem,5vw,4.5rem);
+  line-height:1;letter-spacing:-.04em;font-weight:500}
+.dtitulo em{font-style:normal;opacity:.5;font-size:.42em;vertical-align:.6em;letter-spacing:0}
+.dmodelos-apoyo{margin:-1rem 0 clamp(2rem,4vh,3rem);font-size:clamp(1rem,1.4vw,1.25rem);
+  line-height:1.45;max-width:48ch;opacity:.85}
+.acordeon{border-top:1px solid currentColor;margin-bottom:clamp(5rem,10vh,8rem)}
+.acordeon-fila{border-bottom:1px solid currentColor}
+.acordeon-cabeza{
+  width:100%;display:flex;align-items:center;gap:clamp(1rem,3vw,2.5rem);
+  padding:clamp(1.1rem,2.2vh,1.75rem) 0;background:none;border:0;color:inherit;
+  font:inherit;text-align:left;cursor:pointer
+}
+.acordeon-n{font-size:.8125rem;opacity:.55;font-variant-numeric:tabular-nums;flex:0 0 auto}
+.acordeon-t{font-size:clamp(1.125rem,2.4vw,2rem);letter-spacing:-.02em;line-height:1.1}
+/* La cruz que gira a menos al abrir. Dos barras, no un caracter: un signo
+   tipografico cambia de forma con la fuente y no se puede rotar limpio. */
+.acordeon-mas{margin-left:auto;position:relative;width:1rem;height:1rem;flex:0 0 auto}
+.acordeon-mas::before,.acordeon-mas::after{
+  content:"";position:absolute;inset:50% 0 auto 0;height:1px;background:currentColor;
+  transition:transform .42s cubic-bezier(.22,1,.36,1)
+}
+.acordeon-mas::after{transform:rotate(90deg)}
+.acordeon-fila.abierta .acordeon-mas::after{transform:rotate(0deg)}
+.acordeon-cuerpo{height:0;overflow:hidden}
+.acordeon-dentro{padding:0 0 clamp(1.25rem,2.5vh,2rem) 0;max-width:60ch}
+.acordeon-dentro p{margin:0 0 1rem;font-size:clamp(.9375rem,1.2vw,1.0625rem);line-height:1.5;opacity:.85}
+.acordeon-enlace{color:inherit;text-decoration:none;border-bottom:1px solid currentColor;
+  font-size:.9375rem;padding-bottom:.1em}
+
+/* --- enfoque --- */
+.denfoque-c{display:grid;grid-template-columns:1.35fr .65fr;gap:clamp(2rem,5vw,5rem);
+  align-items:center;padding-bottom:clamp(5rem,10vh,8rem)}
+.denfoque-t{margin:0;font-size:clamp(1.4rem,3.2vw,2.75rem);line-height:1.18;letter-spacing:-.02em;font-weight:400}
+.denfoque-fig{margin:0;overflow:hidden;border-radius:.5rem;aspect-ratio:.7}
+.denfoque-fig img{display:block;width:100%;height:112%;object-fit:cover}
+
+/* --- cierre --- */
+.dcierre-c{padding:clamp(4rem,9vh,7rem) clamp(1.25rem,3vw,3rem) 0;text-align:center}
+.dcierre-h{margin:0 auto;max-width:18ch;font-size:clamp(2rem,5.4vw,4.75rem);
+  line-height:1.02;letter-spacing:-.04em;font-weight:500}
+.dcierre-p{margin:1.25rem auto 2.5rem;font-size:clamp(1rem,1.4vw,1.25rem);opacity:.75}
+.dcierre-btn{
+  display:inline-block;padding:1rem 2rem;border-radius:100px;background:#FAFAFA;color:#0B0B0F;
+  text-decoration:none;font-weight:600;font-size:.9375rem;letter-spacing:.01em;
+  transition:transform .4s cubic-bezier(.22,1,.36,1),opacity .3s
+}
+.dcierre-btn:hover{transform:translateY(-2px)}
+.dcierre-mail{display:inline-block;margin-left:1.5rem;font-size:.9375rem;opacity:.75}
+.dcierre-marca{padding:clamp(4rem,9vh,7rem) clamp(1.25rem,3vw,3rem) 0}
+.dcierre-marca img{display:block;width:100%;max-width:100rem;margin:0 auto;height:auto}
+.dcierre-pie{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+  max-width:100rem;margin:0 auto;padding:2.5rem clamp(1.25rem,3vw,3rem);
+  font-size:.8125rem;letter-spacing:.04em;opacity:.55}
+
+/* --- el enlace cuya etiqueta rueda al pasar por encima ---
+   Sin duplicar el nodo: la copia es una sombra solida colocada exactamente una
+   linea mas abajo, y el bloque sube dentro de un contenedor recortado. Un solo
+   texto en el DOM y una sola lectura para quien use lector de pantalla. */
+.drodillo{
+  display:inline-block;overflow:hidden;vertical-align:top;color:inherit;text-decoration:none;
+  line-height:1.4
+}
+.drodillo span{
+  display:block;
+  text-shadow:0 var(--rodillo-alto,1.4em) 0 currentColor;
+  transition:transform .45s cubic-bezier(.22,1,.36,1)
+}
+.drodillo:hover span{transform:translateY(calc(-1 * var(--rodillo-alto,1.4em)))}
+
+/* --- estrecho --- */
+@media screen and (max-width:860px){
+  .dhero-nucleo{width:72vw}
+  .dhero-marca{font-size:19vw;transform:translateY(20%)}
+  .dgrid{grid-template-columns:1fr;gap:2.5rem}
+  .dcarta-1,.dcarta-2,.dcarta-3,.dcarta-4,.dcarta-5{grid-column:1/-1;margin-top:0}
+  .denfoque-c{grid-template-columns:1fr;gap:2.5rem}
+  .denfoque-fig{aspect-ratio:1.2}
+  .dcierre-mail{display:block;margin:1.5rem 0 0}
+}
