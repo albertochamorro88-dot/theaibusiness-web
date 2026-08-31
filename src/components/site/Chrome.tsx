@@ -3,15 +3,21 @@ import Link from "next/link";
 import { reserva } from "./analytics";
 import { enlaces, img, pruebaGlobal } from "./content";
 
+type Cta = { texto: string; href: string; evento: string };
+
 /**
- * Nav fija: marca a la izquierda, el CTA de reserva en el centro y MENU a la
- * derecha.
+ * Nav fija: marca a la izquierda, el CTA en el centro y MENU a la derecha.
+ *
+ * El CTA es configurable porque no todas las paginas venden lo mismo: en la
+ * landing de webs mandar a la pagina de diagnostico seria una fuga a otra
+ * oferta. Sin argumento se queda el de la portada.
  *
  * El CTA del header solo sale de escritorio: de tablet hacia abajo `.menu-w`
  * ocupa el ancho entero y no queda hueco para el. Ahi la reserva vive dentro
  * del menu desplegado.
  */
-export function Nav() {
+export function Nav({ cta }: { cta?: Cta } = {}) {
+  const accion = cta ?? { texto: "Reservar llamada", href: enlaces.agenda, evento: "nav_book_call" };
   return (
     <nav opacity="" no-scroll="" className="nav-boiler">
       <Link href="/" aria-current="page" className="nav-logo-wrap w-inline-block w--current">
@@ -20,13 +26,13 @@ export function Nav() {
         <img src={img.logo} alt="The AI Business" className="nav-logo-completo" />
       </Link>
       <a
-        href={enlaces.agenda}
-        target="_blank"
-        rel="noreferrer"
-        onClick={reserva("nav_book_call", "nav")}
+        href={accion.href}
+        target={accion.href.startsWith("http") ? "_blank" : undefined}
+        rel={accion.href.startsWith("http") ? "noreferrer" : undefined}
+        onClick={reserva(accion.evento, "nav")}
         className="nav-cta hide-tablet"
       >
-        Reservar llamada
+        {accion.texto}
       </a>
       <div className="menu-w">
         <div className="menu-btn">

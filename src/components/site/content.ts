@@ -505,15 +505,20 @@ export const pruebaGlobal = "+200 empresas auditadas · 7+ sectores";
  * `ads/webs-997/` desde el 9 de agosto—, asi que no se publica aqui.
  */
 export const webs997 = {
-  epigrafe: "The AI Business · Webs",
   entrada: "Diseño, copy y desarrollo en una sola pieza.\nSin sorpresas, sin cuotas ocultas.",
   pie: "Precio cerrado · sin cuotas ocultas",
-  manifiesto: "No vendemos webs bonitas.\nVendemos webs que venden.",
-  apoyoEtiqueta: "( El trabajo real )",
-  apoyo:
+
+  /* La negacion es el angulo que mejor funciona en campana: se conserva
+     literal, incluida la palabra tachada. */
+  negacionAntes: "No vendemos webs",
+  negacionTachada: "bonitas",
+  negacionDespues: "Vendemos webs que",
+  negacionSubrayada: "venden",
+  negacionApoyo:
     "La estética es el mínimo. El trabajo real es que cada visita se convierta en cliente.",
-  palabra: "webs",
-  incluyeTitulo: "Qué incluye\nlos 997 €.",
+
+  pilaEtiqueta: "( Qué incluye )",
+  pilaTitulo: "Cinco cosas.\nUn solo precio.",
   incluye: [
     { nombre: "Diseño a medida", detalle: "Nada de plantillas. Diseñamos tu web sobre tu negocio y sobre tu cliente." },
     { nombre: "Copy que vende", detalle: "Escribimos cada texto. Cada sección tiene un trabajo: llevar a la acción." },
@@ -521,23 +526,23 @@ export const webs997 = {
     { nombre: "Hasta 5 secciones", detalle: "Toda tu web: inicio, servicios, sobre ti, contacto y una sección más." },
     { nombre: "Dominio y hosting", detalle: "La conectamos a tu dominio y la dejamos online. Tú no tocas nada técnico." },
   ],
-  pasosEtiqueta: "( Cómo trabajamos )",
+
+  procesoEtiqueta: "( Cómo trabajamos )",
+  procesoTitulo: "Cuatro fases.",
   proceso:
     "Primero entendemos tu negocio y a quién le vendes. Después diseñamos, construimos lo que convierte y la publicamos. Tú revisas; nosotros ejecutamos.",
   pasos: [
-    { n: "01", nombre: "Diagnóstico", detalle: "Entendemos tu negocio y a quién le vendes." },
-    { n: "02", nombre: "Diseño", detalle: "Diseñamos sobre ese negocio, no sobre una plantilla." },
-    { n: "03", nombre: "Desarrollo", detalle: "Construimos lo que convierte." },
-    { n: "04", nombre: "Online", detalle: "La publicamos. Tú revisas; nosotros ejecutamos." },
+    { n: "01", nombre: "Diagnóstico", detalle: "Entendemos tu negocio y a quién le vendes. Sin esto, lo demás es decoración." },
+    { n: "02", nombre: "Diseño", detalle: "Diseñamos sobre ese negocio, no sobre una plantilla que ya existía." },
+    { n: "03", nombre: "Desarrollo", detalle: "Construimos la web entera. Rápida, y lista para publicar." },
+    { n: "04", nombre: "Online", detalle: "La conectamos a tu dominio y la publicamos. Tú revisas; nosotros ejecutamos." },
   ],
-  cifras: [
-    { cifra: "997 €", concepto: "Precio cerrado" },
-    { cifra: "5", concepto: "Secciones incluidas" },
-    { cifra: "4", concepto: "Fases hasta publicar" },
-    { cifra: "1", concepto: "Pago, sin cuotas" },
-  ],
-  porqueTitulo: "Por qué 997 €.",
-  porque:
-    "Una web a medida cuesta varios miles. La nuestra son 997 € cerrados. No porque valga menos — porque producimos mejor.",
+
+  precioEtiqueta: "( Por qué 997 € )",
+  precio: "997",
+  precioTitulo: "Una web a medida cuesta varios miles.",
+  precioApoyo: "No porque valga menos — porque producimos mejor.",
+
   cierre: "Cuéntanos\ntu caso.",
+  cierreApoyo: "Diseño, copy y desarrollo en una sola pieza. Sin cuotas ocultas.",
 } as const;
