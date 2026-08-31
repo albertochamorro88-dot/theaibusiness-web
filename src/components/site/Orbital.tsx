@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 import { MenuWrapper, Nav } from "./Chrome";
 import { reserva } from "./analytics";
-import { casos, enlaces, img, ofertas } from "./content";
+import { enlaces, img, webs997 as w } from "./content";
 
 import { useHoverFx } from "@/motion/useHoverFx";
 import { useMenu } from "@/motion/useMenu";
@@ -19,7 +19,17 @@ import "lenis/dist/lenis.css";
 import "./webflow-base.css";
 import "./site.css";
 
-const servicios = ofertas.filter((o) => o.tipo === "servicio");
+/* Las piezas de la orbita son webs, no casos de IA: esta pagina vende la linea
+   de webs a precio cerrado. Solo hay dos maquetas reales; las tres restantes
+   son huecos declarados, con su medida escrita dentro para sustituir. */
+const G = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/media/img/estudio`;
+const muestras = [
+  { src: img.muestra1, nombre: "Portátil", alt: "Web en un portátil sobre luz roja y azul." },
+  { src: img.muestra2, nombre: "Tableta", alt: "Web en una tableta sostenida con las dos manos." },
+  { src: `${G}/web-03.png`, nombre: "Pendiente", alt: "" },
+  { src: `${G}/web-04.png`, nombre: "Pendiente", alt: "" },
+  { src: `${G}/web-05.png`, nombre: "Pendiente", alt: "" },
+];
 
 /**
  * Direccion orbital para la portada.
@@ -55,7 +65,7 @@ export default function Orbital() {
 
   return (
     <div className="orbital">
-      <Nav cta={{ texto: "Reservar diagnóstico", href: enlaces.agenda, evento: "orb_nav" }} />
+      <Nav cta={{ texto: "Cuéntanos tu caso", href: enlaces.email, evento: "orb_nav" }} />
       <MenuWrapper />
 
       {/* ------------------------------------------------------------ hero */}
@@ -63,12 +73,11 @@ export default function Orbital() {
         <canvas ref={lienzo} className="orb-lienzo" aria-hidden="true" />
         <div className="orb-hero-copy">
           <h1 line="" className="orb-h1">
-            <span>Sistemas de IA</span>
-            <span>que ejecutan.</span>
+            <span>Webs que convierten.</span>
+            <span>Precio cerrado: <em className="orb-precio">997 €</em></span>
           </h1>
           <p line="" className="orb-sub">
-            Detectamos dónde pierde tiempo y dinero tu empresa, construimos el
-            sistema y medimos el resultado.
+            {w.subA} {w.subB}
           </p>
         </div>
         <div className="orb-hero-pie">
@@ -82,8 +91,7 @@ export default function Orbital() {
         <div className="orb-cont">
           <div line="" className="orb-eti">( 01 — Premisa )</div>
           <h2 line="" className="orb-h2">
-            No somos un proveedor de software. Construimos el sistema y
-            respondemos del resultado.
+            No vendemos webs bonitas. Vendemos webs que venden.
           </h2>
           <figure className="orb-retrato">
             <img src={img.ejecutivo} alt="" loading="lazy" data-orb-par="5.57" />
@@ -97,24 +105,18 @@ export default function Orbital() {
       <section className="orb-galeria">
         <div className="orb-galeria-cab">
           <div className="orb-eti">( 02 — Trabajo )</div>
-          <h2 className="orb-h2-chico">Cinco sistemas en producción.</h2>
+          <h2 className="orb-h2-chico">{w.pilaTitulo.replace("\n", " ")}</h2>
         </div>
         <div className="orb-pista">
-          {casos.map((k, i) => (
-            <article key={k.slug} className="orb-pieza">
-              <a href={`/casos/${k.slug}/`} className="orb-pieza-a">
-                <div className="orb-pieza-marco">
-                  {k.video ? (
-                    <video src={k.media} autoPlay loop muted playsInline preload="metadata" aria-label={k.alt} />
-                  ) : (
-                    <img src={k.media} alt={k.alt} loading="lazy" />
-                  )}
-                </div>
-                <div className="orb-pieza-pie">
-                  <span>{k.nombre}</span>
-                  <span>({String(i + 1).padStart(2, "0")})</span>
-                </div>
-              </a>
+          {muestras.map((m, i) => (
+            <article key={m.src} className="orb-pieza">
+              <div className="orb-pieza-marco">
+                <img src={m.src} alt={m.alt} loading="lazy" />
+              </div>
+              <div className="orb-pieza-pie">
+                <span>{m.nombre}</span>
+                <span>({String(i + 1).padStart(2, "0")})</span>
+              </div>
             </article>
           ))}
         </div>
@@ -123,13 +125,12 @@ export default function Orbital() {
       {/* -------------------------------------------------------- capacidad */}
       <section className="orb-capacidad">
         <div className="orb-cont">
-          <div line="" className="orb-eti">( 03 — Capacidad )</div>
+          <div line="" className="orb-eti">( 03 — Qué incluye )</div>
           <ul className="orb-lista">
-            {servicios.map((s) => (
-              <li key={s.slug} className="orb-lista-fila">
-                <a href={`/servicios/${s.slug}/`} data-rodillo="" className="drodillo">
-                  <span>{s.nombre}</span>
-                </a>
+            {w.incluye.map((it) => (
+              <li key={it.nombre} className="orb-lista-fila orb-lista-fija">
+                <span className="orb-lista-n">{it.nombre}</span>
+                <span className="orb-lista-d">{it.detalle}</span>
               </li>
             ))}
           </ul>
@@ -140,7 +141,7 @@ export default function Orbital() {
       <footer id="contacto" className="orb-cierre">
         {/* Recorre 1584 px atado al scroll: si el lector para, para. */}
         <div className="orb-cinta-w" aria-hidden="true">
-          <div className="orb-cinta" data-orb-cinta="1584">Cuéntanos tu caso —</div>
+          <div className="orb-cinta" data-orb-cinta="1584">997 € — Cuéntanos tu caso —</div>
         </div>
 
         <div className="orb-marcos">
@@ -149,16 +150,14 @@ export default function Orbital() {
         </div>
 
         <div className="orb-cont orb-cierre-c">
-          <p line="" className="orb-cierre-p">
-            Diagnóstico en 72 horas. Sin compromiso.
-          </p>
+          <p line="" className="orb-cierre-p">{w.cierreApoyo}</p>
           <a
             opacity=""
-            href={enlaces.agenda}
+            href={enlaces.email}
             onClick={reserva("orb_cierre", "final")}
             className="orb-btn"
           >
-            Reservar diagnóstico
+            Cuéntanos tu caso
           </a>
           <a href={enlaces.email} data-rodillo="" className="drodillo orb-mail">
             <span>info@theaibusiness.com</span>

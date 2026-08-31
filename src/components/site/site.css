@@ -1809,3 +1809,21 @@ body:has(.webs){background:var(--fondo)}
   .orb-marcos{grid-template-columns:1fr}
   .orb-mail{display:block;margin:1.5rem 0 0}
 }
+
+/* --- ajustes de la propuesta orbital al pasarla a la linea de webs --- */
+/* Las maquetas de web son VERTICALES (0,60 y 0,75); la orbita estaba en
+   apaisado y las recortaba por arriba y por abajo. */
+.orb-pieza-marco{aspect-ratio:.72}
+.orb-precio{font-style:normal;
+  background:linear-gradient(90deg,#FA4D4D,#5A70FA);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+/* La lista deja de ser de enlaces: son las cinco cosas que entran en el
+   precio, y cada una lleva su detalle al lado. */
+.orb-lista-fija{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(1rem,3vw,3rem);
+  align-items:baseline;padding:clamp(1rem,2.4vh,1.75rem) 0}
+.orb-lista-n{font-size:clamp(1.25rem,2.8vw,2.25rem);line-height:1.15;letter-spacing:-.03em}
+.orb-lista-d{font-size:clamp(.9375rem,1.2vw,1.0625rem);line-height:1.5;opacity:.65}
+.orb-lista-fija:hover{background:none}
+@media screen and (max-width:992px){
+  .orb-lista-fija{grid-template-columns:1fr;gap:.5rem}
+}
