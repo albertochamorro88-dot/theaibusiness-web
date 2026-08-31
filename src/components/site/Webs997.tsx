@@ -12,7 +12,7 @@ import { useMenu } from "@/motion/useMenu";
 import { useNavLogo } from "@/motion/useNavLogo";
 import { useReveals, playIntroReveals } from "@/motion/useReveals";
 import { useSmoother } from "@/motion/useSmoother";
-import { useCarrusel, usePila, usePrecio, useTachado, useTinte } from "@/motion/useWebs";
+import { useCarrusel, useMuestras, usePila, usePrecio, useTachado, useTinte } from "@/motion/useWebs";
 
 import "lenis/dist/lenis.css";
 import "./webflow-base.css";
@@ -46,6 +46,7 @@ export default function Webs997() {
   useTachado(true);
   usePila(true);
   useCarrusel(true);
+  useMuestras(true);
   usePrecio(true);
 
   /* Sin loader no hay nada que descubra lo que la hoja de estilos deja en
@@ -158,6 +159,29 @@ export default function Webs997() {
               </article>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------ las muestras */}
+      {/* Va pegada a "Cinco cosas" y en su mismo tramo de color: primero lo que
+          te llevas, inmediatamente despues como se ve. Prometer webs que
+          venden sin ensenar ninguna es pedirle al lector que se fie.
+
+          Son dos, y dos piezas alineadas se leen como una rejilla incompleta.
+          Entran desalineadas a proposito —la segunda arranca mas abajo— y el
+          scroll separa mas todavia. */}
+      <section className="section muestras" data-fondo="#F2F2F5" data-tinta="#0B0B0F">
+        <div className="container">
+          <div line="" className="etiqueta">{c.muestrasEtiqueta}</div>
+          <h2 line="" className="muestras-h">{c.muestrasTitulo}</h2>
+          <p line="" className="muestras-p">{c.muestrasApoyo}</p>
+        </div>
+        <div className="muestras-par">
+          {c.muestras.map((m) => (
+            <figure key={m.src} opacity="" className="muestra">
+              <img src={img[m.src]} alt={m.alt} loading="lazy" />
+            </figure>
+          ))}
         </div>
       </section>
 

@@ -53,6 +53,8 @@ export const img = {
   pompon: `${IMG}/formas/pompon.webp`,
   marca997: `${IMG}/webs/marca-997.png`,
   webHeroPoster: `${IMG}/webs/hero-poster.jpg`,
+  muestra1: `${IMG}/webs/muestra-01.webp`,
+  muestra2: `${IMG}/webs/muestra-02.webp`,
   brujula: `${IMG}/cargando/brujula.webp`,
   esfera: `${IMG}/cargando/esfera.webp`,
   letraA: `${IMG}/formas/letra-a.png${V}`,
@@ -540,6 +542,18 @@ export const webs997 = {
     { nombre: "Desarrollo completo", detalle: "Construimos la web entera, rápida y lista para publicar." },
     { nombre: "Hasta 5 secciones", detalle: "Toda tu web: inicio, servicios, sobre ti, contacto y una sección más." },
     { nombre: "Dominio y hosting", detalle: "La conectamos a tu dominio y la dejamos online. Tú no tocas nada técnico." },
+  ],
+
+  /* Las dos muestras son trabajo propio de la casa, no de cliente: van sin pie
+     ni nombre precisamente por eso. Poner un nombre de cliente debajo de una
+     web que no es suya seria inventarse una referencia. */
+  muestrasEtiqueta: "( Trabajo real )",
+  muestrasTitulo: "Así se ven.",
+  muestrasApoyo:
+    "Diseño propio, no plantilla. Esto es lo que sale de las cuatro fases.",
+  muestras: [
+    { src: "muestra1", alt: "Web de The AI Business en un portátil, sobre luz roja y azul." },
+    { src: "muestra2", alt: "Web de The AI Business en una tableta sostenida con las dos manos." },
   ],
 
   procesoEtiqueta: "( Cómo trabajamos )",

@@ -1507,3 +1507,34 @@ body:has(.webs){background:var(--fondo)}
   .hv-banda{position:static;transform:none;width:auto;
     display:grid;grid-template-columns:1fr 1fr;gap:.5rem 1rem;font-size:.75rem}
 }
+
+/* --- las muestras: el trabajo, en su mismo tramo blanco --- */
+/* Solo hay dos piezas. Puestas a la misma altura y del mismo tamano se leerian
+   como una fila a la que le faltan dos huecos, asi que se apoyan justo en lo
+   contrario: proporciones distintas —una es 3:5 y la otra 3:4—, anchos
+   distintos y la segunda arrancando mas abajo. El desequilibrio es la
+   composicion, no un resto. */
+.section.muestras{padding:14vh 0 16vh}
+.muestras-h{
+  font-size:clamp(2rem,5vw,4.5rem);line-height:1;letter-spacing:-.04em;
+  font-weight:500;margin:0 0 1.5rem
+}
+.muestras-p{font-size:clamp(1rem,1.4vw,1.25rem);line-height:1.45;max-width:44ch;margin:0;opacity:.85}
+.muestras-par{
+  display:grid;grid-template-columns:1fr 1.12fr;gap:clamp(1.5rem,4vw,5rem);
+  align-items:start;max-width:100rem;margin:10vh auto 0;padding:0 1.25rem
+}
+.muestra{margin:0;will-change:transform}
+/* El desfase de arranque. El movimiento de scroll lo anade `useMuestras`
+   encima; sin JS la pareja ya queda desalineada. */
+.muestra:nth-child(2){margin-top:clamp(3rem,10vw,11rem)}
+.muestra img{
+  display:block;width:100%;height:auto;border-radius:.75rem;
+  box-shadow:0 2rem 4rem rgba(11,11,15,.22)
+}
+
+@media screen and (max-width:860px){
+  .section.muestras{padding:10vh 0 12vh}
+  .muestras-par{grid-template-columns:1fr;gap:2rem;margin-top:6vh}
+  .muestra:nth-child(2){margin-top:0}
+}

@@ -249,3 +249,55 @@ export function useTinte(ready: boolean) {
     return () => { triggers.forEach((t) => t.kill()); };
   }, [ready]);
 }
+
+/* --------------------------------------------------------------- muestras */
+
+/**
+ * El desfase de las dos muestras de trabajo.
+ *
+ * Solo hay dos piezas, y dos piezas puestas a la misma altura se leen como una
+ * rejilla a la que le faltan huecos. Aqui entran ya desalineadas por CSS y el
+ * scroll separa mas todavia: la de la izquierda sube, la de la derecha baja.
+ * El desequilibrio es la composicion — asi la pareja se sostiene sola y no
+ * parece el resto de una fila mas larga.
+ *
+ * `scrub` en vez de duracion, para que el movimiento pertenezca al scroll y no
+ * a un reloj propio. Por debajo de 860 px las muestras se apilan y cualquier
+ * desplazamiento vertical sobra: ahi no se monta nada.
+ */
+export function useMuestras(ready: boolean) {
+  useEffect(() => {
+    if (!ready) return;
+    registerGsap();
+
+    const seccion = document.querySelector<HTMLElement>(".section.muestras");
+    if (!seccion) return;
+    if (window.matchMedia("(max-width: 860px)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const piezas = [...seccion.querySelectorAll<HTMLElement>(".muestra")];
+    if (!piezas.length) return;
+
+    const tweens = piezas.map((el, i) =>
+      gsap.fromTo(
+        el,
+        { y: i === 0 ? 40 : -40 },
+        {
+          y: i === 0 ? -40 : 40,
+          ease: "none",
+          scrollTrigger: {
+            trigger: seccion,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        },
+      ),
+    );
+
+    return () => {
+      tweens.forEach((t) => { t.scrollTrigger?.kill(); t.kill(); });
+    };
+  }, [ready]);
+}
