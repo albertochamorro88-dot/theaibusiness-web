@@ -1,10 +1,11 @@
 /**
  * El texto de la pagina del AI Act.
  *
- * Es el contenido APROBADO de la landing informativa
- * (albertochamorro88-dot.github.io/aiact-informativa), traido tal cual. Lo que
- * cambia es el diseno, no lo que dice: el copy no se toca sin que pase otra
- * vez por aprobacion.
+ * Segunda pasada: el contenido aprobado, PODADO. La primera version traia los
+ * parrafos enteros de la landing informativa y la lectura se hacia larga; aqui
+ * cada seccion defiende UNA idea con las palabras justas y deja que la
+ * animacion cuente el resto. No se ha inventado ningun argumento nuevo: lo que
+ * queda son las frases aprobadas, recortadas.
  *
  * Fuente original: https://theaibusiness.com/es/ai-act
  */
@@ -20,18 +21,7 @@ export const actMedia = {
   alejandro: `${MEDIA}/img/aiact/alejandro.jpg`,
 } as const;
 
-/** El video de YouTube en el que Alejandro explica el reglamento. */
-export const actVideo = {
-  id: "T4eKjJMs9Ak",
-  etiqueta: "Míralo explicado",
-  titulo: "El AI Act, contado por quien construye los sistemas.",
-  duracionAlt: "Ver el vídeo en YouTube",
-  autor: {
-    nombre: "Alejandro Ríos",
-    rol: "Cofundador y CTO · The AI Business",
-    bio: "Ha diseñado e implementado sistemas de IA en más de 200 empresas. Conoce la ley desde dentro: traduce cada obligación en controles reales, no en teoría jurídica.",
-  },
-} as const;
+/* -------------------------------------------------------------- 00 · hero */
 
 export const actHero = {
   eyebrow: "Reglamento UE 2024/1689",
@@ -40,69 +30,94 @@ export const actHero = {
      recorte—, las otras dos caen letra a letra. */
   marca: "AI Act",
   palabras: ["ya te", "obliga"],
-  sub: "La nueva ley de la IA obliga a toda empresa que la use, propia o comprada.",
   cta: "Ver el mapa",
 } as const;
 
 /** Desde cuando corre el contador de dias en vigor (Art. 4). */
 export const EN_VIGOR_DESDE = "2025-02-02";
 
+/** La entradilla de la tarjeta. Una frase: el resto lo dice el titular. */
 export const actFicha =
-  "El Reglamento de Inteligencia Artificial regula cómo tu empresa usa la IA. Aplica por el uso, no por el tamaño: si tu equipo usa un asistente comprado o un modelo propio, ya estás dentro. La mayoría ni lo sabe.";
+  "Aplica por el uso, no por el tamaño. Si tu equipo usa IA —comprada o propia—, ya estás dentro.";
 
-export const actClaim = {
-  etiqueta: "Por qué te afecta",
-  lead: "No regula la tecnología. Regula el uso que haces de ella.",
+/* ------------------------------------------------------ 01 · que regula */
+
+/**
+ * La escena de la sustitucion. Una frase tacha a la otra: eso es literalmente
+ * lo que hace la ley, y por eso la animacion es un reemplazo y no una entrada.
+ */
+export const actSust = {
+  etiqueta: "Qué regula",
+  fuera: "No regula la tecnología.",
+  dentro: "Regula el uso.",
   cita: "Tener un informe no es cumplir.",
   citaAcento: "Cumplir es cambiar el sistema.",
-  cuerpo:
-    "Cumplir el reglamento es un 20% legal y un 80% técnico: clasificar el riesgo de tus modelos, construir la trazabilidad y montar la supervisión humana que la ley exige. En la llamada de 15 minutos te damos el punto de partida, claro y sin jerga.",
+  pie: ["20 %", "legal", "80 %", "técnico"],
 } as const;
 
-export type Nivel = { index: string; titulo: string; cuerpo: string; etiqueta?: string };
+/* ---------------------------------------------------------- 02 · niveles */
+
+export type Nivel = {
+  index: string;
+  titulo: string;
+  cuerpo: string;
+  etiqueta: string;
+  /* El color del nivel en el medidor. Va de rojo a gris siguiendo el
+     degradado de marca: cuanto mas arriba en la escala, mas rojo. */
+  color: string;
+};
 
 /** Los cuatro niveles de riesgo en que la ley clasifica cada sistema de IA. */
 export const actNiveles: Nivel[] = [
   {
     index: "01",
     titulo: "Riesgo inaceptable",
-    cuerpo:
-      "Usos prohibidos: puntuación social, manipulación del comportamiento, categorización biométrica sensible. Vetados desde febrero de 2025.",
+    cuerpo: "Puntuación social, manipulación, biometría sensible. Vetados desde febrero de 2025.",
     etiqueta: "Prohibido",
+    color: "#FA4D4D",
   },
   {
     index: "02",
     titulo: "Alto riesgo",
-    cuerpo:
-      "IA en RR. HH., crédito, educación, salud o infraestructura crítica. Exige documentación técnica, trazabilidad y supervisión humana.",
+    cuerpo: "RR. HH., crédito, salud, infraestructura. Documentación, trazabilidad y supervisión humana.",
     etiqueta: "Máxima obligación",
+    color: "#A855C9",
   },
   {
     index: "03",
     titulo: "Riesgo limitado",
-    cuerpo:
-      "Chatbots, generadores de contenido, deepfakes. Obligación de transparencia: la persona tiene que saber que habla con una IA.",
+    cuerpo: "Chatbots, generadores, deepfakes. La persona tiene que saber que habla con una IA.",
     etiqueta: "Transparencia",
+    color: "#5A70FA",
   },
   {
     index: "04",
     titulo: "Riesgo mínimo",
-    cuerpo:
-      "El resto de usos. Hoy sin obligaciones específicas, pero conviene tener el inventario hecho: un sistema puede cambiar de categoría.",
+    cuerpo: "El resto. Hoy sin obligaciones, pero un sistema puede cambiar de categoría.",
+    etiqueta: "Inventario",
+    color: "#D7D9E6",
   },
 ];
 
-export type Hito = { fecha: string; corto: string; estado: string; titulo: string; cuerpo: string; pasado: boolean };
+/* --------------------------------------------------------- 03 · el reloj */
 
-/** El calendario del reglamento. */
+export type Hito = {
+  fecha: string;
+  corto: string;
+  estado: string;
+  titulo: string;
+  nota: string;
+  pasado: boolean;
+};
+
+/** El calendario del reglamento. Sin parrafos: fecha, estado y titular. */
 export const actHitos: Hito[] = [
   {
     fecha: "2 feb 2025",
     corto: "feb 25",
     estado: "Vencido",
     titulo: "Formación obligatoria",
-    cuerpo:
-      "Prohibiciones y alfabetización en IA (Art. 4). Toda empresa que usa IA debe formar a su equipo. La mayoría ya está en incumplimiento, y no lo sabe.",
+    nota: "Art. 4. La mayoría ya incumple.",
     pasado: true,
   },
   {
@@ -110,8 +125,7 @@ export const actHitos: Hito[] = [
     corto: "ago 25",
     estado: "Vigente",
     titulo: "Sanciones activas",
-    cuerpo:
-      "Modelos de propósito general, gobernanza y régimen sancionador. Desde aquí, el incumplimiento tiene un precio.",
+    nota: "Desde aquí, incumplir tiene precio.",
     pasado: true,
   },
   {
@@ -119,8 +133,7 @@ export const actHitos: Hito[] = [
     corto: "ago 26",
     estado: "En vigor",
     titulo: "Sistemas de alto riesgo",
-    cuerpo:
-      "Documentación técnica, gestión de riesgos, supervisión humana y registros. El plazo que ningún comité puede ignorar.",
+    nota: "Documentación, riesgos y supervisión.",
     pasado: true,
   },
   {
@@ -128,59 +141,67 @@ export const actHitos: Hito[] = [
     corto: "ago 27",
     estado: "Próximo",
     titulo: "Productos regulados",
-    cuerpo: "Cierre del calendario para los casos más complejos: salud, automoción, industria.",
+    nota: "Salud, automoción, industria.",
     pasado: false,
   },
 ];
 
+/* ---------------------------------------------------------- 04 · la multa */
+
+/** Una cifra sola, a pantalla completa. Es el numero que decide si sigues. */
+export const actMulta = {
+  etiqueta: "Lo que hay en juego",
+  n: 35,
+  sufijo: "M€",
+  titulo: "Sanción máxima.",
+  pie: "Art. 99 · o el 7 % de la facturación anual global, lo que sea mayor.",
+  lados: [
+    { n: 4, sufijo: "", etiqueta: "Niveles de riesgo" },
+    { n: 7, sufijo: "%", etiqueta: "De facturación global" },
+  ],
+} as const;
+
+/* ----------------------------------------------------------- 05 · video */
+
+export const actVideo = {
+  id: "T4eKjJMs9Ak",
+  etiqueta: "Míralo explicado",
+  titulo: "El AI Act, contado por quien construye los sistemas.",
+  duracionAlt: "Ver el vídeo en YouTube",
+  autor: {
+    nombre: "Alejandro Ríos",
+    rol: "Cofundador y CTO · The AI Business",
+    bio: "IA implantada en más de 200 empresas. Traduce cada obligación en controles reales.",
+  },
+} as const;
+
+/* --------------------------------------------------------- 06 · rivales */
+
 /** Con quien te comparan cuando buscas como cumplir. */
 export const actRivales = [
-  {
-    quien: "Bufetes",
-    que: "Te dan un dictamen",
-    cuerpo:
-      "Se conocen la ley. No pueden entrar en tu sistema, clasificar tus modelos ni construir la trazabilidad.",
-  },
-  {
-    quien: "Big Four",
-    que: "Auditan y se van",
-    cuerpo:
-      "Diagnóstico caro, propuesta lenta y cero capacidad de construir. La brecha entre consultor y ejecutor sigue abierta.",
-  },
-  {
-    quien: "Software de compliance",
-    que: "Listas genéricas",
-    cuerpo:
-      "No conocen tu negocio ni tus sistemas. Marcan casillas; no resuelven la conformidad real.",
-  },
+  { quien: "Bufetes", que: "Te dan un dictamen", cuerpo: "No entran en tu sistema." },
+  { quien: "Big Four", que: "Auditan y se van", cuerpo: "Diagnostican caro. No construyen." },
+  { quien: "Software", que: "Listas genéricas", cuerpo: "Marcan casillas. No resuelven." },
   {
     quien: "The AI Business",
     que: "Consultamos y construimos",
-    cuerpo:
-      "Entendemos los sistemas y los construimos. La conformidad se diseña dentro del sistema, no se añade por encima.",
+    cuerpo: "La conformidad se diseña dentro del sistema.",
   },
 ] as const;
 
-/** Las cifras. `n` y `sufijo` van aparte para poder contarlas al entrar. */
-export const actCifras = [
-  { n: 4, sufijo: "", etiqueta: "Niveles de riesgo en los que la ley clasifica cada sistema" },
-  { n: 7, sufijo: "%", etiqueta: "De la facturación anual global, sanción máxima" },
-  { n: 35, sufijo: "M€", etiqueta: "Sanción máxima por prácticas prohibidas (Art. 99)" },
-] as const;
+/* ------------------------------------------------------------- llamadas */
 
 /** Bandas de llamada intermedias, para no tener que llegar al final. */
 export const actBandas = [
-  { linea: "¿Y tú? ¿En qué nivel de riesgo cae tu empresa?", boton: "Descúbrelo en 15 min" },
-  { linea: "Deja de suponer. Ponle cifras a tu exposición.", boton: "Reservar diagnóstico" },
-  { linea: "Ya estás obligado. Empieza por saber cuánto.", boton: "Reservar mi diagnóstico" },
+  { linea: "¿En qué nivel de riesgo cae tu empresa?", boton: "Descúbrelo en 15 min" },
+  { linea: "Ya estás obligado. Empieza por saber cuánto.", boton: "Reservar diagnóstico" },
 ] as const;
 
 export const actContacto = {
   titulo: ["No esperes a una inspección", "para saber qué IA usas."],
-  texto:
-    "Empieza con una evaluación de 15 minutos. Si el Sprint AI Act no encaja con tu empresa, te lo decimos durante la llamada. Sin preparación previa.",
+  texto: "Evaluación de 15 minutos. Si no encaja con tu empresa, te lo decimos en la llamada.",
   formTitulo: "Reserva tu diagnóstico.",
-  formTexto: "Evaluación de 15 minutos. Sin compromiso.",
+  formTexto: "15 minutos. Sin preparación previa.",
   campos: { nombre: "Nombre", email: "Email", empresa: "Empresa" },
   necesidadLabel: "¿Qué describe mejor tu caso?",
   necesidades: [

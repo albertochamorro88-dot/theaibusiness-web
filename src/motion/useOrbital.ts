@@ -165,7 +165,9 @@ export function useTapado(ready: boolean) {
     registerGsap();
 
     const hero = document.querySelector<HTMLElement>(".orb-hero");
-    const tapa = document.querySelector<HTMLElement>(".orb-premisa");
+    /* En webs tapa la premisa; en el AI Act, la primera escena. Es la misma
+       maniobra y no merece dos hooks: lo unico que cambia es quien cubre. */
+    const tapa = document.querySelector<HTMLElement>(".orb-premisa, .act-tapa");
     if (!hero || !tapa) return;
     if (reducido()) return;
 
@@ -845,25 +847,9 @@ export function useActo(ready: boolean) {
       limpiar.push(() => { tw.scrollTrigger?.kill(); tw.kill(); });
     });
 
-    const filetes = [...document.querySelectorAll<HTMLElement>(".act-rival-l")];
-    if (filetes.length) {
-      if (!suave) {
-        gsap.set(filetes, { scaleX: 1 });
-      } else {
-        filetes.forEach((f, i) => {
-          const tw = gsap.fromTo(f,
-            { scaleX: 0 },
-            {
-              scaleX: 1,
-              duration: 0.9,
-              ease: "power3.inOut",
-              delay: i * 0.08,
-              scrollTrigger: { trigger: f, start: "top 88%", once: true },
-            });
-          limpiar.push(() => { tw.scrollTrigger?.kill(); tw.kill(); });
-        });
-      }
-    }
+    /* Los filetes de la comparativa NO se trazan aqui: los lleva `useCaida`,
+       que ademas los ata al mismo recorrido en que las columnas se hunden.
+       Trazarlos dos veces dejaba el segundo tween sobrescribiendo al primero. */
 
     return () => { limpiar.forEach((f) => f()); };
   }, [ready]);

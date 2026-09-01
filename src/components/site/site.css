@@ -2175,9 +2175,12 @@ body:has(.webs){background:var(--fondo)}
 .orbital .orb-brecha,
 .orbital .orb-capacidad,
 .orbital .orb-cierre,
+.act-sust,
+.act-pila,
+.act-reloj,
+.act-multa,
 .act-banda,
-.act-linea,
-.act-cifras,
+.act-video,
 .act-rivales{position:relative;z-index:1;background:#0A0A0A}
 /* La seccion del proceso. Viene de la portada, que corre con otras
    variables; aqui hay que devolverle el color de esta pagina.
@@ -2361,10 +2364,10 @@ body:has(.webs){background:var(--fondo)}
 
 /* ==========================================================================
    AI ACT
-   Mismo lenguaje que la pagina de webs —tarjeta sobre marco de color, titular
-   en domino, filetes que se trazan, rotulos entre parentesis— con el contenido
-   aprobado del reglamento. Todo lo que no cambia se hereda de las clases
-   `orb-`; aqui solo va lo propio.
+   Una seccion, una idea, una animacion. El encabezado se hereda de la pagina
+   de webs —tarjeta sobre marco de color, titular en domino, filetes que se
+   trazan—; de ahi para abajo cada escena tiene forma propia porque cada una
+   defiende algo distinto. Todo lo que no cambia sigue viniendo de `orb-`.
    ========================================================================== */
 
 /* El encuadre del plano. El video del AI Act es abstracto —una linea de luz,
@@ -2389,183 +2392,236 @@ body:has(.webs){background:var(--fondo)}
 .act-fases li[data-pasado] span{opacity:.78}
 .act-dias{font-weight:500;font-style:normal;color:#FA4D4D;opacity:.95}
 
-/* --- 01 · por que te afecta --- */
-.act-claim{padding:clamp(7rem,19vh,14rem) 0}
-.act-claim .orb-cont{display:block}
-.act-claim-rejilla{display:grid;grid-template-columns:1.15fr .85fr;
-  gap:clamp(2rem,5vw,4.5rem) clamp(2.5rem,6vw,6rem);align-items:start;
-  margin-top:clamp(2.5rem,6vh,4.5rem)}
-.act-lead{grid-column:1;margin:0;max-width:16ch}
-/* La cita, a la derecha y con su filete: se lee como una nota al margen, que
-   es lo que es. */
-.act-cita{grid-column:2;grid-row:1/3;margin:0;position:relative;
-  padding-left:clamp(1.25rem,2vw,2rem);align-self:center}
-.act-cita::before{content:"";position:absolute;left:0;top:.2em;bottom:.2em;width:2px;
-  background:linear-gradient(180deg,#FA4D4D,#5A70FA)}
-.act-cita p{margin:0;font-size:clamp(1.25rem,2vw,1.75rem);line-height:1.24;
-  letter-spacing:-.02em;font-weight:400}
-.act-cita-acento{margin-top:.5em!important;
-  background:linear-gradient(90deg,#FA4D4D,#5A70FA);
-  -webkit-background-clip:text;background-clip:text;color:transparent}
-.act-cuerpo{grid-column:1;margin:0;max-width:52ch;
-  font-size:clamp(1rem,1.15vw,1.125rem);line-height:1.62;opacity:.72}
+/* ==========================================================================
+   01 · la sustitucion
+   Una frase tacha a la otra. La escena entera cabe en una pantalla clavada
+   porque la gracia es ver el cambio, no bajar buscandolo.
+   ========================================================================== */
+.act-sust-pin{min-height:100vh;display:flex;align-items:center;
+  padding:clamp(5rem,12vh,9rem) 0}
+.act-sust-c{display:block;width:100%}
 
-/* --- 02 · los niveles: la lista heredada, con su etiqueta --- */
-.act-chip{display:inline-block;margin-left:.8rem;padding:.22em .7em;
-  border:1px solid rgba(255,255,255,.18);border-radius:999px;
-  font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
-  font-weight:400;opacity:.6;vertical-align:middle;white-space:nowrap}
-.act-lista li:first-child .act-chip{border-color:rgba(250,77,77,.5);color:#FA4D4D;opacity:.9}
+.act-sust-frases{position:relative;margin:clamp(2rem,6vh,4rem) 0 0}
 
-/* --- 03 · el calendario --- */
-.act-linea{padding:clamp(7rem,19vh,14rem) 0}
-.act-linea-h{margin:clamp(1.5rem,4vh,2.5rem) 0 clamp(3rem,7vh,5rem);max-width:18ch}
-.act-hitos{list-style:none;margin:0;padding:0;
-  display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(1.5rem,3vw,3rem)}
-/* La linea de tiempo es literal: un filete que cruza los cuatro hitos y un
-   punto en cada uno. */
-.act-hito{position:relative;padding-top:2.75rem}
-.act-hito::before{content:"";position:absolute;left:0;right:calc(-1 * clamp(1.5rem,3vw,3rem));
-  top:1.5rem;height:1px;background:rgba(255,255,255,.14)}
-.act-hito:last-child::before{right:0}
-.act-hito-p{position:absolute;left:0;top:calc(1.5rem - 4px);width:9px;height:9px;
-  border-radius:50%;background:#2A2A33;display:block;
-  box-shadow:0 0 0 4px #0B0B0F}
-.act-hito[data-pasado] .act-hito-p{background:linear-gradient(135deg,#FA4D4D,#5A70FA)}
-.act-hito-f{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
-  font-variant-numeric:tabular-nums;opacity:.85}
-.act-hito-e{display:inline-block;margin-top:.5rem;padding:.2em .6em;
-  border:1px solid rgba(255,255,255,.16);border-radius:999px;
-  font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;opacity:.5}
-.act-hito[data-pasado] .act-hito-e{border-color:rgba(250,77,77,.45);color:#FA4D4D;opacity:.9}
-.act-hito-t{margin:1.1rem 0 .6rem;font-size:clamp(1rem,1.35vw,1.3rem);
-  line-height:1.2;letter-spacing:-.02em;font-weight:500}
-.act-hito-c{margin:0;font-size:.86rem;line-height:1.56;opacity:.6}
+.act-sust-fuera{position:relative;display:inline-block;margin:0;
+  font-size:clamp(1.75rem,6.2vw,5.4rem);line-height:1;letter-spacing:-.05em;
+  font-weight:500;color:#FAFAFA}
+/* El tachon se traza de izquierda a derecha, como se tacha a mano. Va en
+   degradado de marca porque no esta borrando: esta corrigiendo. */
+.act-tachon{position:absolute;left:-.015em;right:-.015em;top:52%;
+  height:clamp(3px,.5vw,6px);display:block;border-radius:3px;
+  transform-origin:left center;
+  background:linear-gradient(90deg,#FA4D4D,#5A70FA)}
 
-/* --- 04 · las cifras --- */
-.act-cifras{padding:clamp(6rem,15vh,11rem) 0}
-.act-cifras-r{display:grid;grid-template-columns:repeat(3,1fr);
-  gap:clamp(2rem,4vw,4rem);margin-top:clamp(2.5rem,6vh,4rem)}
-.act-cifra{position:relative;padding-top:1.75rem;
-  border-top:1px solid rgba(255,255,255,.12)}
-.act-cifra-n{display:block;font-size:clamp(3rem,7vw,7rem);line-height:.86;
-  letter-spacing:-.055em;font-weight:500;font-variant-numeric:tabular-nums;
-  background:linear-gradient(100deg,#FA4D4D,#5A70FA);
-  -webkit-background-clip:text;background-clip:text;color:transparent}
-.act-cifra-n em{font-style:normal;font-size:.5em;letter-spacing:-.02em}
-.act-cifra-e{display:block;margin-top:1.1rem;max-width:26ch;
-  font-size:.82rem;line-height:1.5;opacity:.58}
+/* La frase que se queda entra por una ventana que se abre, no cambiando de
+   ancho: recortando el ancho, el texto se recompondria linea a linea mientras
+   se descubre. Con `clip-path` el texto ya esta compuesto. */
+/* `inline-block` no es un capricho de maquetacion: en bloque, la caja ocupa
+   el ancho del contenedor y el degradado se reparte por todo el, asi que sobre
+   las letras solo cae el primer tercio y la frase acaba en morado en vez de
+   llegar al azul. Ajustando la caja al texto, el degradado es el de marca. */
+.act-sust-dentro{display:inline-block;margin:.1em 0 0;
+  font-size:clamp(2.4rem,9vw,7.5rem);line-height:.9;letter-spacing:-.055em;
+  font-weight:600;
+  background:linear-gradient(100deg,#FA4D4D 0%,#9B5BD6 52%,#5A70FA 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  will-change:clip-path}
 
-/* --- 05 · con quien nos comparan --- */
-.act-rivales{padding:clamp(7rem,19vh,14rem) 0}
-.act-rivales-r{display:grid;grid-template-columns:repeat(4,1fr);
-  gap:clamp(1.25rem,2.5vw,2.5rem);margin-top:clamp(2.5rem,6vh,4rem)}
-.act-rival{position:relative;padding:1.75rem 0 0}
-.act-rival-l{position:absolute;left:0;right:0;top:0;height:1px;display:block;
-  background:rgba(255,255,255,.14);transform:scaleX(0);transform-origin:left center}
-.act-rival-q{margin:0;font-size:clamp(1.05rem,1.5vw,1.45rem);line-height:1.15;
+.act-sust-bajo{display:flex;flex-wrap:wrap;align-items:flex-end;
+  gap:clamp(1.5rem,4vw,4rem);margin-top:clamp(2.5rem,7vh,4.5rem)}
+.act-sust-cita{position:relative;margin:0;max-width:34ch;
+  padding-left:clamp(1rem,1.6vw,1.6rem)}
+.act-sust-cita::before{content:"";position:absolute;left:0;top:.18em;bottom:.18em;
+  width:2px;background:linear-gradient(180deg,#FA4D4D,#5A70FA)}
+.act-sust-cita p{margin:0;font-size:clamp(1.05rem,1.8vw,1.6rem);line-height:1.24;
+  letter-spacing:-.025em;opacity:.55}
+.act-sust-acento{margin-top:.35em!important;opacity:1!important;color:#FAFAFA}
+
+/* El 20/80 no es un parrafo: son dos numeros. Se lee de un vistazo, que es
+   justo lo que hay que hacer con un dato de apoyo. */
+.act-sust-pie{display:flex;align-items:center;gap:clamp(.9rem,1.8vw,1.75rem);
+  font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;opacity:.55}
+.act-sust-pie b{font-weight:500;font-size:1rem;letter-spacing:-.01em}
+.act-sust-pie span:first-of-type b{color:#FA4D4D}
+.act-sust-pie span:last-of-type b{color:#5A70FA}
+.act-sust-pie i{flex:0 0 clamp(1.5rem,3vw,3rem);height:1px;display:block;
+  background:rgba(250,250,250,.22)}
+
+/* ==========================================================================
+   02 · la pila de niveles
+   Cuatro laminas que se tapan. Al final solo queda una a la vista, que es
+   exactamente lo que hace la ley: te mete en una caja y solo en una.
+   ========================================================================== */
+.act-pila-pin{min-height:100vh;display:flex;flex-direction:column;
+  justify-content:center;padding:clamp(4rem,10vh,7rem) 0}
+.act-pila-c{display:block;width:100%}
+.act-pila-cab{margin-bottom:clamp(1.75rem,4.5vh,3rem)}
+.act-pila-h{margin:clamp(1rem,2.5vh,1.75rem) 0 0;
+  font-size:clamp(1.6rem,4.2vw,3.6rem);line-height:1;letter-spacing:-.045em;
+  font-weight:500}
+.act-pila-h span{display:block}
+
+.act-pila-cuerpo{display:grid;
+  grid-template-columns:clamp(9rem,13vw,13.5rem) 1fr;
+  gap:clamp(1.75rem,3.5vw,4rem);align-items:stretch}
+
+/* --- el medidor de riesgo --- */
+.act-medidor{display:grid;grid-template-columns:auto 1fr;gap:1.1rem;
+  align-items:stretch}
+.act-medidor-v{position:relative;width:3px;border-radius:2px;overflow:hidden;
+  background:rgba(250,250,250,.12)}
+/* El relleno baja de rojo a gris. Es la escala de riesgo hecha objeto: no hace
+   falta explicar el orden si se ve. */
+.act-medidor-f{position:absolute;inset:0;display:block;transform-origin:top center;
+  background:linear-gradient(180deg,#FA4D4D 0%,#A855C9 36%,#5A70FA 68%,#D7D9E6 100%)}
+.act-medidor-o{list-style:none;margin:0;padding:0;display:flex;
+  flex-direction:column;justify-content:space-between}
+.act-medidor-i{display:flex;align-items:center;gap:.6rem;
+  font-size:.76rem;letter-spacing:-.01em;line-height:1.2}
+.act-medidor-i i{flex:0 0 7px;width:7px;height:7px;border-radius:50%;
+  display:block;background:var(--c)}
+
+/* --- las laminas --- */
+/* Recorte solo por abajo. Las laminas que esperan estan justo debajo del
+   borde y asomaban en la pantalla clavada; las que ya cayeron suben por
+   encima y tienen que seguir viendose. Un `overflow:hidden` cortaria las dos
+   cosas, asi que el recorte se abre hacia arriba con un valor negativo. */
+.act-pila-laminas{position:relative;min-height:clamp(19rem,44vh,29rem);
+  clip-path:inset(-24rem 0 0 0)}
+.act-nivel{position:absolute;inset:0;
+  display:grid;grid-template-columns:auto 1fr;align-items:center;
+  gap:clamp(1.25rem,3vw,3rem);padding:clamp(1.5rem,3.2vw,3rem);
+  border-radius:1rem;border:1px solid rgba(250,250,250,.1);
+  background:#0E0E13;
+  background:
+    radial-gradient(125% 145% at 100% 0%,
+      color-mix(in srgb,var(--c) 15%,transparent) 0%,transparent 58%),
+    #0E0E13;
+  will-change:transform}
+/* El numeral va hueco: pesa en la composicion sin robarle el ojo al titular,
+   que es lo que hay que leer. */
+.act-nivel-i{font-size:clamp(3.5rem,10vw,9rem);line-height:.78;letter-spacing:-.06em;
+  font-weight:600;color:transparent;
+  -webkit-text-stroke:1px rgba(250,250,250,.25);
+  -webkit-text-stroke:1px color-mix(in srgb,var(--c) 65%,transparent)}
+.act-nivel-chip{display:inline-block;padding:.24em .75em;border-radius:99px;
+  border:1px solid rgba(250,250,250,.25);
+  border-color:color-mix(in srgb,var(--c) 45%,transparent);
+  color:var(--c);font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;
+  font-weight:500}
+.act-nivel-h{margin:.9rem 0 .55rem;font-size:clamp(1.4rem,3.2vw,2.75rem);
+  line-height:1;letter-spacing:-.04em;font-weight:500}
+.act-nivel-p{margin:0;max-width:42ch;font-size:clamp(.92rem,1.2vw,1.125rem);
+  line-height:1.5;opacity:.62}
+
+/* ==========================================================================
+   03 · el reloj
+   La unica seccion cuyo tema es el paso del tiempo, y la unica que se recorre
+   en horizontal: bajas y las fechas pasan de largo.
+   ========================================================================== */
+.act-reloj-pin{min-height:100vh;display:flex;flex-direction:column;
+  justify-content:center;overflow:hidden;padding:clamp(4rem,10vh,7rem) 0}
+.act-reloj-h{margin:clamp(1rem,2.5vh,1.75rem) 0 0;
+  font-size:clamp(2rem,6vw,5rem);line-height:.98;letter-spacing:-.05em;
+  font-weight:500}
+
+.act-via{position:relative;margin-top:clamp(2.5rem,6vh,4.5rem)}
+/* La via se traza al mismo ritmo al que avanza el tren: la linea no decora,
+   mide cuanto llevas recorrido. */
+.act-via-l{position:absolute;left:0;right:0;top:0;height:1px;display:block;
+  transform-origin:left center;
+  background:linear-gradient(90deg,#FA4D4D,#5A70FA 55%,rgba(215,217,230,.25))}
+/* El hueco de la derecha no es un margen: es el recorrido. Sin el, en una
+   pantalla ancha las cuatro fechas caben casi enteras y el tren apenas se
+   mueve —quedaba una seccion clavada que no viajaba a ningun sitio—. Con el,
+   el recorrido crece con la pantalla y la ultima fecha llega a quedar
+   centrada, que es cuando se enciende. */
+.act-tren{position:relative;list-style:none;margin:0;display:flex;
+  gap:clamp(2.5rem,6vw,6.5rem);
+  padding:0 clamp(16rem,30vw,34rem) 0 clamp(1.25rem,4vw,4rem);
+  will-change:transform}
+.act-hito{position:relative;flex:0 0 clamp(17rem,25vw,25rem);padding-top:2.4rem}
+.act-hito-p{position:absolute;left:0;top:-5px;width:11px;height:11px;
+  display:block;border-radius:50%;background:#1B1B22;
+  border:1px solid rgba(250,250,250,.22)}
+.act-hito[data-pasado] .act-hito-p{border-color:transparent;
+  background:linear-gradient(135deg,#FA4D4D,#5A70FA);
+  box-shadow:0 0 0 6px rgba(250,77,77,.11)}
+.act-hito-e{display:inline-block;padding:.2em .65em;border-radius:99px;
+  border:1px solid rgba(250,250,250,.18);font-size:.57rem;letter-spacing:.16em;
+  text-transform:uppercase;opacity:.55}
+.act-hito[data-pasado] .act-hito-e{border-color:rgba(250,77,77,.45);
+  color:#FA4D4D;opacity:.95}
+.act-hito-f{display:block;margin-top:1rem;
+  font-size:clamp(1.9rem,4.2vw,3.5rem);line-height:.95;letter-spacing:-.05em;
+  font-weight:500;font-variant-numeric:tabular-nums}
+.act-hito-t{margin:.7rem 0 .35rem;font-size:clamp(1rem,1.4vw,1.35rem);
   letter-spacing:-.025em;font-weight:500}
-.act-rival-w{margin:.5rem 0 1rem;font-size:.65rem;letter-spacing:.14em;
+.act-hito-n{margin:0;font-size:.86rem;line-height:1.5;opacity:.55}
+
+/* ==========================================================================
+   04 · la multa
+   Un numero solo, a pantalla completa, que sube al ritmo al que bajas.
+   ========================================================================== */
+.act-multa-pin{min-height:100vh;display:flex;align-items:center;
+  overflow:hidden;padding:clamp(5rem,12vh,9rem) 0}
+.act-multa-c{display:block;width:100%}
+
+.act-multa-n{position:relative;display:flex;align-items:flex-start;
+  justify-content:center;width:fit-content;
+  margin:clamp(1.5rem,5vh,3.5rem) auto 0;
+  font-size:clamp(5.5rem,25vw,21rem);line-height:.82;letter-spacing:-.06em;
+  font-weight:600;font-variant-numeric:tabular-nums;
+  background:linear-gradient(112deg,#FA4D4D 0%,#F0679B 30%,#9B5BD6 58%,#5A70FA 84%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  will-change:transform}
+.act-multa-n em{font-style:normal;font-size:.3em;letter-spacing:-.02em;
+  margin-top:.3em}
+/* El resplandor crece con la cifra. Va detras del propio numero —capa
+   negativa dentro de su contexto de apilado— para que no lave el texto. */
+.act-multa-brillo{position:absolute;left:50%;top:50%;translate:-50% -50%;
+  z-index:-1;display:block;width:min(86vw,60rem);aspect-ratio:1.55;
+  pointer-events:none;filter:blur(10px);
+  background:radial-gradient(closest-side,
+    rgba(250,77,77,.3),rgba(90,112,250,.13) 55%,transparent 78%)}
+
+.act-multa-t{margin:clamp(1rem,3vh,2rem) 0 0;text-align:center;
+  font-size:clamp(1.3rem,3vw,2.6rem);letter-spacing:-.04em;font-weight:500}
+.act-multa-pie{margin:.8rem auto 0;max-width:46ch;text-align:center;
+  font-size:clamp(.85rem,1.1vw,1rem);line-height:1.5;opacity:.55}
+
+.act-multa-lados{display:flex;justify-content:center;
+  gap:clamp(2.5rem,7vw,7rem);margin-top:clamp(2.5rem,6vh,4rem);
+  padding-top:clamp(1.5rem,3vh,2.25rem);
+  border-top:1px solid rgba(250,250,250,.1)}
+.act-lado{text-align:center}
+.act-lado-n{display:block;font-size:clamp(1.8rem,3.4vw,3rem);line-height:1;
+  letter-spacing:-.045em;font-weight:500;font-variant-numeric:tabular-nums}
+.act-lado-n em{font-style:normal;font-size:.55em}
+.act-lado-e{display:block;margin-top:.5rem;font-size:.66rem;letter-spacing:.15em;
   text-transform:uppercase;opacity:.45}
-.act-rival-c{margin:0;font-size:.86rem;line-height:1.56;opacity:.6}
-/* La cuarta columna somos nosotros: se enciende, y el filete de arriba pasa a
-   degradado. Es la unica jerarquia que necesita el bloque. */
-.act-rival[data-nosotros]{padding-left:clamp(1rem,1.6vw,1.5rem);
-  padding-right:clamp(1rem,1.6vw,1.5rem);padding-bottom:1.75rem;
-  background:linear-gradient(180deg,rgba(250,77,77,.07),rgba(90,112,250,.05))}
-.act-rival[data-nosotros] .act-rival-l{background:linear-gradient(90deg,#FA4D4D,#5A70FA);height:2px}
-.act-rival[data-nosotros] .act-rival-q{
-  background:linear-gradient(90deg,#FA4D4D,#5A70FA);
-  -webkit-background-clip:text;background-clip:text;color:transparent}
-.act-rival[data-nosotros] .act-rival-c{opacity:.82}
 
-/* --- las bandas de llamada --- */
-.act-banda{padding:clamp(3rem,8vh,5.5rem) 0;
-  border-top:1px solid rgba(255,255,255,.08);
-  border-bottom:1px solid rgba(255,255,255,.08)}
-.act-banda-c{display:flex;align-items:center;justify-content:space-between;
-  gap:clamp(1.5rem,4vw,3rem);flex-wrap:wrap}
-.act-banda-l{margin:0;max-width:22ch;
-  font-size:clamp(1.25rem,2.6vw,2.25rem);line-height:1.12;letter-spacing:-.03em;
-  font-weight:500}
-.act-banda-b{margin:0}
-
-/* --- el cierre --- */
-.act-cierre-r{display:grid;grid-template-columns:1.05fr .95fr;
-  gap:clamp(2rem,5vw,5rem);align-items:start;text-align:left}
-.act-cierre-c{text-align:left}
-.act-cierre-h{margin:0 0 clamp(1.25rem,3vh,2rem);max-width:none;text-align:left}
-.act-cierre-p{margin:0 0 2rem;max-width:44ch;text-align:left}
-.act-form{display:flex;flex-direction:column;gap:1rem;
-  padding:clamp(1.5rem,2.5vw,2.5rem);border:1px solid rgba(255,255,255,.12);
-  border-radius:.75rem;background:rgba(255,255,255,.02)}
-.act-form-h{margin:0;font-size:clamp(1.15rem,1.6vw,1.5rem);letter-spacing:-.025em;
-  font-weight:500}
-.act-form-p{margin:-.4rem 0 .6rem;font-size:.82rem;opacity:.55}
-.act-campo{display:flex;flex-direction:column;gap:.4rem}
-.act-campo span{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;opacity:.45}
-.act-campo input{width:100%;padding:.7rem 0;color:inherit;font:inherit;font-size:.95rem;
-  background:transparent;border:0;border-bottom:1px solid rgba(255,255,255,.16);
-  border-radius:0;outline:none;transition:border-color .3s ease}
-.act-campo input:focus{border-bottom-color:#5A70FA}
-.act-casos{margin:.5rem 0 0;padding:0;border:0}
-.act-casos legend{padding:0;margin-bottom:.75rem;
-  font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;opacity:.45}
-.act-caso{display:flex;align-items:center;gap:.6rem;padding:.4rem 0;
-  font-size:.88rem;opacity:.75;cursor:pointer;transition:opacity .3s ease}
-.act-caso:hover{opacity:1}
-.act-caso input{appearance:none;width:14px;height:14px;flex:0 0 14px;border-radius:50%;
-  border:1px solid rgba(255,255,255,.3);margin:0;transition:all .3s ease}
-.act-caso input:checked{border-color:transparent;
-  background:linear-gradient(135deg,#FA4D4D,#5A70FA);box-shadow:inset 0 0 0 3px #0B0B0F}
-.act-enviar{margin-top:1rem;align-self:flex-start;border:0;cursor:pointer;font:inherit}
-
-/* --- en estrecho --- */
-@media screen and (max-width:900px){
-  .act-claim-rejilla{grid-template-columns:1fr;gap:2rem}
-  .act-lead,.act-cuerpo{grid-column:1;max-width:none}
-  .act-cita{grid-column:1;grid-row:auto}
-  .act-hitos{grid-template-columns:1fr;gap:2.25rem}
-  .act-hito::before{right:0}
-  .act-cifras-r{grid-template-columns:1fr;gap:2.5rem}
-  .act-cifra-e{max-width:none}
-  .act-rivales-r{grid-template-columns:1fr;gap:1.75rem}
-  .act-banda-c{flex-direction:column;align-items:flex-start}
-  .act-banda-l{max-width:none}
-  .act-cierre-r{grid-template-columns:1fr;gap:2.5rem}
-}
-
-/* El cierre del AI Act: dos columnas, asi que el titular no puede ir al mismo
-   cuerpo que en la otra pagina —alli ocupa el ancho entero— o se come el
-   formulario. Y la cinta necesita aire por debajo: pasaba justo por detras de
-   la caja y se leian encima. */
-.act-cierre .orb-cinta-w{margin-bottom:clamp(2.5rem,7vh,5rem)}
-.act-cierre-h{font-size:clamp(1.9rem,3.9vw,3.4rem);line-height:1.02;max-width:16ch}
-.act-cierre .orb-pie{margin-top:clamp(3rem,8vh,5rem)}
-@media screen and (max-width:900px){
-  .act-cierre-h{font-size:clamp(1.9rem,8.4vw,2.6rem);max-width:none}
-}
-
-/* --- 03 · el video: fachada primero, iframe solo si se pulsa --- */
-.act-video{padding:clamp(7rem,19vh,14rem) 0;position:relative;z-index:1;background:#0A0A0A}
+/* ==========================================================================
+   05 · el video
+   ========================================================================== */
+.act-video{padding:clamp(6rem,16vh,11rem) 0 clamp(4rem,10vh,7rem)}
 .act-video-h{margin:clamp(1.5rem,4vh,2.5rem) 0 clamp(2.5rem,6vh,4rem);max-width:20ch}
-.act-video-m{position:relative;max-width:62rem;margin:0 auto;
-  aspect-ratio:16/9;overflow:hidden;border-radius:.75rem;
-  border:1px solid rgba(255,255,255,.1);background:#000}
+/* El marco llega como una rendija y se abre. `clip-path` y no altura: con
+   altura, la imagen de dentro se estiraria mientras se abre. */
+.act-video-m{position:relative;max-width:62rem;margin:0 auto;aspect-ratio:16/9;
+  overflow:hidden;border-radius:.75rem;border:1px solid rgba(255,255,255,.1);
+  background:#000;will-change:clip-path,transform}
 .act-video-i{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
 .act-video-b{position:absolute;inset:0;padding:0;border:0;cursor:pointer;
-  display:block;width:100%;height:100%;background:#000;overflow:hidden}
+  background:none;display:block;width:100%;height:100%}
 .act-video-b img{display:block;width:100%;height:100%;object-fit:cover;
-  transition:transform .8s cubic-bezier(.22,1,.36,1),opacity .5s ease}
-/* El disco de play, en el degradado de marca. El triangulo va un pelo a la
-   derecha: centrado geometricamente parece descentrado, porque su masa esta a
-   la izquierda. */
+  transition:transform .7s cubic-bezier(.22,1,.36,1),opacity .5s ease}
 .act-play{position:absolute;left:50%;top:50%;translate:-50% -50%;
   display:grid;place-items:center;width:clamp(4rem,6vw,5.5rem);aspect-ratio:1;
-  border-radius:50%;color:#fff;
+  border-radius:50%;color:#FAFAFA;
   background:linear-gradient(135deg,#FA4D4D,#5A70FA);
   box-shadow:0 1rem 3rem rgba(0,0,0,.5);
-  transition:transform .5s cubic-bezier(.22,1,.36,1)}
+  transition:transform .45s cubic-bezier(.22,1,.36,1)}
 .act-play svg{margin-left:.12em}
 @media (hover:hover){
   .act-video-b:hover img{transform:scale(1.03);opacity:.82}
@@ -2573,22 +2629,138 @@ body:has(.webs){background:var(--fondo)}
 }
 .act-video-b:focus-visible{outline:2px solid #5A70FA;outline-offset:3px}
 
-/* La firma de autoridad: quien lo cuenta y por que se le cree. */
 .act-autor{display:grid;grid-template-columns:auto 1fr;
   gap:.4rem clamp(1rem,2vw,1.5rem);align-items:center;
   max-width:62rem;margin:clamp(2rem,5vh,3rem) auto 0}
 .act-autor-f{grid-row:1/3;width:clamp(3.25rem,4.5vw,4rem);height:auto;
-  aspect-ratio:1;border-radius:50%;object-fit:cover;display:block}
+  border-radius:50%;display:block}
 .act-autor-t{display:block}
-.act-autor-n{margin:0;font-size:clamp(1rem,1.2vw,1.125rem);letter-spacing:-.02em;font-weight:500}
+.act-autor-n{margin:0;font-size:clamp(1rem,1.2vw,1.125rem);letter-spacing:-.02em;
+  font-weight:500}
 .act-autor-r{margin:.15rem 0 0;font-size:.78rem;
   background:linear-gradient(90deg,#FA4D4D,#5A70FA);
   -webkit-background-clip:text;background-clip:text;color:transparent}
 .act-autor-b{grid-column:2;margin:.9rem 0 0;padding-top:.9rem;max-width:56ch;
-  border-top:1px solid rgba(255,255,255,.1);
-  font-size:.84rem;line-height:1.56;opacity:.58}
+  border-top:1px solid rgba(250,250,250,.1);
+  font-size:.86rem;line-height:1.55;opacity:.55}
+
+/* ==========================================================================
+   06 · la caida
+   Tres columnas se hunden y una se queda. La comparacion la hace el scroll.
+   ========================================================================== */
+.act-rivales{padding:clamp(5rem,13vh,9rem) 0 clamp(6rem,16vh,11rem)}
+.act-rivales-r{display:grid;grid-template-columns:repeat(4,1fr);
+  gap:clamp(1.25rem,2.5vw,2.5rem);margin-top:clamp(2.5rem,6vh,4rem)}
+.act-rival{position:relative;padding:1.75rem 0 0;will-change:transform}
+.act-rival-l{position:absolute;left:0;right:0;top:0;height:1px;display:block;
+  transform-origin:left center;background:rgba(250,250,250,.16)}
+.act-rival-q{margin:0;font-size:clamp(1.05rem,1.5vw,1.45rem);line-height:1.15;
+  letter-spacing:-.03em;font-weight:500}
+.act-rival-w{margin:.5rem 0 1rem;font-size:.62rem;letter-spacing:.15em;
+  text-transform:uppercase;opacity:.45}
+.act-rival-c{margin:0;font-size:.88rem;line-height:1.55;opacity:.6}
+/* La nuestra no se distingue por color: se distingue porque es la unica que
+   sube. El filete en degradado solo lo confirma. */
+.act-rival[data-nosotros]{padding-left:clamp(1rem,1.6vw,1.5rem)}
+.act-rival[data-nosotros] .act-rival-l{height:2px;
+  background:linear-gradient(90deg,#FA4D4D,#5A70FA)}
+.act-rival[data-nosotros] .act-rival-q{
+  background:linear-gradient(90deg,#FA4D4D,#5A70FA);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.act-rival[data-nosotros] .act-rival-c{opacity:.85}
+
+/* ==========================================================================
+   bandas de llamada
+   ========================================================================== */
+.act-banda{padding:clamp(3rem,8vh,5.5rem) 0;
+  border-top:1px solid rgba(250,250,250,.09);
+  border-bottom:1px solid rgba(250,250,250,.09)}
+.act-banda-c{display:flex;align-items:center;justify-content:space-between;
+  gap:clamp(1.5rem,4vw,3rem);flex-wrap:wrap}
+.act-banda-l{margin:0;max-width:22ch;
+  font-size:clamp(1.15rem,2.4vw,2rem);line-height:1.08;letter-spacing:-.035em;
+  font-weight:500}
+.act-banda-b{margin:0}
+
+/* ==========================================================================
+   cierre
+   ========================================================================== */
+.act-cierre-r{display:grid;grid-template-columns:1.05fr .95fr;
+  gap:clamp(2.5rem,6vw,6rem);align-items:start;text-align:left}
+.act-cierre-c{text-align:left}
+.act-cierre-h{margin:0 0 clamp(1.25rem,3vh,2rem);max-width:16ch;text-align:left;
+  font-size:clamp(1.9rem,3.9vw,3.4rem);line-height:1.02}
+.act-cierre-p{margin:0 0 2rem;max-width:44ch;text-align:left}
+.act-cierre .orb-cinta-w{margin-bottom:clamp(2.5rem,7vh,5rem)}
+.act-cierre .orb-pie{margin-top:clamp(3rem,8vh,5rem)}
+
+.act-form{display:flex;flex-direction:column;gap:1rem;
+  padding:clamp(1.5rem,3vw,2.5rem);border:1px solid rgba(250,250,250,.12);
+  border-radius:1rem;background:rgba(250,250,250,.02)}
+.act-form-h{margin:0;font-size:clamp(1.15rem,1.6vw,1.5rem);letter-spacing:-.025em;
+  font-weight:500}
+.act-form-p{margin:-.4rem 0 .6rem;font-size:.82rem;opacity:.55}
+.act-campo{display:flex;flex-direction:column;gap:.4rem}
+.act-campo span{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;opacity:.45}
+.act-campo input{width:100%;padding:.7rem 0;color:inherit;font:inherit;font-size:.95rem;
+  background:none;border:0;border-bottom:1px solid rgba(250,250,250,.18);
+  outline:none;transition:border-color .3s ease}
+.act-campo input:focus{border-bottom-color:#5A70FA}
+.act-casos{margin:.5rem 0 0;padding:0;border:0}
+.act-casos legend{padding:0;margin-bottom:.75rem;
+  font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;opacity:.45}
+.act-caso{display:flex;align-items:center;gap:.6rem;padding:.4rem 0;
+  cursor:pointer;font-size:.9rem;opacity:.8;transition:opacity .25s ease}
+.act-caso:hover{opacity:1}
+.act-caso input{appearance:none;width:14px;height:14px;flex:0 0 14px;border-radius:50%;
+  border:1px solid rgba(250,250,250,.35);cursor:pointer;transition:border-color .25s ease}
+.act-caso input:checked{border-color:transparent;
+  background:linear-gradient(135deg,#FA4D4D,#5A70FA)}
+.act-enviar{margin-top:1rem;align-self:flex-start;border:0;cursor:pointer;font:inherit}
+
+/* ==========================================================================
+   pantallas chicas
+   Nada se clava por debajo de 900 px: robarle cuatro pantallas de scroll a un
+   movil es secuestrarle la pagina. Cada escena degrada a su forma en columna.
+   ========================================================================== */
 @media screen and (max-width:900px){
+  .act-sust-pin{min-height:auto;padding:clamp(5rem,14vh,8rem) 0}
+  .act-sust-bajo{grid-template-columns:1fr;align-items:start;gap:1.75rem}
+  .act-sust-cita{max-width:none}
+
+  .act-pila-pin{min-height:auto;padding:clamp(5rem,14vh,8rem) 0}
+  .act-pila-cuerpo{grid-template-columns:1fr}
+  .act-medidor{display:none}
+  .act-pila-laminas{position:static;min-height:0;display:grid;gap:1rem}
+  .act-nivel{position:relative;inset:auto;grid-template-columns:1fr;
+    gap:.75rem;align-items:start}
+  .act-nivel-i{font-size:clamp(2.75rem,14vw,4.5rem)}
+  .act-nivel-p{max-width:none}
+
+  .act-reloj-pin{min-height:auto;padding:clamp(5rem,14vh,8rem) 0;overflow:visible}
+  .act-via{overflow:visible}
+  /* En vertical la via es una linea al margen, no un carril: la lectura
+     tambien pasa a ser de arriba abajo. */
+  .act-via-l{left:5px;right:auto;top:0;bottom:0;width:1px;height:auto;
+    background:linear-gradient(180deg,#FA4D4D,#5A70FA 60%,rgba(215,217,230,.25))}
+  .act-tren{flex-direction:column;gap:clamp(2rem,6vh,3rem);padding:0}
+  .act-hito{flex:none;width:auto;padding:0 0 0 2rem}
+  .act-hito-p{top:.3rem}
+  .act-hito-f{font-size:clamp(1.7rem,8vw,2.4rem)}
+
+  .act-multa-pin{min-height:auto;padding:clamp(5rem,14vh,8rem) 0}
+  .act-multa-lados{flex-direction:column;gap:1.75rem}
+
   .act-video-h{max-width:none}
   .act-autor{grid-template-columns:auto 1fr}
   .act-autor-b{grid-column:1/-1;margin-top:1.1rem}
+
+  .act-rivales-r{grid-template-columns:1fr;gap:1.75rem}
+  .act-rival[data-nosotros]{padding-left:0}
+
+  .act-banda-c{flex-direction:column;align-items:flex-start}
+  .act-banda-l{max-width:none}
+
+  .act-cierre-r{grid-template-columns:1fr;gap:2.5rem}
+  .act-cierre-h{font-size:clamp(1.9rem,8.4vw,2.6rem);max-width:none}
 }

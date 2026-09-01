@@ -8,15 +8,15 @@ import { enlaces } from "./content";
 import {
   EN_VIGOR_DESDE,
   actBandas,
-  actCifras,
-  actClaim,
   actContacto,
   actFicha,
   actHero,
   actHitos,
   actMedia,
+  actMulta,
   actNiveles,
   actRivales,
+  actSust,
   actVideo,
 } from "./aiact-content";
 
@@ -31,18 +31,30 @@ import {
   useCara,
   useCintaScroll,
   useHeroEntrada,
-  useIncluye,
   useLetras,
   useMicro,
   useMiraPuntero,
-  useParalajeOrb,
   useTapado,
 } from "@/motion/useOrbital";
+import {
+  useApertura,
+  useCaida,
+  useMulta,
+  usePila,
+  useRefresco,
+  useReloj,
+  useSustitucion,
+} from "@/motion/useActoEscenas";
 import { useRodillo } from "@/motion/useDonut";
 
 import "lenis/dist/lenis.css";
 import "./webflow-base.css";
 import "./site.css";
+
+/* El color del nivel viaja al CSS como variable, que es donde se usa: lo pinta
+   el medidor, el numeral, el chip y el borde de la lamina. Pasarlo cuatro
+   veces por separado seria escribir el mismo dato cuatro veces. */
+const conColor = (c: string) => ({ "--c": c }) as React.CSSProperties;
 
 /* Los dias que lleva en vigor el articulo 4. Se calcula EN EL CLIENTE, no al
    renderizar en servidor: el numero cambia cada dia y el HTML exportado es
@@ -68,18 +80,26 @@ export default function AiAct() {
   useNavLogo(true);
   useSmoother(true, false);
 
-  useParalajeOrb(true);
+  /* Lo que se hereda de la pagina de webs: el encabezado y sus detalles. */
   useCintaScroll(true);
   useTapado(true);
   useLetras(true);
   useHeroEntrada(true);
   useCara(true);
   useMiraPuntero(true);
-  useIncluye(true);
   useMicro(true);
   useActo(true);
   useGlitch(true);
   useRodillo(true);
+
+  /* Lo propio del AI Act: una escena por seccion. */
+  useSustitucion(true);
+  usePila(true);
+  useReloj(true);
+  useMulta(true);
+  useApertura(true);
+  useCaida(true);
+  useRefresco(true);
 
   useEffect(() => { playIntroReveals(); }, []);
 
@@ -224,20 +244,80 @@ export default function AiAct() {
         </div>
       </header>
 
-      {/* ------------------------------------------------- 01 · por que te afecta */}
-      <section className="orb-premisa act-claim">
-        <div className="orb-cont">
-          <div line="" className="orb-eti">( 01 — {actClaim.etiqueta} )<i className="orb-eti-l" aria-hidden="true" /></div>
+      {/* ============================================ 01 · una frase tacha a otra */}
+      <section className="act-sust act-tapa">
+        <div className="act-sust-pin">
+          <div className="orb-cont act-sust-c">
+            <div line="" className="orb-eti">
+              ( 01 — {actSust.etiqueta} )<i className="orb-eti-l" aria-hidden="true" />
+            </div>
 
-          <div className="act-claim-rejilla">
-            <h2 data-letras="" className="orb-h2 act-lead">{actClaim.lead}</h2>
+            <div className="act-sust-frases">
+              <p className="act-sust-fuera">
+                <span>{actSust.fuera}</span>
+                <i className="act-tachon" aria-hidden="true" />
+              </p>
+              <p className="act-sust-dentro">{actSust.dentro}</p>
+            </div>
 
-            <blockquote className="act-cita">
-              <p data-letras="">{actClaim.cita}</p>
-              <p className="act-cita-acento" data-letras="">{actClaim.citaAcento}</p>
-            </blockquote>
+            <div className="act-sust-bajo">
+              <blockquote className="act-sust-cita">
+                <p>{actSust.cita}</p>
+                <p className="act-sust-acento">{actSust.citaAcento}</p>
+              </blockquote>
 
-            <p data-letras="" className="act-cuerpo">{actClaim.cuerpo}</p>
+              <div className="act-sust-pie">
+                <span><b>{actSust.pie[0]}</b> {actSust.pie[1]}</span>
+                <i aria-hidden="true" />
+                <span><b>{actSust.pie[2]}</b> {actSust.pie[3]}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ================================================ 02 · la pila de niveles */}
+      <section id="niveles" className="act-pila">
+        <div className="act-pila-pin">
+          <div className="orb-cont act-pila-c">
+            <div className="act-pila-cab">
+              <div line="" className="orb-eti">
+                ( 02 — Niveles de riesgo )<i className="orb-eti-l" aria-hidden="true" />
+              </div>
+              <h2 className="act-pila-h">
+                <span data-letras="">La ley no clasifica empresas.</span>
+                <span className="orb-degradado">Clasifica sistemas.</span>
+              </h2>
+            </div>
+
+            <div className="act-pila-cuerpo">
+              {/* El medidor. Es la escala de riesgo hecha objeto: baja de rojo
+                  a gris al mismo ritmo al que se apilan las laminas. */}
+              <aside className="act-medidor" aria-hidden="true">
+                <div className="act-medidor-v"><i className="act-medidor-f" /></div>
+                <ol className="act-medidor-o">
+                  {actNiveles.map((n) => (
+                    <li key={n.index} className="act-medidor-i" style={conColor(n.color)}>
+                      <i />
+                      <span>{n.titulo}</span>
+                    </li>
+                  ))}
+                </ol>
+              </aside>
+
+              <div className="act-pila-laminas">
+                {actNiveles.map((n) => (
+                  <article key={n.index} className="act-nivel" style={conColor(n.color)}>
+                    <span className="act-nivel-i" aria-hidden="true">{n.index}</span>
+                    <div className="act-nivel-t">
+                      <b className="act-nivel-chip">{n.etiqueta}</b>
+                      <h3 className="act-nivel-h">{n.titulo}</h3>
+                      <p className="act-nivel-p">{n.cuerpo}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -245,34 +325,71 @@ export default function AiAct() {
       {/* ------------------------------------------------------- banda 1 */}
       <Banda i={0} irA={irA} />
 
-      {/* ------------------------------------------------- 02 · los niveles */}
-      <section id="niveles" className="orb-capacidad act-niveles">
-        <div className="orb-cont">
-          <div line="" className="orb-eti">( 02 — Niveles de riesgo )<i className="orb-eti-l" aria-hidden="true" /></div>
-          <h2 className="orb-h2 orb-h2-incluye">
-            <span data-letras="">La ley no clasifica empresas.</span>
-            <span className="orb-degradado">Clasifica sistemas.</span>
-          </h2>
-          <ul className="orb-lista act-lista">
-            {actNiveles.map((n) => (
-              <li key={n.index} className="orb-lista-fila orb-lista-fija">
-                <span className="orb-lista-i">{n.index}</span>
-                <span className="orb-lista-n">
-                  {n.titulo}
-                  {n.etiqueta && <b className="act-chip">{n.etiqueta}</b>}
-                </span>
-                <span className="orb-lista-d">{n.cuerpo}</span>
-                <i className="orb-lista-filete" aria-hidden="true" />
-              </li>
-            ))}
-          </ul>
+      {/* ======================================================== 03 · el reloj */}
+      <section id="calendario" className="act-reloj">
+        <div className="act-reloj-pin">
+          <div className="orb-cont act-reloj-cab">
+            <div line="" className="orb-eti">
+              ( 03 — El calendario )<i className="orb-eti-l" aria-hidden="true" />
+            </div>
+            <h2 data-letras="" className="act-reloj-h">Las fechas ya corren.</h2>
+          </div>
+
+          <div className="act-via">
+            <i className="act-via-l" aria-hidden="true" />
+            <ol className="act-tren">
+              {actHitos.map((h) => (
+                <li key={h.fecha} className="act-hito" data-pasado={h.pasado ? "" : undefined}>
+                  <span className="act-hito-e">{h.estado}</span>
+                  <i className="act-hito-p" aria-hidden="true" />
+                  <span className="act-hito-f">{h.fecha}</span>
+                  <h3 className="act-hito-t">{h.titulo}</h3>
+                  <p className="act-hito-n">{h.nota}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
       </section>
 
-      {/* ------------------------------------------- 03 · miralo explicado */}
+      {/* ========================================================= 04 · la multa */}
+      <section className="act-multa">
+        <div className="act-multa-pin">
+          <div className="orb-cont act-multa-c">
+            <div line="" className="orb-eti">
+              ( 04 — {actMulta.etiqueta} )<i className="orb-eti-l" aria-hidden="true" />
+            </div>
+
+            <div className="act-multa-n">
+              <i className="act-multa-brillo" aria-hidden="true" />
+              <span data-multa={String(actMulta.n)}>{actMulta.n}</span>
+              <em>{actMulta.sufijo}</em>
+            </div>
+
+            <p className="act-multa-t">{actMulta.titulo}</p>
+            <p className="act-multa-pie">{actMulta.pie}</p>
+
+            <div className="act-multa-lados">
+              {actMulta.lados.map((l) => (
+                <div key={l.etiqueta} className="act-lado">
+                  <span className="act-lado-n">{l.n}<em>{l.sufijo}</em></span>
+                  <span className="act-lado-e">{l.etiqueta}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------- banda 2 */}
+      <Banda i={1} irA={irA} />
+
+      {/* ========================================================== 05 · el video */}
       <section id="video" className="act-video">
         <div className="orb-cont">
-          <div line="" className="orb-eti">( 03 — {actVideo.etiqueta} )<i className="orb-eti-l" aria-hidden="true" /></div>
+          <div line="" className="orb-eti">
+            ( 05 — {actVideo.etiqueta} )<i className="orb-eti-l" aria-hidden="true" />
+          </div>
           <h2 data-letras="" className="orb-h2 act-video-h">{actVideo.titulo}</h2>
 
           {/* Fachada: hasta que no se pulsa, esto es una imagen nuestra. El
@@ -292,51 +409,12 @@ export default function AiAct() {
         </div>
       </section>
 
-      {/* ------------------------------------------------- 04 · el calendario */}
-      <section id="calendario" className="act-linea">
-        <div className="orb-cont">
-          <div line="" className="orb-eti">( 04 — El calendario )<i className="orb-eti-l" aria-hidden="true" /></div>
-          <h2 data-letras="" className="orb-h2 act-linea-h">Las fechas ya corren.</h2>
-
-          <ol className="act-hitos">
-            {actHitos.map((h) => (
-              <li key={h.fecha} className="act-hito" data-pasado={h.pasado ? "" : undefined}>
-                <span className="act-hito-f">{h.fecha}</span>
-                <span className="act-hito-e">{h.estado}</span>
-                <i className="act-hito-p" aria-hidden="true" />
-                <h3 className="act-hito-t">{h.titulo}</h3>
-                <p className="act-hito-c">{h.cuerpo}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* ------------------------------------------------------- banda 2 */}
-      <Banda i={1} irA={irA} />
-
-      {/* --------------------------------------------------- 04 · las cifras */}
-      <section className="act-cifras">
-        <div className="orb-cont">
-          <div line="" className="orb-eti">( 05 — Lo que hay en juego )<i className="orb-eti-l" aria-hidden="true" /></div>
-          <div className="act-cifras-r">
-            {actCifras.map((c) => (
-              <div key={c.etiqueta} className="act-cifra">
-                <span className="act-cifra-n">
-                  <span data-cuenta={String(c.n)}>{c.n}</span>
-                  <em>{c.sufijo}</em>
-                </span>
-                <span className="act-cifra-e">{c.etiqueta}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* --------------------------------------------- 05 · con quien comparan */}
+      {/* ====================================================== 06 · la caida */}
       <section className="act-rivales">
         <div className="orb-cont">
-          <div line="" className="orb-eti">( 06 — Con quién nos comparan )<i className="orb-eti-l" aria-hidden="true" /></div>
+          <div line="" className="orb-eti">
+            ( 06 — Con quién nos comparan )<i className="orb-eti-l" aria-hidden="true" />
+          </div>
           <h2 className="orb-h2 orb-h2-incluye">
             <span data-letras="">Todos te dicen qué falla.</span>
             <span className="orb-degradado">Nosotros lo arreglamos.</span>
@@ -348,18 +426,15 @@ export default function AiAct() {
                 className="act-rival"
                 data-nosotros={i === actRivales.length - 1 ? "" : undefined}
               >
+                <i className="act-rival-l" aria-hidden="true" />
                 <h3 className="act-rival-q">{r.quien}</h3>
                 <p className="act-rival-w">{r.que}</p>
                 <p className="act-rival-c">{r.cuerpo}</p>
-                <i className="act-rival-l" aria-hidden="true" />
               </article>
             ))}
           </div>
         </div>
       </section>
-
-      {/* ------------------------------------------------------- banda 3 */}
-      <Banda i={2} irA={irA} />
 
       {/* ---------------------------------------------------------- cierre */}
       <footer id="contacto" className="orb-cierre act-cierre">
@@ -478,8 +553,8 @@ function Reproductor() {
   );
 }
 
-/* La banda de llamada intermedia. Aparece tres veces entre secciones para que
-   no haya que llegar al final para reservar. */
+/* La banda de llamada intermedia. Dos veces en toda la pagina: una despues de
+   saber en que nivel caes y otra despues de ver cuanto cuesta no saberlo. */
 function Banda({ i, irA }: { i: number; irA: (d: string) => (e: React.MouseEvent) => void }) {
   const b = actBandas[i];
   return (
