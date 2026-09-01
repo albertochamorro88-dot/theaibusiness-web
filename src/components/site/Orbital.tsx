@@ -73,22 +73,36 @@ export default function Orbital() {
 
       {/* ------------------------------------------------------------ hero */}
       <header className="orb-hero">
-        {/* El video vive en su propio marco a la derecha, no a sangre: rodeado
-            de negro se lee como una pieza, y la inclinacion hacia el cursor se
-            percibe mucho mejor cuando hay borde contra el que compararla. */}
-        <div className="orb-hero-panel">
-          <canvas ref={lienzo} className="orb-lienzo" aria-hidden="true" />
+        {/* Tres palabras repartidas de canto a canto. Antes eran dos lineas de
+            frase completa dentro de media pagina: cuarenta caracteres a 4,5
+            rem no son un titular, son un parrafo grande. El precio sale del
+            titulo y baja a su propio bloque, donde ademas se lee mejor. */}
+        <h1 className="orb-h1">
+          <span data-palabra="">Webs</span>
+          <span data-palabra="">que</span>
+          <span data-palabra="">convierten</span>
+        </h1>
+
+        <div className="orb-hero-fila">
+          <div className="orb-hero-copy">
+            <p className="orb-precio-b">
+              <em className="orb-precio">{w.titularPrecio}</em>
+              <span className="orb-precio-t">Precio cerrado</span>
+            </p>
+            <p line="" className="orb-sub">
+              {w.subA} {w.subB}
+            </p>
+          </div>
+
+          {/* El video vive en su propio marco a la derecha, no a sangre:
+              rodeado de negro se lee como una pieza, y la inclinacion hacia el
+              cursor se percibe mucho mejor cuando hay borde contra el que
+              compararla. */}
+          <div className="orb-hero-panel">
+            <canvas ref={lienzo} className="orb-lienzo" aria-hidden="true" />
+          </div>
         </div>
 
-        <div className="orb-hero-copy">
-          <h1 className="orb-h1">
-            <span>Webs que convierten.</span>
-            <span>Precio cerrado: <em className="orb-precio">997 €</em></span>
-          </h1>
-          <p line="" className="orb-sub">
-            {w.subA} {w.subB}
-          </p>
-        </div>
         <div className="orb-hero-pie">
           <span>Madrid · Miami · Dubái</span>
           <span>Mueve el cursor</span>
@@ -114,7 +128,10 @@ export default function Orbital() {
       <section className="orb-galeria">
         <div className="orb-galeria-cab">
           <div className="orb-eti">( 02 — Trabajo )</div>
-          <h2 data-letras="" className="orb-h2-chico">{w.pilaTitulo.replace("\n", " ")}</h2>
+          {/* Este rotulo decia "Cinco cosas. Un solo precio.", que es el
+              titulo de lo que INCLUYE el precio y estaba encabezando la
+              galeria de trabajo. Cada uno vuelve a su seccion. */}
+          <h2 data-letras="" className="orb-h2-chico">{w.muestrasTitulo}</h2>
         </div>
         <div className="orb-pista">
           {muestras.map((m, i) => (
@@ -135,6 +152,9 @@ export default function Orbital() {
       <section className="orb-capacidad">
         <div className="orb-cont">
           <div line="" className="orb-eti">( 03 — Qué incluye )</div>
+          <h2 data-letras="" className="orb-h2 orb-h2-incluye">
+            {w.pilaTitulo.replace("\n", " ")}
+          </h2>
           <ul className="orb-lista">
             {w.incluye.map((it) => (
               <li key={it.nombre} className="orb-lista-fila orb-lista-fija">
@@ -159,6 +179,9 @@ export default function Orbital() {
         </div>
 
         <div className="orb-cont orb-cierre-c">
+          {/* El cierre no tenia titulo: se pasaba de una cinta a un parrafo de
+              apoyo y un boton. Ahora abre y cierra con el mismo peso. */}
+          <h2 data-letras="" className="orb-h2-cierre">Empecemos por tu negocio.</h2>
           <p data-letras="" className="orb-cierre-p">{w.cierreApoyo}</p>
           <a
             opacity=""

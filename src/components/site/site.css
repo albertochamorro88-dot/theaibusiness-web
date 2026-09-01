@@ -1029,8 +1029,11 @@ body:has(.caso-pagina){background:var(--white)}
    izquierda se deja vacia a proposito. */
 .caso-entrada{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:-2rem}
 .caso-entrada > *{grid-column:2}
+/* El titular del caso es la frase que resume el trabajo: a 1,875 rem quedaba
+   por debajo del parrafo que tiene al lado y se leia como una entradilla, no
+   como el titulo del caso. */
 .caso-titular{
-  font-size:clamp(1.25rem,2.1vw,1.875rem);line-height:1.25;letter-spacing:-.02em;
+  font-size:clamp(1.75rem,3.8vw,3.5rem);line-height:1.04;letter-spacing:-.04em;
   font-weight:500;margin:0;text-wrap:balance
 }
 .caso-contexto{
@@ -1073,7 +1076,8 @@ body:has(.caso-pagina){background:var(--white)}
   padding:5rem 0;text-align:center
 }
 .caso-cierre-titulo{
-  font-size:clamp(1.5rem,3vw,2.25rem);font-weight:500;letter-spacing:-.03em;margin:0
+  font-size:clamp(2.25rem,6.4vw,5.5rem);line-height:.96;font-weight:500;
+  letter-spacing:-.05em;margin:0;max-width:14ch
 }
 .caso-cierre-botones{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center}
 /* Los botones son los de la portada, pensados sobre negro: aqui hay que
@@ -1721,34 +1725,62 @@ body:has(.webs){background:var(--fondo)}
 .orbital{background:#0A0A0A;color:#FAFAFA}
 .orb-cont{width:100%;max-width:90rem;margin:0 auto;padding:0 clamp(1.25rem,4vw,4rem)}
 .orb-eti{font-size:.8125rem;letter-spacing:.1em;text-transform:uppercase;opacity:.5;margin-bottom:2rem}
-.orb-h2{margin:0;font-size:clamp(1.75rem,4.6vw,4rem);line-height:1.06;letter-spacing:-.04em;
-  font-weight:500;max-width:20ch}
-.orb-h2-chico{margin:.75rem 0 0;font-size:clamp(1.25rem,2.4vw,2rem);line-height:1.1;
-  letter-spacing:-.03em;font-weight:500}
+/* Escala de titulares. El salto respecto a lo anterior es deliberado: un h2 a
+   4 rem sobre un h1 a 4,5 rem no establecia jerarquia, solo repetia tamano.
+   Ahora el encabezado manda, las secciones pesan y los rotulos acompanan. */
+.orb-h2{margin:0;font-size:clamp(2rem,6.4vw,5.5rem);line-height:.98;letter-spacing:-.05em;
+  font-weight:500;max-width:15ch}
+.orb-h2-chico{margin:.75rem 0 0;font-size:clamp(1.5rem,3.6vw,3.25rem);line-height:1.02;
+  letter-spacing:-.04em;font-weight:500}
+/* El titular del cierre: mismo tratamiento que el encabezado —mayusculas y
+   repartido de canto a canto— para que la pagina abra y cierre igual. */
+.orb-h2-cierre{margin:0 auto clamp(1.5rem,4vh,2.5rem);max-width:16ch;
+  font-size:clamp(2.25rem,7vw,6rem);line-height:.94;letter-spacing:-.05em;font-weight:500}
 
-/* --- encabezado: el lienzo a sangre y el texto encima --- */
+/* --- encabezado: el titular de canto a canto y, debajo, precio y video --- */
+/* Deja de ser una rejilla de dos columnas. El titular necesita el ancho
+   ENTERO para poder repartirse; en media pagina solo cabia partiendolo en
+   lineas, que es justo lo que le quitaba fuerza. */
 .orb-hero{position:relative;min-height:100vh;overflow:hidden;
-  display:grid;grid-template-columns:1.02fr .98fr;align-items:center;
-  gap:clamp(2rem,5vw,5rem);max-width:100rem;margin:0 auto;
-  padding:clamp(7rem,14vh,10rem) clamp(1.25rem,4vw,4rem) clamp(5rem,9vh,7rem)}
+  display:flex;flex-direction:column;justify-content:center;
+  gap:clamp(1.75rem,5vh,3.5rem);max-width:100rem;margin:0 auto;
+  padding:clamp(6rem,12vh,8.5rem) clamp(1.25rem,4vw,4rem) clamp(5rem,9vh,7rem)}
+/* La fila de debajo: el dato a la izquierda, el video a la derecha. Alineados
+   por abajo para que el bloque del precio se apoye en el canto del marco. */
+.orb-hero-fila{display:grid;grid-template-columns:1fr .82fr;
+  gap:clamp(2rem,5vw,4rem);align-items:end}
 @supports (height:100svh){ .orb-hero{min-height:100svh} }
 /* El marco del video. El negro alrededor es parte del diseno: sin borde, la
    inclinacion hacia el cursor no se percibe porque no hay nada fijo con lo que
    compararla. */
-.orb-hero-panel{position:relative;order:2;width:100%;
+.orb-hero-panel{position:relative;width:100%;
   border-radius:1rem;overflow:hidden;background:#000;
   box-shadow:0 2rem 5rem rgba(0,0,0,.8), 0 0 0 1px rgba(250,250,250,.07)}
 .orb-lienzo{display:block;width:100%;aspect-ratio:16/9;height:auto}
-.orb-hero-copy{position:relative;order:1;z-index:1;padding:0;max-width:none;margin:0;width:100%}
-/* Reglas del titular. Se perdieron al reescribir el bloque del hero y las dos
-   lineas quedaron pegadas en un parrafo continuo: los <span> son de linea, y
-   sin `flex-direction:column` no rompen. La perspectiva la necesita la entrada
-   letra a letra —sin ella `rotationX` no vuelca, solo aplasta. */
-.orb-h1{margin:0;display:flex;flex-direction:column;perspective:900px;opacity:0;
-  font-size:clamp(2.25rem,5.2vw,4.5rem);line-height:.98;letter-spacing:-.05em;font-weight:500}
-.orb-sub{margin:1.75rem 0 0;max-width:38ch;font-size:clamp(1rem,1.2vw,1.125rem);
+.orb-hero-copy{position:relative;z-index:1;padding:0;margin:0;width:100%}
+/* El titular: tres palabras repartidas de canto a canto.
+   `space-between` y no `text-align:justify` porque el titular se parte en
+   letras para la entrada, y la justificacion depende de que los espacios
+   sigan siendo espacios —al partirlo dejan de serlo y la linea se descuelga a
+   la izquierda. Repartiendo cajas el hueco lo pone el flex, no el texto, y
+   sobrevive a la particion.
+   Mayusculas: la frase pasa a funcionar como rotulo, no como oracion, y en
+   caja alta forma una banda solida en vez de un perfil dentado. */
+.orb-h1{margin:0;display:flex;justify-content:space-between;align-items:baseline;
+  width:100%;opacity:0;text-transform:uppercase;
+  font-size:clamp(1.75rem,7.9vw,8rem);line-height:.9;letter-spacing:-.05em;font-weight:500}
+/* Cada palabra es su propia mascara Y su propia perspectiva. La perspectiva
+   solo alcanza a los HIJOS DIRECTOS: puesta en el h1 no llegaba a las letras,
+   que cuelgan una generacion mas abajo, y `rotationX` se veia aplastado. */
+.orb-h1 [data-palabra]{display:inline-block;overflow:hidden;
+  padding:.08em 0 .12em;perspective:900px}
+/* El precio deja de ser parte del titulo: es el dato que lo sostiene. */
+.orb-precio-b{margin:0 0 1.25rem;display:flex;align-items:baseline;gap:.9rem;flex-wrap:wrap}
+.orb-precio-t{font-size:.8125rem;letter-spacing:.1em;text-transform:uppercase;opacity:.55}
+.orb-sub{margin:0;max-width:34ch;font-size:clamp(1rem,1.2vw,1.125rem);
   line-height:1.5;opacity:.78}
-.orb-precio{font-style:normal;
+.orb-precio{font-style:normal;font-size:clamp(2.5rem,5.6vw,4.75rem);line-height:.86;
+  letter-spacing:-.05em;font-weight:500;
   background:linear-gradient(90deg,#FA4D4D,#5A70FA);
   -webkit-background-clip:text;background-clip:text;color:transparent}
 .orb-hero-pie{position:absolute;left:0;right:0;bottom:0;z-index:1;
@@ -1789,6 +1821,7 @@ body:has(.webs){background:var(--fondo)}
 
 /* --- capacidad --- */
 .orb-capacidad{padding:clamp(6rem,16vh,12rem) 0;border-top:1px solid rgba(250,250,250,.12)}
+.orb-h2-incluye{margin-bottom:clamp(2rem,5vh,3.5rem)}
 .orb-lista{list-style:none;margin:0;padding:0}
 .orb-lista-fila{border-bottom:1px solid rgba(250,250,250,.12)}
 .orb-lista-fila a{display:block;padding:clamp(1rem,2.4vh,1.75rem) 0;color:inherit;
@@ -1833,14 +1866,15 @@ body:has(.webs){background:var(--fondo)}
    para que el diseño se siga leyendo dentro de la orbita. */
 .orb-pieza{width:clamp(15rem,25vw,23rem)}
 .orb-pieza-marco{aspect-ratio:1.5}
-.orb-precio{font-style:normal;
+.orb-precio{font-style:normal;font-size:clamp(2.5rem,5.6vw,4.75rem);line-height:.86;
+  letter-spacing:-.05em;font-weight:500;
   background:linear-gradient(90deg,#FA4D4D,#5A70FA);
   -webkit-background-clip:text;background-clip:text;color:transparent}
 /* La lista deja de ser de enlaces: son las cinco cosas que entran en el
    precio, y cada una lleva su detalle al lado. */
 .orb-lista-fija{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(1rem,3vw,3rem);
   align-items:baseline;padding:clamp(1rem,2.4vh,1.75rem) 0}
-.orb-lista-n{font-size:clamp(1.25rem,2.8vw,2.25rem);line-height:1.15;letter-spacing:-.03em}
+.orb-lista-n{font-size:clamp(1.375rem,3.4vw,3rem);line-height:1.08;letter-spacing:-.04em}
 .orb-lista-d{font-size:clamp(.9375rem,1.2vw,1.0625rem);line-height:1.5;opacity:.65}
 .orb-lista-fija:hover{background:none}
 @media screen and (max-width:992px){
@@ -1886,8 +1920,12 @@ body:has(.webs){background:var(--fondo)}
 
 /* --- el hero en pantallas estrechas: el video pasa arriba --- */
 @media screen and (max-width:900px){
-  .orb-hero{grid-template-columns:1fr;gap:2.5rem;
-    padding:6rem 1.25rem 5rem;align-content:center}
+  .orb-hero{gap:2rem;padding:6rem 1.25rem 5rem}
+  .orb-h1{font-size:clamp(1.5rem,7.2vw,4rem)}
+  /* El titular se queda en una linea repartida hasta abajo del todo: a 8,6vw
+     las tres palabras siguen cabiendo en 390 px. Lo que se apila es la fila
+     de debajo, con el video primero. */
+  .orb-hero-fila{grid-template-columns:1fr;gap:2rem;align-items:stretch}
   .orb-hero-panel{order:1}
   .orb-hero-copy{order:2}
   .orb-hero-pie{position:static;padding:2rem 1.25rem 0;flex-wrap:wrap}

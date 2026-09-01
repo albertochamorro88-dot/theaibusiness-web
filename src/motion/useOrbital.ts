@@ -169,7 +169,18 @@ export function useTapado(ready: boolean) {
     if (!hero || !tapa) return;
     if (reducido()) return;
 
-    const dentro = hero.querySelectorAll<HTMLElement>(".orb-lienzo, .orb-hero-copy, .orb-hero-pie");
+    /* El titular salio de `.orb-hero-copy` al ganar el ancho entero, asi que
+       hay que nombrarlo aparte: si no, se queda quieto mientras el resto del
+       encabezado retrocede. */
+    const dentro = hero.querySelectorAll<HTMLElement>(
+      ".orb-h1, .orb-lienzo, .orb-hero-copy, .orb-hero-pie",
+    );
+
+    /* Se limpia lo que hubiera escrito una ejecucion anterior. Un `to` graba
+       como punto de partida el valor que encuentra: si el montaje previo dejo
+       el encabezado a 0,7 de opacidad, el nuevo animaria de 0,7 a 0,7 y el
+       encabezado se quedaria apagado para siempre. */
+    gsap.set(dentro, { clearProps: "opacity,transform" });
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -285,8 +296,27 @@ export function useHeroEntrada(ready: boolean) {
       return;
     }
 
+    /* Igual que en el tapado: `from` graba como destino el valor actual, y si
+       un montaje anterior dejo el subtitulo a cero, el nuevo lo animaria de
+       cero a cero. Se limpia primero y se declara el destino a mano. */
+    gsap.set([h1, sub, pie].filter(Boolean) as HTMLElement[], { clearProps: "opacity,transform" });
+    const opacidadFinal = (el: HTMLElement) => Number(getComputedStyle(el).opacity) || 1;
+    const opSub = sub ? opacidadFinal(sub) : 1;
+    const opPie = pie ? opacidadFinal(pie) : 1;
+
     h1.style.opacity = "1";
-    const sp = new SplitText(h1, { type: "lines,chars", linesClass: "orb-linea" });
+
+    /* Se parte PALABRA A PALABRA, no el titular entero.
+       El titular reparte sus tres palabras con `space-between`, y partir el h1
+       de una vez lo sustituye por divs de linea: las tres palabras caerian
+       dentro de una sola caja y el reparto se perderia. Partiendo cada palabra
+       por dentro, la caja sobrevive y sigue siendo un elemento del reparto.
+       Cada palabra lleva ademas su propia mascara, asi que ya no hace falta la
+       clase de linea. */
+    const palabras = [...h1.querySelectorAll<HTMLElement>("[data-palabra]")];
+    const dianas = palabras.length ? palabras : [h1];
+    const sp = dianas.map((el) => new SplitText(el, { type: "chars" }));
+    const letras = sp.flatMap((s) => s.chars);
 
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
@@ -296,7 +326,7 @@ export function useHeroEntrada(ready: boolean) {
        acababa a 3226x2016 en vez de 2880x1800. Su entrada ya la hace el propio
        shader con el uniforme `uEntrada`. */
 
-    tl.from(sp.chars, {
+    tl.from(letras, {
       yPercent: 120,
       rotationX: -78,
       transformOrigin: "50% 100% -30px",
@@ -304,8 +334,8 @@ export function useHeroEntrada(ready: boolean) {
       stagger: { each: 0.017, from: "start" },
     }, 0.25);
 
-    if (sub) tl.from(sub, { y: 24, opacity: 0, duration: 0.9 }, "-=0.55");
-    if (pie) tl.from(pie, { y: 14, opacity: 0, duration: 0.7 }, "-=0.5");
+    if (sub) tl.fromTo(sub, { y: 24, opacity: 0 }, { y: 0, opacity: opSub, duration: 0.9 }, "-=0.55");
+    if (pie) tl.fromTo(pie, { y: 14, opacity: 0 }, { y: 0, opacity: opPie, duration: 0.7 }, "-=0.5");
 
     /* La respiracion posterior. Amplitud minima —seis pixeles en catorce
        segundos— porque lo que se busca es que no parezca congelado, no que se
@@ -319,6 +349,6 @@ export function useHeroEntrada(ready: boolean) {
       delay: 2,
     });
 
-    return () => { tl.kill(); respirar.kill(); sp.revert(); };
+    return () => { tl.kill(); respirar.kill(); sp.forEach((s) => s.revert()); };
   }, [ready]);
 }
