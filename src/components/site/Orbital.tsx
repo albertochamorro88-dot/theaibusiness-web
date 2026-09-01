@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 import { MenuWrapper, Nav } from "./Chrome";
 import { reserva } from "./analytics";
-import { enlaces, img, webs997 as w } from "./content";
+import { enlaces, img, video, webs997 as w } from "./content";
 
 import { useHoverFx } from "@/motion/useHoverFx";
 import { useMenu } from "@/motion/useMenu";
@@ -62,7 +62,7 @@ export default function Orbital() {
 
   useEffect(() => {
     if (!lienzo.current) return;
-    return montarTilt(lienzo.current, img.salaJuntas);
+    return montarTilt(lienzo.current, video.estudioHero);
   }, []);
 
   return (

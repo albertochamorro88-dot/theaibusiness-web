@@ -74,6 +74,7 @@ export const img = {
 export const video = {
   heroFondo: `${VIDEO}/hero-fondo.mp4`,
   webHero: `${VIDEO}/webs/hero.mp4`,
+  estudioHero: `${VIDEO}/estudio/hero.mp4`,
   showreel: `${VIDEO}/showreel.mp4`,
   manifiesto: `${VIDEO}/manifiesto.mp4`,
   manifiestoReflejo: `${VIDEO}/manifiesto-reflejo.mp4`,

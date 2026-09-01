@@ -81,7 +81,13 @@ function compilar(gl: WebGL2RenderingContext, tipo: number, src: string) {
   return sh;
 }
 
-export function montarTilt(lienzo: HTMLCanvasElement, urlImagen: string) {
+/**
+ * `fuente` acepta imagen o video. Con video, cada cuadro se sube de nuevo a la
+ * textura: es lo que permite que el plano siga inclinandose con el cursor
+ * mientras el video corre por dentro, en vez de tener que elegir entre las dos
+ * cosas.
+ */
+export function montarTilt(lienzo: HTMLCanvasElement, fuente: string) {
   const gl = lienzo.getContext("webgl2", { antialias: true, alpha: false });
   if (!gl) return () => {};
 
@@ -130,18 +136,44 @@ export function montarTilt(lienzo: HTMLCanvasElement, urlImagen: string) {
 
   let imgRes: [number, number] = [1, 1];
   let cargada = false;
-  const img = new Image();
-  img.crossOrigin = "anonymous";
-  img.onerror = () => {
-    (window as unknown as Record<string, unknown>).__tilt = { error: "imagen: " + img.src };
-  };
-  img.onload = () => {
-    cargada = true;
-    imgRes = [img.naturalWidth, img.naturalHeight];
-    gl.bindTexture(gl.TEXTURE_2D, tex);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
-  };
-  img.src = urlImagen;
+  const esVideo = /\.(mp4|webm|mov)(\?|$)/i.test(fuente);
+  let video: HTMLVideoElement | null = null;
+  if (esVideo) {
+    video = document.createElement("video");
+    video.src = fuente;
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.autoplay = true;
+    video.preload = "auto";
+    /* `crossOrigin` NO se pone: el video es del mismo origen y declararlo
+       obliga a una peticion CORS que el hosting estatico no responde, y la
+       textura se queda en negro sin decir por que. */
+    video.addEventListener("loadeddata", () => {
+      cargada = true;
+      imgRes = [video!.videoWidth, video!.videoHeight];
+    });
+    video.addEventListener("error", () => {
+      (window as unknown as Record<string, unknown>).__tilt = { error: "video: " + fuente };
+    });
+    /* Algunos navegadores rechazan la reproduccion automatica aunque este
+       silenciado; se reintenta al primer gesto del lector. */
+    const arrancar = () => { video?.play().catch(() => {}); };
+    arrancar();
+    window.addEventListener("pointerdown", arrancar, { once: true });
+  } else {
+    const img = new Image();
+    img.onerror = () => {
+      (window as unknown as Record<string, unknown>).__tilt = { error: "imagen: " + img.src };
+    };
+    img.onload = () => {
+      cargada = true;
+      imgRes = [img.naturalWidth, img.naturalHeight];
+      gl.bindTexture(gl.TEXTURE_2D, tex);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+    };
+    img.src = fuente;
+  }
 
   /* El raton se persigue con suavizado: leerlo en crudo hace que el plano
      salte, porque el puntero se mueve a tirones y el render va a 60 fps. */
@@ -177,6 +209,12 @@ export function montarTilt(lienzo: HTMLCanvasElement, urlImagen: string) {
     gl.uniform1f(u.time, t);
     gl.uniform1f(u.entrada, Math.min(1, t / 1.6));
     gl.bindTexture(gl.TEXTURE_2D, tex);
+    /* Con video hay que volver a subir la textura en CADA cuadro: subirla una
+       vez deja el primer fotograma congelado. `readyState >= 2` es el minimo
+       que garantiza que hay un fotograma que subir. */
+    if (video && video.readyState >= 2) {
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video);
+    }
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     (window as unknown as Record<string, unknown>).__tilt = {
       ok: true, cargada, imgRes, err: gl.getError(),
@@ -190,5 +228,6 @@ export function montarTilt(lienzo: HTMLCanvasElement, urlImagen: string) {
     vivo = false;
     window.removeEventListener("pointermove", mover);
     window.removeEventListener("resize", medir);
+    if (video) { video.pause(); video.src = ""; video.load(); }
   };
 }
