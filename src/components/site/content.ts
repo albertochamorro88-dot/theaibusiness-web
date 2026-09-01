@@ -64,6 +64,10 @@ export const img = {
   marca997: `${IMG}/webs/marca-997.png`,
   webHeroPoster: `${IMG}/webs/hero-poster.jpg`,
   estudioHeroPoster: `${IMG}/estudio/hero-poster.jpg`,
+  /* El plano con la pantalla APAGADA: los dos puntos ya no son parte del video,
+     se pintan encima y siguen al raton. Estabilizado fotograma a fotograma —la
+     cabeza derivaba 21 px— y cerrado en bucle con un fundido de un segundo. */
+  estudioOjosPoster: `${IMG}/estudio/hero-ojos-poster.jpg`,
   muestra1: `${IMG}/webs/muestra-01.webp`,
   muestra2: `${IMG}/webs/muestra-02.webp`,
   brujula: `${IMG}/cargando/brujula.webp`,
@@ -86,6 +90,7 @@ export const video = {
   heroFondo: `${VIDEO}/hero-fondo.mp4`,
   webHero: `${VIDEO}/webs/hero.mp4`,
   estudioHero: `${VIDEO}/estudio/hero.mp4`,
+  estudioOjos: `${VIDEO}/estudio/hero-ojos.mp4`,
   showreel: `${VIDEO}/showreel.mp4`,
   manifiesto: `${VIDEO}/manifiesto.mp4`,
   manifiestoReflejo: `${VIDEO}/manifiesto-reflejo.mp4`,

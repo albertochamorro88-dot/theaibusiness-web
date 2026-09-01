@@ -12,7 +12,7 @@ import { useMenu } from "@/motion/useMenu";
 import { useNavLogo } from "@/motion/useNavLogo";
 import { useReveals, playIntroReveals } from "@/motion/useReveals";
 import { useSmoother } from "@/motion/useSmoother";
-import { useCintaScroll, useEntraDerecha, useHeroEntrada, useIncluye, useLetras, useMicro, useMiraPuntero, useOrbita, useParalajeOrb, useTapado } from "@/motion/useOrbital";
+import { useCintaScroll, useEntraDerecha, useHeroEntrada, useIncluye, useLetras, useCara, useMicro, useMiraPuntero, useParpadeo, useOrbita, useParalajeOrb, useTapado } from "@/motion/useOrbital";
 import { useRodillo } from "@/motion/useDonut";
 
 import "lenis/dist/lenis.css";
@@ -76,7 +76,9 @@ export default function Orbital() {
   useTapado(true);
   useLetras(true);
   useHeroEntrada(true);
+  useCara(true);
   useMiraPuntero(true);
+  useParpadeo(true);
   useIncluye(true);
   useEntraDerecha(true);
   useMicro(true);
@@ -187,18 +189,30 @@ export default function Orbital() {
                 De canto a canto en vertical y sin margen: es la columna
                 central del original, la que sostiene la composicion. */}
             <div className="orb-tj-lamina">
-              <video
-                ref={video1}
-                className="orb-lienzo"
-                preload="auto"
-                src={video.estudioHero}
-                poster={img.estudioHeroPoster}
-                autoPlay
-                muted
-                loop
-                playsInline
-                aria-hidden="true"
-              />
+              {/* `.orb-cara` es la caja de la IMAGEN, no la del elemento.
+                  `object-fit: cover` recorta, asi que un ojo colocado en
+                  porcentajes del <video> caeria donde no toca. La caja se
+                  calcula a mano —misma cuenta que hace `cover`— y dentro de
+                  ella los dos ojos van en porcentajes fijos, medidos sobre el
+                  fotograma en el que la pantalla todavia estaba encendida. */}
+              <div className="orb-cara">
+                <video
+                  ref={video1}
+                  className="orb-lienzo"
+                  preload="auto"
+                  src={video.estudioOjos}
+                  poster={img.estudioOjosPoster}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  aria-hidden="true"
+                />
+                {/* Los ojos. Ya no vienen en el video: se apagaron en el plano
+                    para poder pintarlos aqui y que miren al puntero. */}
+                <i className="orb-ojo orb-ojo-r" aria-hidden="true" />
+                <i className="orb-ojo orb-ojo-a" aria-hidden="true" />
+              </div>
               {/* El foco que sigue al puntero. No es una luz nueva: son los
                   mismos dos contraluces —rojo a la izquierda, azul a la
                   derecha— que ya tiene el plano, superpuestos y corridos con

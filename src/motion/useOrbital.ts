@@ -459,7 +459,7 @@ export function useHeroEntrada(ready: boolean) {
           ease: "power3.inOut",
           onComplete: () => { gsap.set(lamina, { clearProps: "clipPath" }); },
         }, 0);
-      const v = lamina.querySelector<HTMLElement>(".orb-lienzo");
+      const v = lamina.querySelector<HTMLElement>(".orb-cara");
       if (v) tl.fromTo(v, { scale: 1.14 }, { scale: 1, duration: 1.6, ease: "power2.out" }, 0);
     }
 
@@ -580,13 +580,21 @@ export function useMiraPuntero(ready: boolean) {
     registerGsap();
 
     const hero = document.querySelector<HTMLElement>(".orb-hero");
-    const video = hero?.querySelector<HTMLElement>(".orb-lienzo");
+    const video = hero?.querySelector<HTMLElement>(".orb-cara");
     if (!hero || !video) return;
     const fondo = hero.querySelector<HTMLElement>(".orb-marco-fondo");
     const luz = hero.querySelector<HTMLElement>(".orb-luz");
 
+    const ojos = [...hero.querySelectorAll<HTMLElement>(".orb-ojo")];
+
     const vx = gsap.quickTo(video, "x", { duration: 0.65, ease: "power3.out" });
     const vy = gsap.quickTo(video, "y", { duration: 0.65, ease: "power3.out" });
+    /* Los ojos van MAS RAPIDO que la cabeza —0,32 s frente a 0,65— porque asi
+       es como funciona mirar: la vista llega antes que el cuello. Y en
+       `xPercent`, no en pixeles: el recorrido queda atado al tamano del propio
+       ojo, asi que se escala solo con la ventana. */
+    const ox = ojos.map((o) => gsap.quickTo(o, "xPercent", { duration: 0.32, ease: "power2.out" }));
+    const oy = ojos.map((o) => gsap.quickTo(o, "yPercent", { duration: 0.32, ease: "power2.out" }));
     const lx = luz ? gsap.quickTo(luz, "x", { duration: 1.1, ease: "power3.out" }) : null;
     const ly = luz ? gsap.quickTo(luz, "y", { duration: 1.1, ease: "power3.out" }) : null;
     const fx = fondo ? gsap.quickTo(fondo, "x", { duration: 1.5, ease: "power3.out" }) : null;
@@ -601,7 +609,11 @@ export function useMiraPuntero(ready: boolean) {
          sale de ella y sin acotar los valores se dispararian. */
       const nx = limite((e.clientX - r.left) / r.width - 0.5);
       const ny = limite((e.clientY - r.top) / r.height - 0.5);
-      vx(nx * 90); vy(ny * 30);
+      vx(nx * 40); vy(ny * 20);
+      /* Tope de 46 y 32: mas alla el punto toca el canto de la pantalla y deja
+         de leerse como una mirada. */
+      ox.forEach((f) => f(nx * 92));
+      oy.forEach((f) => f(ny * 64));
       if (lx && ly) { lx(nx * 70); ly(ny * 32); }
       if (fx && fy) { fx(nx * -40); fy(ny * -20); }
       if (luz && !encendida) {
@@ -612,6 +624,8 @@ export function useMiraPuntero(ready: boolean) {
 
     const soltar = () => {
       vx(0); vy(0);
+      ox.forEach((f) => f(0));
+      oy.forEach((f) => f(0));
       if (lx && ly) { lx(0); ly(0); }
       if (fx && fy) { fx(0); fy(0); }
       if (luz && encendida) {
@@ -628,10 +642,146 @@ export function useMiraPuntero(ready: boolean) {
       window.removeEventListener("pointermove", mover);
       document.removeEventListener("pointerleave", soltar);
       window.removeEventListener("blur", soltar);
-      gsap.killTweensOf([video, luz, fondo].filter(Boolean) as HTMLElement[]);
+      gsap.killTweensOf([video, luz, fondo, ...ojos].filter(Boolean) as HTMLElement[]);
       gsap.set(video, { x: 0, y: 0 });
+      if (ojos.length) gsap.set(ojos, { clearProps: "transform" });
       if (luz) gsap.set(luz, { x: 0, y: 0, opacity: 0 });
       if (fondo) gsap.set(fondo, { x: 0, y: 0 });
+    };
+  }, [ready]);
+}
+
+/* ------------------------------------------------------------------- cara */
+
+/**
+ * Coloca la caja de la IMAGEN del encabezado.
+ *
+ * `object-fit: cover` recorta: la caja del elemento y la de la imagen que se
+ * ve dentro NO son la misma. Un ojo colocado en porcentajes del <video>
+ * caeria donde no toca en cuanto cambiase el ancho de la ventana. Asi que la
+ * cuenta que hace `cover` se hace aqui a mano, se le da ese tamano exacto a
+ * `.orb-cara` y el video pasa a `fill` dentro de ella. A partir de ahi los
+ * ojos son dos porcentajes fijos y no se despegan de la cara.
+ *
+ * Las cuatro medidas del encuadre —desplazamiento, holgura y punto de
+ * recorte— se leen del CSS, que es donde viven, en vez de repetirlas aqui.
+ */
+/* El fotograma: medida y, dentro de el, el punto entre los ojos y el ancho de
+   la cabeza. Todo lo demas se coloca respecto a ese punto. */
+const CARA = { w: 1280, h: 840, ax: 0.756, ay: 0.355 };
+
+/* Margen que hay que dejar libre por cada lado para que el seguimiento del
+   puntero no destape el canto de la tarjeta. */
+const MX = 32, MY = 16;
+
+export function useCara(ready: boolean) {
+  useEffect(() => {
+    if (!ready) return;
+
+    const lamina = document.querySelector<HTMLElement>(".orb-hero .orb-tj-lamina");
+    const cara = lamina?.querySelector<HTMLElement>(".orb-cara");
+    if (!lamina || !cara) return;
+
+    const medir = () => {
+      const Lw = lamina.clientWidth;
+      const Lh = lamina.clientHeight;
+      if (!Lw || !Lh) return;
+
+      const cs = getComputedStyle(lamina);
+      const num = (n: string, d: number) => {
+        const v = parseFloat(cs.getPropertyValue(n));
+        return isNaN(v) ? d : v;
+      };
+      const holg = num("--cara-o", 0);   // holgura vertical, en px
+      const z = num("--cara-z", 1);      // acercamiento sobre el encuadre justo
+      const cx = num("--cara-cx", 0.5);  // donde cae la cara, a lo ancho
+      const cy = num("--cara-cy", 0.5);  // y a lo alto
+
+      const bw = Lw;
+      const bh = Lh + holg * 2;
+      const by = -holg;
+
+      /* `cover`: se escala por el lado que falta, nunca por el que sobra. */
+      const s = Math.max(bw / CARA.w, bh / CARA.h) * z;
+      const iw = CARA.w * s;
+      const ih = CARA.h * s;
+
+      /* Se coloca por la CARA, no por el canto: "los ojos van al 68 % del
+         ancho de la tarjeta" se lee y se corrige; "left: -17 %" no. */
+      let left = cx * bw - CARA.ax * iw;
+      let top = by + cy * bh - CARA.ay * ih;
+
+      /* Y sin dejar de cubrir la tarjeta ni un pixel, contando el recorrido
+         del puntero. Si lo pedido no cabe, se pega al canto: mas vale la cara
+         un poco corrida que una franja de fondo a la vista. */
+      const apretar = (v: number, lo: number, hi: number, m: number) =>
+        (hi - m) - (lo + m) >= 0
+          ? Math.min(hi - m, Math.max(lo + m, v))
+          : Math.min(hi, Math.max(lo, v));
+      left = apretar(left, bw - iw, 0, MX);
+      top = apretar(top, by + bh - ih, by, MY);
+
+      cara.style.width = `${iw}px`;
+      cara.style.height = `${ih}px`;
+      cara.style.left = `${left}px`;
+      cara.style.top = `${top}px`;
+    };
+
+    medir();
+    /* `ResizeObserver` y no `resize`: la lamina tambien cambia de medida
+       cuando lo hace la tarjeta, sin que la ventana se mueva. */
+    const ro = new ResizeObserver(medir);
+    ro.observe(lamina);
+    window.addEventListener("orientationchange", medir);
+    return () => { ro.disconnect(); window.removeEventListener("orientationchange", medir); };
+  }, [ready]);
+}
+
+
+/* --------------------------------------------------------------- parpadeo */
+
+/**
+ * Los ojos parpadean.
+ *
+ * Es lo que separa dos puntos encendidos de una cara: sin esto la mirada es
+ * fija y muerta por muy bien que siga al raton. Se APLASTA el ojo en vertical
+ * en vez de apagarlo —apagarlo lo delata como un div que se enciende—, y de
+ * vez en cuando van dos seguidos, que es como parpadea la gente.
+ *
+ * Va aparte del seguimiento del puntero: aquel no se monta en pantallas
+ * tactiles, y ahi la cara se quedaria con la mirada congelada.
+ */
+export function useParpadeo(ready: boolean) {
+  useEffect(() => {
+    if (!ready) return;
+    if (reducido()) return;
+    registerGsap();
+
+    const ojos = [...document.querySelectorAll<HTMLElement>(".orb-hero .orb-ojo")];
+    if (!ojos.length) return;
+
+    let reloj = 0;
+    let tw: gsap.core.Tween | null = null;
+    const pestanear = () => {
+      tw = gsap.to(ojos, {
+        scaleY: 0.08,
+        duration: 0.075,
+        ease: "power2.in",
+        yoyo: true,
+        repeat: 1,
+        transformOrigin: "50% 50%",
+        onComplete: () => {
+          const doble = Math.random() < 0.28;
+          reloj = window.setTimeout(pestanear, doble ? 190 : 2600 + Math.random() * 4200);
+        },
+      });
+    };
+    reloj = window.setTimeout(pestanear, 1800 + Math.random() * 2000);
+
+    return () => {
+      window.clearTimeout(reloj);
+      tw?.kill();
+      gsap.set(ojos, { clearProps: "scaleY,transformOrigin" });
     };
   }, [ready]);
 }
