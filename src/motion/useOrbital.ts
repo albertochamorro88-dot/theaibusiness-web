@@ -266,6 +266,43 @@ export function useLetras(ready: boolean) {
 }
 
 
+/* --------------------------------------------------------- micro detalles */
+
+/**
+ * Los filetes de los rotulos se trazan al llegar a ellos.
+ *
+ * Es el unico detalle de los pequeños que necesita JS: el resto —el lavado del
+ * boton, el levante de las piezas, la flecha— son estados de hover y se
+ * resuelven en CSS, que ademas no cuesta un solo cuadro.
+ */
+export function useMicro(ready: boolean) {
+  useEffect(() => {
+    if (!ready) return;
+    registerGsap();
+
+    const filetes = [...document.querySelectorAll<HTMLElement>(".orb-eti-l")];
+    if (!filetes.length) return;
+
+    if (reducido()) {
+      filetes.forEach((f) => { f.style.transform = "none"; });
+      return;
+    }
+
+    gsap.set(filetes, { clearProps: "transform" });
+
+    const tweens = filetes.map((f) =>
+      gsap.fromTo(f,
+        { scaleX: 0 },
+        {
+          scaleX: 1, duration: 1.1, ease: "power3.inOut",
+          scrollTrigger: { trigger: f.parentElement ?? f, start: "top 88%", once: true },
+        }),
+    );
+
+    return () => { tweens.forEach((t) => { t.scrollTrigger?.kill(); t.kill(); }); };
+  }, [ready]);
+}
+
 /* --------------------------------------------------------- lo que incluye */
 
 /**

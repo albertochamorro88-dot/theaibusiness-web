@@ -6,12 +6,13 @@ import { MenuWrapper, Nav } from "./Chrome";
 import { reserva } from "./analytics";
 import { enlaces, img, video, webs997 as w } from "./content";
 
+import { useGlitch } from "@/motion/useGlitch";
 import { useHoverFx } from "@/motion/useHoverFx";
 import { useMenu } from "@/motion/useMenu";
 import { useNavLogo } from "@/motion/useNavLogo";
 import { useReveals, playIntroReveals } from "@/motion/useReveals";
 import { useSmoother } from "@/motion/useSmoother";
-import { useCintaScroll, useEntraDerecha, useHeroEntrada, useIncluye, useLetras, useOrbita, useParalajeOrb, useTapado } from "@/motion/useOrbital";
+import { useCintaScroll, useEntraDerecha, useHeroEntrada, useIncluye, useLetras, useMicro, useOrbita, useParalajeOrb, useTapado } from "@/motion/useOrbital";
 import { useRodillo } from "@/motion/useDonut";
 
 import "lenis/dist/lenis.css";
@@ -22,6 +23,13 @@ import "./site.css";
    de webs a precio cerrado. Solo hay dos maquetas reales; las tres restantes
    son huecos declarados, con su medida escrita dentro para sustituir. */
 const G = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/media/img/estudio`;
+
+/* La linea que se descompone bajo el cursor en la seccion del ascensor. Son
+   las cuatro fases de la linea de webs, no el metodo de consultoria: la
+   pagina vende webs. */
+const LINEA_WEBS = (
+  <>diagnóstico · diseño · desarrollo · online<br />diagnóstico · diseño · desarrollo · online<br />diagnóstico · diseño · desarrollo · online<br />997 € · precio cerrado · sin cuotas ocultas</>
+);
 const muestras = [
   { src: `${G}/web-01.webp`, nombre: "Web 01" },
   { src: `${G}/web-02.webp`, nombre: "Web 02" },
@@ -56,6 +64,8 @@ export default function Orbital() {
   useHeroEntrada(true);
   useIncluye(true);
   useEntraDerecha(true);
+  useMicro(true);
+  useGlitch(true);
   useRodillo(true);
 
   useEffect(() => { playIntroReveals(); }, []);
@@ -107,14 +117,14 @@ export default function Orbital() {
           {/* Decia "mueve el cursor" cuando el video se inclinaba hacia el
               raton. Quitada la inclinacion, la frase pedia algo que ya no
               pasa. */}
-          <span>Baja para ver</span>
+          <span>Baja para ver <i className="orb-flecha" aria-hidden="true">↓</i></span>
         </div>
       </header>
 
       {/* --------------------------------------------------------- premisa */}
       <section className="orb-premisa">
         <div className="orb-cont">
-          <div line="" className="orb-eti">( 01 — Premisa )</div>
+          <div line="" className="orb-eti">( 01 — Premisa )<i className="orb-eti-l" aria-hidden="true" /></div>
           <h2 data-letras="" className="orb-h2">
             No vendemos webs bonitas. Vendemos webs que venden.
           </h2>
@@ -135,7 +145,7 @@ export default function Orbital() {
           delante crece al doble. La medida sale de la referencia. */}
       <section className="orb-galeria">
         <div className="orb-galeria-cab">
-          <div className="orb-eti">( 02 — Trabajo )</div>
+          <div className="orb-eti">( 02 — Trabajo )<i className="orb-eti-l" aria-hidden="true" /></div>
           {/* Este rotulo decia "Cinco cosas. Un solo precio.", que es el
               titulo de lo que INCLUYE el precio y estaba encabezando la
               galeria de trabajo. Cada uno vuelve a su seccion. */}
@@ -156,10 +166,50 @@ export default function Orbital() {
         </div>
       </section>
 
+      {/* ---------------------------------------- proceso: el ascensor */}
+      {/* Misma pieza que en la portada —imagen a pantalla completa, texto que
+          se descompone bajo el cursor y se recompone con el scroll— con el
+          contenido de la linea de webs. Ademas tapa un hueco: la pagina no
+          contaba en ningun sitio COMO se trabaja. */}
+      <section className="section glitch orb-brecha">
+        <div className="glitch-img-w">
+          <img
+            src={img.ejecutivo}
+            loading="lazy"
+            alt="Ejecutivo en un ascensor con un maletín de The AI Business."
+            className="img-ascenseur"
+          />
+        </div>
+        <div className="glitch-text-w">
+          <div className="glitch-text-sticky-w">
+            {["_3", "_1", "_2", "_4", "", "_6"].map((mod, i) => (
+              <div key={i} className={`div-block-5${mod === "" ? " none" : ""}`}>
+                <div className={`text-block-6${mod ? ` ${mod}` : ""}`}>{LINEA_WEBS}</div>
+              </div>
+            ))}
+            <div className="finaltext">
+Diagnóstico. <br />Diseño. <br />Desarrollo. <br />Online.
+            </div>
+          </div>
+          {/* Aqui NO van capturas de web: entran recortadas y en claro, y
+              contra el ascensor se leen como recortes pegados. Van dos piezas
+              oscuras, que es lo que pide la escena. Y no las del cierre, que
+              ya salen mas abajo. */}
+          <div className="img-glitch-w">
+            <div className="merguez">
+              <img className="merguez-img" src={img.proyectoAutointel} alt="" loading="lazy" />
+            </div>
+            <div className="ballon">
+              <img className="ballon-img" src={img.proyectoDermai} alt="" loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* -------------------------------------------------------- capacidad */}
       <section className="orb-capacidad">
         <div className="orb-cont">
-          <div line="" className="orb-eti">( 03 — Qué incluye )</div>
+          <div line="" className="orb-eti">( 04 — Qué incluye )<i className="orb-eti-l" aria-hidden="true" /></div>
           {/* La segunda mitad va en degradado y NO se parte en letras: el
               recorte del degradado se aplica al texto del propio elemento, y
               al partirlo el texto pasa a los hijos —el padre se queda sin
@@ -204,7 +254,8 @@ export default function Orbital() {
             onClick={reserva("orb_cierre", "final")}
             className="orb-btn"
           >
-            Cuéntanos tu caso
+            <span>Cuéntanos tu caso</span>
+            <i className="orb-btn-f" aria-hidden="true">→</i>
           </a>
           <a href={enlaces.email} data-rodillo="" className="drodillo orb-mail">
             <span>info@theaibusiness.com</span>

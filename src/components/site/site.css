@@ -1724,7 +1724,12 @@ body:has(.webs){background:var(--fondo)}
    ===================================================================== */
 .orbital{background:#0A0A0A;color:#FAFAFA}
 .orb-cont{width:100%;max-width:90rem;margin:0 auto;padding:0 clamp(1.25rem,4vw,4rem)}
-.orb-eti{font-size:.8125rem;letter-spacing:.1em;text-transform:uppercase;opacity:.5;margin-bottom:2rem}
+.orb-eti{display:flex;align-items:center;gap:1.25rem;
+  font-size:.8125rem;letter-spacing:.1em;text-transform:uppercase;opacity:.5;margin-bottom:2rem}
+/* El filete del rotulo. Se traza de izquierda a derecha al llegar a el; es lo
+   que convierte una etiqueta suelta en el arranque de una seccion. */
+.orb-eti-l{flex:1;height:1px;display:block;transform-origin:left center;
+  background:linear-gradient(90deg,#FA4D4D,#5A70FA 38%,rgba(250,250,250,.14))}
 /* Escala de titulares. El salto respecto a lo anterior es deliberado: un h2 a
    4 rem sobre un h1 a 4,5 rem no establecia jerarquia, solo repetia tamano.
    Ahora el encabezado manda, las secciones pesan y los rotulos acompanan. */
@@ -1832,8 +1837,18 @@ body:has(.webs){background:var(--fondo)}
 .orb-pista{position:relative;width:100%;height:100%;display:grid;place-items:center}
 .orb-pieza{position:absolute;width:clamp(11rem,17vw,15rem);will-change:transform,opacity}
 .orb-pieza-a{display:block;color:inherit;text-decoration:none}
-.orb-pieza-marco{overflow:hidden;border-radius:.375rem;aspect-ratio:1.1;background:#141414}
-.orb-pieza-marco img,.orb-pieza-marco video{display:block;width:100%;height:100%;object-fit:cover}
+/* Al pasar por encima, la pieza se levanta y el diseño de dentro se acerca.
+   El levante va en el MARCO y no en la pieza: la orbita le escribe a la pieza
+   su propio `transform` en cada cuadro y lo machacaria. */
+.orb-pieza-marco{overflow:hidden;border-radius:.375rem;aspect-ratio:1.1;background:#141414;
+  transition:transform .6s cubic-bezier(.22,1,.36,1),box-shadow .6s cubic-bezier(.22,1,.36,1)}
+.orb-pieza:hover .orb-pieza-marco{transform:translateY(-10px);
+  box-shadow:0 1.5rem 3rem rgba(0,0,0,.7)}
+.orb-pieza-marco img,.orb-pieza-marco video{display:block;width:100%;height:100%;object-fit:cover;
+  transition:transform .8s cubic-bezier(.22,1,.36,1)}
+.orb-pieza:hover .orb-pieza-marco img{transform:scale(1.06)}
+.orb-pieza-pie span:last-child{transition:transform .5s cubic-bezier(.22,1,.36,1)}
+.orb-pieza:hover .orb-pieza-pie span:last-child{transform:translateX(-8px)}
 .orb-pieza-pie{display:flex;justify-content:space-between;gap:.75rem;margin-top:.5rem;
   font-size:.625rem;letter-spacing:.04em;text-transform:uppercase;opacity:.8}
 /* Bajo 992 px no se clava nada: la pista pasa a rejilla normal. */
@@ -1877,10 +1892,30 @@ body:has(.webs){background:var(--fondo)}
 .orb-marcos img{display:block;width:100%;height:126%;object-fit:cover}
 .orb-cierre-c{text-align:center;padding-top:clamp(4rem,10vh,7rem);padding-bottom:2.5rem}
 .orb-cierre-p{margin:0 0 2rem;font-size:clamp(1rem,1.4vw,1.25rem);opacity:.7}
-.orb-btn{display:inline-block;padding:1rem 2.25rem;border-radius:100px;background:#FAFAFA;
+/* El boton: el degradado entra barriendo de izquierda a derecha y el texto se
+   pasa a blanco a la vez. Barrido y no cambio de color de fondo porque un
+   degradado no se puede interpolar: o se pinta entero o no se pinta. */
+.orb-btn{position:relative;overflow:hidden;isolation:isolate;
+  display:inline-flex;align-items:center;gap:.7rem;
+  padding:1rem 2.25rem;border-radius:100px;background:#FAFAFA;
   color:#0A0A0A;text-decoration:none;font-weight:600;font-size:.9375rem;
   transition:transform .4s cubic-bezier(.22,1,.36,1)}
+.orb-btn::before{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(90deg,#FA4D4D,#5A70FA);
+  transform:translateX(-101%);
+  transition:transform .55s cubic-bezier(.22,1,.36,1)}
+.orb-btn:hover::before{transform:translateX(0)}
+.orb-btn > *{transition:color .35s ease,transform .55s cubic-bezier(.22,1,.36,1)}
 .orb-btn:hover{transform:translateY(-2px)}
+.orb-btn:hover > *{color:#FAFAFA}
+.orb-btn-f{font-style:normal}
+.orb-btn:hover .orb-btn-f{transform:translateX(5px)}
+/* La flecha del aviso de bajar: seis pixeles, cuatro segundos. Lo justo para
+   que se note que hay algo mas abajo. */
+.orb-flecha{font-style:normal;display:inline-block;margin-left:.35rem;
+  animation:orb-bota 2.4s ease-in-out infinite}
+@keyframes orb-bota{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+@media (prefers-reduced-motion:reduce){ .orb-flecha{animation:none} }
 .orb-mail{display:inline-block;margin-left:1.5rem;font-size:.9375rem;opacity:.7}
 .orb-pie{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;
   margin-top:clamp(3rem,8vh,5rem);font-size:.75rem;letter-spacing:.06em;opacity:.4}
@@ -1949,8 +1984,14 @@ body:has(.webs){background:var(--fondo)}
 .orb-hero{position:sticky;top:0;z-index:0}
 .orbital .orb-premisa,
 .orbital .orb-galeria,
+.orbital .orb-brecha,
 .orbital .orb-capacidad,
 .orbital .orb-cierre{position:relative;z-index:1;background:#0A0A0A}
+/* La seccion del ascensor viene de la portada, que es blanca sobre negro con
+   otras variables; aqui hay que devolverle el color de esta pagina. */
+.orbital .orb-brecha{color:#FAFAFA;overflow:hidden}
+.orbital .orb-brecha .img-glitch-w{
+  background-image:linear-gradient(0deg,#0A0A0A,rgba(10,10,10,0))}
 /* El canto que separa la tapa del encabezado: sin el, las dos superficies
    negras se funden y no se percibe que una cubre a la otra. */
 /* El canto de la tapa. Sobre negro, una sombra y una linea gris no se ven:
