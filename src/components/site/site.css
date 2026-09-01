@@ -1901,7 +1901,7 @@ body:has(.webs){background:var(--fondo)}
    Va con `left` y no con `transform` porque la entrada anima la escala del
    video con GSAP, y GSAP reescribe la matriz entera: un `translateX` en el CSS
    se quedaria congelado en pixeles y no seguiria al cambiar el ancho. */
-.orb-lienzo{display:block;position:absolute;top:0;bottom:0;left:18%;
+.orb-lienzo{display:block;position:absolute;top:-22px;bottom:-22px;left:18%;
   width:100%;aspect-ratio:auto;
   object-fit:cover;object-position:50% 32%;transform:none}
 /* Los velos. Sin la caja, el texto se apoya directamente sobre la imagen y
@@ -1911,6 +1911,17 @@ body:has(.webs){background:var(--fondo)}
    pie, que es donde cae el titular. Los cortes coinciden con los cantos de
    las columnas de antes: la composicion sigue leyendose en tres zonas, pero
    ya no hay linea que las parta. */
+/* El foco que sigue al puntero. No es una luz nueva: son los mismos dos
+   contraluces que el plano ya tiene —rojo por la izquierda, azul por la
+   derecha—, superpuestos y corridos con el raton. En `screen` solo SUMAN luz,
+   nunca ensucian el negro, asi que al desplazarse refuerzan un lado y aflojan
+   el otro en vez de pintar una mancha encima. Apagado hasta que el raton
+   entra: en la primera pantalla, quieto, no hay nada que explicar. */
+.orb-luz{position:absolute;inset:-6%;display:block;pointer-events:none;
+  opacity:0;mix-blend-mode:screen;
+  background:
+    radial-gradient(26% 34% at 50% 38%, rgba(250,77,77,.16), transparent 70%),
+    radial-gradient(26% 34% at 78% 44%, rgba(90,112,250,.15), transparent 70%)}
 .orb-lamina-vel{position:absolute;inset:0;display:block;pointer-events:none;
   background:
     linear-gradient(90deg,
@@ -2231,6 +2242,7 @@ body:has(.webs){background:var(--fondo)}
      caja— y el personaje se ve entero. */
   .orb-tj-lamina{position:relative;inset:auto;grid-column:auto;
     order:1;flex:1 1 30vh;min-height:26vh}
+  .orb-luz{display:none}
   .orb-lienzo{position:relative;top:auto;bottom:auto;left:auto;
     height:100%;object-position:60% 26%}
   .orb-lamina-vel{inset:auto;left:0;right:0;bottom:0;height:46%;

@@ -12,7 +12,7 @@ import { useMenu } from "@/motion/useMenu";
 import { useNavLogo } from "@/motion/useNavLogo";
 import { useReveals, playIntroReveals } from "@/motion/useReveals";
 import { useSmoother } from "@/motion/useSmoother";
-import { useCintaScroll, useEntraDerecha, useHeroEntrada, useIncluye, useLetras, useMicro, useOrbita, useParalajeOrb, useTapado } from "@/motion/useOrbital";
+import { useCintaScroll, useEntraDerecha, useHeroEntrada, useIncluye, useLetras, useMicro, useMiraPuntero, useOrbita, useParalajeOrb, useTapado } from "@/motion/useOrbital";
 import { useRodillo } from "@/motion/useDonut";
 
 import "lenis/dist/lenis.css";
@@ -76,6 +76,7 @@ export default function Orbital() {
   useTapado(true);
   useLetras(true);
   useHeroEntrada(true);
+  useMiraPuntero(true);
   useIncluye(true);
   useEntraDerecha(true);
   useMicro(true);
@@ -198,6 +199,12 @@ export default function Orbital() {
                 playsInline
                 aria-hidden="true"
               />
+              {/* El foco que sigue al puntero. No es una luz nueva: son los
+                  mismos dos contraluces —rojo a la izquierda, azul a la
+                  derecha— que ya tiene el plano, superpuestos y corridos con
+                  el raton. Al moverse refuerzan uno y aflojan el otro, que es
+                  lo que hace que la iluminacion parezca reaccionar. */}
+              <i className="orb-luz" aria-hidden="true" />
               <i className="orb-lamina-vel" aria-hidden="true" />
             </div>
 

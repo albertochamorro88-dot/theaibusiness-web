@@ -549,3 +549,89 @@ export function useHeroEntrada(ready: boolean) {
     return () => { tl.kill(); respirar.kill(); sp.forEach((s) => s.revert()); };
   }, [ready]);
 }
+
+/* ------------------------------------------------------------ mira al raton */
+
+/**
+ * El personaje del encabezado sigue al puntero.
+ *
+ * No se le pueden mover las pupilas: los dos puntos de la pantalla son parte
+ * del video y la cabeza YA gira dentro del plano —medido, entre el segundo 1
+ * y el 5 se desplaza unos 50 de los 1280 px del original—, asi que unas
+ * pupilas pintadas encima se desincronizarian a los pocos fotogramas. Lo que
+ * sigue al raton es la figura entera, con retraso, y el foco que la ilumina.
+ *
+ * Tres capas a velocidades distintas, que es de donde sale la profundidad:
+ * la figura va la primera, el foco un poco por detras y el fondo desenfocado
+ * del marco se mueve al reves y mas despacio.
+ *
+ * `quickTo` en vez de un `to` por cada movimiento del raton: reutiliza el
+ * mismo tween en vez de crear uno nuevo sesenta veces por segundo.
+ *
+ * Solo en punteros finos. En una pantalla tactil no hay cursor al que seguir,
+ * y `pointermove` ahi se dispara con el dedo: la figura pegaria un salto a
+ * cada toque.
+ */
+export function useMiraPuntero(ready: boolean) {
+  useEffect(() => {
+    if (!ready) return;
+    if (reducido()) return;
+    if (!window.matchMedia("(hover:hover) and (pointer:fine)").matches) return;
+    registerGsap();
+
+    const hero = document.querySelector<HTMLElement>(".orb-hero");
+    const video = hero?.querySelector<HTMLElement>(".orb-lienzo");
+    if (!hero || !video) return;
+    const fondo = hero.querySelector<HTMLElement>(".orb-marco-fondo");
+    const luz = hero.querySelector<HTMLElement>(".orb-luz");
+
+    const vx = gsap.quickTo(video, "x", { duration: 0.65, ease: "power3.out" });
+    const vy = gsap.quickTo(video, "y", { duration: 0.65, ease: "power3.out" });
+    const lx = luz ? gsap.quickTo(luz, "x", { duration: 1.1, ease: "power3.out" }) : null;
+    const ly = luz ? gsap.quickTo(luz, "y", { duration: 1.1, ease: "power3.out" }) : null;
+    const fx = fondo ? gsap.quickTo(fondo, "x", { duration: 1.5, ease: "power3.out" }) : null;
+    const fy = fondo ? gsap.quickTo(fondo, "y", { duration: 1.5, ease: "power3.out" }) : null;
+
+    let encendida = false;
+    const limite = (n: number) => Math.max(-0.5, Math.min(0.5, n));
+
+    const mover = (e: PointerEvent) => {
+      const r = hero.getBoundingClientRect();
+      /* Acotado a la caja del encabezado: al bajar por la pagina el raton se
+         sale de ella y sin acotar los valores se dispararian. */
+      const nx = limite((e.clientX - r.left) / r.width - 0.5);
+      const ny = limite((e.clientY - r.top) / r.height - 0.5);
+      vx(nx * 90); vy(ny * 30);
+      if (lx && ly) { lx(nx * 70); ly(ny * 32); }
+      if (fx && fy) { fx(nx * -40); fy(ny * -20); }
+      if (luz && !encendida) {
+        encendida = true;
+        gsap.to(luz, { opacity: 0.9, duration: 0.7, ease: "power2.out" });
+      }
+    };
+
+    const soltar = () => {
+      vx(0); vy(0);
+      if (lx && ly) { lx(0); ly(0); }
+      if (fx && fy) { fx(0); fy(0); }
+      if (luz && encendida) {
+        encendida = false;
+        gsap.to(luz, { opacity: 0, duration: 0.9, ease: "power2.out" });
+      }
+    };
+
+    window.addEventListener("pointermove", mover, { passive: true });
+    document.addEventListener("pointerleave", soltar);
+    window.addEventListener("blur", soltar);
+
+    return () => {
+      window.removeEventListener("pointermove", mover);
+      document.removeEventListener("pointerleave", soltar);
+      window.removeEventListener("blur", soltar);
+      gsap.killTweensOf([video, luz, fondo].filter(Boolean) as HTMLElement[]);
+      gsap.set(video, { x: 0, y: 0 });
+      if (luz) gsap.set(luz, { x: 0, y: 0, opacity: 0 });
+      if (fondo) gsap.set(fondo, { x: 0, y: 0 });
+    };
+  }, [ready]);
+}
