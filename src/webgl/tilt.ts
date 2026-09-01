@@ -43,6 +43,7 @@ uniform vec2 uRes;      // resolucion del lienzo
 uniform vec2 uImgRes;   // resolucion de la textura
 uniform float uTime;
 uniform float uEntrada;  // 0 -> 1 al aparecer
+uniform float uVoltear;  // 1 = fuente de video, hay que dar la vuelta a la Y
 
 void main() {
   /* Encaje por proporcion (equivalente a object-fit: cover) calculado contra
@@ -51,6 +52,14 @@ void main() {
   float aRes = uRes.x / uRes.y;
   vec2 escala = aRes < aImg ? vec2(aRes / aImg, 1.0) : vec2(1.0, aImg / aRes);
   vec2 uv = (vUV - 0.5) / escala + 0.5;
+
+  /* El eje Y.
+     La pantalla tiene el origen arriba y la textura abajo, asi que el video
+     sale del reves. Se corrige AQUI y no con pixelStorei UNPACK_FLIP_Y:
+     aquello se probo, quedo publicado y la escena seguia invertida (medido
+     comparando el render contra la fuente y contra la fuente volteada). En el
+     shader el efecto es explicito y comprobable. */
+  uv.y = mix(uv.y, 1.0 - uv.y, uVoltear);
 
   /* Una ondulacion muy leve, atada al reloj: da vida sin llamar la atencion. */
   uv.y += sin(uv.x * 5.0 + uTime * 0.35) * 0.0035;
@@ -122,6 +131,7 @@ export function montarTilt(lienzo: HTMLCanvasElement, fuente: string) {
     imgRes: gl.getUniformLocation(prog, "uImgRes"),
     time: gl.getUniformLocation(prog, "uTime"),
     entrada: gl.getUniformLocation(prog, "uEntrada"),
+    voltear: gl.getUniformLocation(prog, "uVoltear"),
   };
 
   const tex = gl.createTexture();
@@ -208,17 +218,13 @@ export function montarTilt(lienzo: HTMLCanvasElement, fuente: string) {
     gl.uniform2f(u.imgRes, imgRes[0], imgRes[1]);
     gl.uniform1f(u.time, t);
     gl.uniform1f(u.entrada, Math.min(1, t / 1.6));
+    gl.uniform1f(u.voltear, esVideo ? 1 : 0);
     gl.bindTexture(gl.TEXTURE_2D, tex);
     /* Con video hay que volver a subir la textura en CADA cuadro: subirla una
        vez deja el primer fotograma congelado. `readyState >= 2` es el minimo
        que garantiza que hay un fotograma que subir. */
     if (video && video.readyState >= 2) {
-      /* WebGL tiene el origen de textura ABAJO-izquierda y el video arriba-
-         izquierda: sin voltear, la escena sale del reves —el reflejo del suelo
-         arriba y el cubo de agua abajo—. */
-      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video);
-      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
     }
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     (window as unknown as Record<string, unknown>).__tilt = {
