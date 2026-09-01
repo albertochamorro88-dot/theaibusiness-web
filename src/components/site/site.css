@@ -1742,33 +1742,38 @@ body:has(.webs){background:var(--fondo)}
   display:flex;flex-direction:column;justify-content:center;
   max-width:100rem;margin:0 auto;
   padding:clamp(6rem,12vh,8.5rem) clamp(1.25rem,4vw,4rem) clamp(5rem,9vh,7rem)}
-/* La capa de texto va por encima del video. El titular se pega al canto
-   derecho y la mitad izquierda se deja libre: es donde esta la figura. */
+/* Titular a la izquierda, video a la derecha. */
 .orb-hero-fila{position:relative;z-index:1;width:100%;
-  display:flex;justify-content:flex-end}
+  display:grid;grid-template-columns:1.1fr .9fr;
+  gap:clamp(2rem,4vw,3.5rem);align-items:center}
 @supports (height:100svh){ .orb-hero{min-height:100svh} }
-/* El video, a sangre y por detras de todo. El plano del shader se dibuja un
-   12 % mas grande que la pantalla para que el giro hacia el cursor no descubra
-   el borde. */
-.orb-hero-panel{position:absolute;inset:0;z-index:0;overflow:hidden;background:#000}
-/* El velo. Sin el, el titular blanco cae sobre el foco azul del video y deja
-   de leerse. Tres pasadas: la derecha —donde va el texto—, el canto de arriba
-   para la barra y el de abajo para el pie. El centro se queda casi limpio,
-   que es donde esta la figura. */
-.orb-hero-panel::after{content:"";position:absolute;inset:0;pointer-events:none;
-  background:
-    linear-gradient(270deg,rgba(10,10,10,.9) 0%,rgba(10,10,10,.68) 28%,rgba(10,10,10,.26) 56%,rgba(10,10,10,0) 80%),
-    linear-gradient(180deg,rgba(10,10,10,.62) 0%,rgba(10,10,10,0) 20%,rgba(10,10,10,0) 60%,rgba(10,10,10,.8) 100%)}
-.orb-lienzo{display:block;width:100%;height:100%}
-.orb-hero-copy{position:relative;z-index:1;padding:0;margin:0;
-  width:min(48%,42rem);
-  display:flex;flex-direction:column;align-items:flex-end;text-align:right}
+/* El video, a la derecha y SIN recuadro. No lleva borde, ni esquinas
+   redondeadas, ni sombra: los cuatro cantos se apagan contra el negro de la
+   pagina, que es lo que evita que se lea como una lamina pegada encima. */
+.orb-hero-panel{position:relative;width:100%;background:#0A0A0A}
+/* El fundido se hace con MASCARA, no pintando un degradado del color del
+   fondo encima. Encima queda siempre el escalon: basta un pixel de diferencia
+   entre el negro del velo y el de la pagina para que el canto se vea, y se
+   veia. Con mascara el video se vuelve transparente de verdad y lo que asoma
+   es el fondo, sea cual sea. Una sola imagen de mascara, sin componer varias:
+   `mask-composite` no esta en todos los navegadores, un radial si. */
+/* Los radios van al 53 %, no al 118 %. En `radial-gradient` el porcentaje se
+   mide contra el ANCHO y el ALTO enteros de la caja, no contra la mitad: con
+   118 % el canto caia al 42 % del degradado —opaco del todo— y la mascara no
+   hacia nada, que es exactamente lo que se vio. Con 53 %, el punto medio del
+   canto cae al 94 % y llega casi transparente. */
+.orb-hero-panel{
+  -webkit-mask-image:radial-gradient(53% 53% at 50% 50%,#000 30%,rgba(0,0,0,.82) 66%,transparent 97%);
+  mask-image:radial-gradient(53% 53% at 50% 50%,#000 30%,rgba(0,0,0,.82) 66%,transparent 97%)}
+.orb-lienzo{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+.orb-hero-copy{position:relative;z-index:1;padding:0;margin:0;width:100%;
+  display:flex;flex-direction:column;align-items:flex-start;text-align:left}
 /* El titular: una palabra por linea, apiladas contra el canto derecho.
    Mayusculas: la frase pasa a funcionar como rotulo, no como oracion, y en
    caja alta forma una banda solida en vez de un perfil dentado. */
-.orb-h1{margin:0;display:flex;flex-direction:column;align-items:flex-end;
+.orb-h1{margin:0;display:flex;flex-direction:column;align-items:flex-start;
   opacity:0;text-transform:uppercase;
-  font-size:clamp(2.5rem,6.4vw,6rem);line-height:.9;letter-spacing:-.05em;font-weight:500}
+  font-size:clamp(2.5rem,7.2vw,7rem);line-height:.9;letter-spacing:-.05em;font-weight:500}
 /* Cada palabra es su propia mascara Y su propia perspectiva. La perspectiva
    solo alcanza a los HIJOS DIRECTOS: puesta en el h1 no llegaba a las letras,
    que cuelgan una generacion mas abajo, y `rotationX` se veia aplastado. */
@@ -1796,11 +1801,17 @@ body:has(.webs){background:var(--fondo)}
 
 /* --- premisa --- */
 .orb-premisa{padding:clamp(6rem,16vh,12rem) 0}
-.orb-premisa .orb-cont{display:grid;grid-template-columns:1.4fr .6fr;
-  gap:clamp(2rem,6vw,6rem);align-items:center}
+.orb-premisa .orb-cont{display:grid;grid-template-columns:1.05fr .95fr;
+  gap:clamp(2rem,5vw,4.5rem);align-items:center}
 .orb-premisa .orb-eti{grid-column:1/-1}
-.orb-retrato{margin:0;overflow:hidden;border-radius:.5rem;aspect-ratio:.78}
-.orb-retrato img{display:block;width:100%;height:114%;object-fit:cover}
+/* La maqueta es un recorte con fondo transparente: nada de marco, ni de
+   recorte por proporcion. Se apoya sobre el negro de la seccion tal cual. */
+/* Se sale un 22 % por la derecha. El PNG lleva mucho aire transparente
+   alrededor del portatil, asi que a ancho de columna el aparato se quedaba en
+   la mitad de su sitio; sobrepasando el canto ocupa lo que tiene que ocupar,
+   y la seccion ya recorta lo que sobra. */
+.orb-retrato{margin:0;opacity:0;width:122%}
+.orb-retrato img{display:block;width:100%;height:auto}
 
 /* --- galeria orbital ---
    La pista ocupa la pantalla entera y las piezas se colocan desde su centro:
@@ -1869,7 +1880,9 @@ body:has(.webs){background:var(--fondo)}
 
 @media screen and (max-width:992px){
   .orb-premisa .orb-cont{grid-template-columns:1fr}
-  .orb-retrato{aspect-ratio:1.2}
+  /* Sin columna al lado, el sangrado del 22 % no aporta nada y se come el
+     portatil por la derecha. */
+  .orb-retrato{width:100%}
   .orb-marcos{grid-template-columns:1fr}
   .orb-mail{display:block;margin:1.5rem 0 0}
 }
@@ -1964,19 +1977,12 @@ body:has(.webs){background:var(--fondo)}
   .orb-hero{padding:6rem 1.25rem 5rem}
   /* En estrecho manda el titular: va primero y el video debajo. */
   .orb-h1{font-size:clamp(2.75rem,13.5vw,5rem)}
+  .orb-hero-fila{grid-template-columns:1fr;gap:2.25rem}
   .orb-hero-copy{width:100%}
-  /* El pie se queda abajo del todo, sobre el video. En 390 px solo cabe un
-     dato: se queda el precio. Las ciudades ya estan en el pie de pagina, y
-     "mueve el cursor" no significa nada en una pantalla tactil. */
+  /* En 390 px solo cabe un dato en el pie: se queda el precio. Las ciudades
+     ya estan en el pie de pagina, y el aviso de bajar sobra en una pantalla
+     donde bajar es lo unico que se puede hacer. */
   .orb-hero-pie{padding-bottom:2rem}
   .orb-hero-pie span:nth-child(2),
   .orb-hero-pie span:nth-child(3){display:none}
-  /* En vertical el recorte deja la figura a pantalla completa y el velo
-     lateral ya no basta: hace falta una pasada uniforme por debajo del
-     texto. */
-  .orb-hero-panel::after{
-    background:
-      linear-gradient(180deg,rgba(10,10,10,.6) 0%,rgba(10,10,10,.2) 22%,rgba(10,10,10,.25) 55%,rgba(10,10,10,.85) 100%),
-      linear-gradient(0deg,rgba(10,10,10,.42),rgba(10,10,10,.42))}
-
 }

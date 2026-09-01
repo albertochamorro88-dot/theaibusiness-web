@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 import { MenuWrapper, Nav } from "./Chrome";
 import { reserva } from "./analytics";
@@ -11,9 +11,8 @@ import { useMenu } from "@/motion/useMenu";
 import { useNavLogo } from "@/motion/useNavLogo";
 import { useReveals, playIntroReveals } from "@/motion/useReveals";
 import { useSmoother } from "@/motion/useSmoother";
-import { useCintaScroll, useHeroEntrada, useIncluye, useLetras, useOrbita, useParalajeOrb, useTapado } from "@/motion/useOrbital";
+import { useCintaScroll, useEntraDerecha, useHeroEntrada, useIncluye, useLetras, useOrbita, useParalajeOrb, useTapado } from "@/motion/useOrbital";
 import { useRodillo } from "@/motion/useDonut";
-import { montarTilt } from "@/webgl/tilt";
 
 import "lenis/dist/lenis.css";
 import "./webflow-base.css";
@@ -43,8 +42,6 @@ const muestras = [
  * Ruta propia y sin indexar: es una propuesta para comparar, no un reemplazo.
  */
 export default function Orbital() {
-  const lienzo = useRef<HTMLCanvasElement>(null);
-
   useReveals(true);
   useHoverFx(true);
   useMenu(true);
@@ -58,14 +55,10 @@ export default function Orbital() {
   useLetras(true);
   useHeroEntrada(true);
   useIncluye(true);
+  useEntraDerecha(true);
   useRodillo(true);
 
   useEffect(() => { playIntroReveals(); }, []);
-
-  useEffect(() => {
-    if (!lienzo.current) return;
-    return montarTilt(lienzo.current, video.estudioHero);
-  }, []);
 
   return (
     <div className="orbital">
@@ -74,20 +67,11 @@ export default function Orbital() {
 
       {/* ------------------------------------------------------------ hero */}
       <header className="orb-hero">
-        {/* El video es el FONDO del encabezado: ocupa la pantalla entera por
-            detras de todo. Lleva su propio velo encima —oscurece la derecha
-            para que el titular se lea, y el borde de arriba y el de abajo
-            para la barra y el pie—; sin el, texto blanco sobre el foco azul
-            del video no se sostiene. */}
-        <div className="orb-hero-panel">
-          <canvas ref={lienzo} className="orb-lienzo" aria-hidden="true" />
-        </div>
-
         <div className="orb-hero-fila">
-          {/* El titular a la derecha, alineado al canto. La palabra en
-              degradado es la primera del titular, no un adorno suelto: se lee
-              "websites que convierten" de corrido. Ocupa el sitio donde antes
-              estaba el precio. */}
+          {/* El titular a la izquierda. La palabra en degradado es la primera
+              del titular, no un adorno suelto: se lee "websites que
+              convierten" de corrido. Ocupa el sitio donde antes estaba el
+              precio. */}
           <div className="orb-hero-copy">
             <h1 className="orb-h1">
               <span data-marca="" className="orb-h1-marca">websites</span>
@@ -98,12 +82,32 @@ export default function Orbital() {
               {w.subA} {w.subB}
             </p>
           </div>
+
+          {/* El video, a la derecha y sin recuadro: los cuatro cantos se
+              funden en el negro de la pagina, asi que no se lee como una
+              lamina pegada encima sino como algo que emerge del fondo.
+              Se quita la inclinacion hacia el cursor. */}
+          <div className="orb-hero-panel">
+            <video
+              className="orb-lienzo"
+              src={video.estudioHero}
+              poster={img.estudioHeroPoster}
+              autoPlay
+              muted
+              loop
+              playsInline
+              aria-hidden="true"
+            />
+          </div>
         </div>
 
         <div className="orb-hero-pie">
           <span>{w.titularPrecio} · Precio cerrado</span>
           <span>Madrid · Miami · Dubái</span>
-          <span>Mueve el cursor</span>
+          {/* Decia "mueve el cursor" cuando el video se inclinaba hacia el
+              raton. Quitada la inclinacion, la frase pedia algo que ya no
+              pasa. */}
+          <span>Baja para ver</span>
         </div>
       </header>
 
@@ -114,8 +118,14 @@ export default function Orbital() {
           <h2 data-letras="" className="orb-h2">
             No vendemos webs bonitas. Vendemos webs que venden.
           </h2>
-          <figure className="orb-retrato">
-            <img src={img.ejecutivo} alt="" loading="lazy" data-orb-par="5.57" />
+          {/* Entra por la derecha al llegar a ella; el recorte no lleva marco
+              porque no le hace falta: el fondo del PNG es transparente. */}
+          <figure className="orb-retrato" data-entra-der="">
+            <img
+              src={img.mockupPortatil}
+              alt="Maqueta de una web nuestra en la pantalla de un portatil."
+              loading="lazy"
+            />
           </figure>
         </div>
       </section>

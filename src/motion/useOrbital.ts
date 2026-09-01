@@ -317,6 +317,47 @@ export function useIncluye(ready: boolean) {
   }, [ready]);
 }
 
+/* ------------------------------------------------------- entrada lateral */
+
+/**
+ * Las piezas marcadas entran desde fuera del canto derecho al llegar a ellas.
+ *
+ * Entran de una vez (`once`), no atadas al scroll: una maqueta que va y viene
+ * segun subes y bajas se convierte en un juguete y distrae del texto que
+ * tiene al lado.
+ *
+ * El desplazamiento se mide en porcentaje de la propia pieza y no en pixeles:
+ * asi recorre lo mismo en una pantalla de 1440 que en una de 1920, que es lo
+ * que hace que el gesto se lea igual en las dos.
+ */
+export function useEntraDerecha(ready: boolean) {
+  useEffect(() => {
+    if (!ready) return;
+    registerGsap();
+
+    const piezas = [...document.querySelectorAll<HTMLElement>("[data-entra-der]")];
+    if (!piezas.length) return;
+
+    if (reducido()) {
+      piezas.forEach((p) => { p.style.opacity = "1"; });
+      return;
+    }
+
+    gsap.set(piezas, { clearProps: "opacity,transform" });
+
+    const tweens = piezas.map((p) =>
+      gsap.fromTo(p,
+        { xPercent: 46, opacity: 0 },
+        {
+          xPercent: 0, opacity: 1, duration: 1.15, ease: "power3.out",
+          scrollTrigger: { trigger: p, start: "top 82%", once: true },
+        }),
+    );
+
+    return () => { tweens.forEach((t) => { t.scrollTrigger?.kill(); t.kill(); }); };
+  }, [ready]);
+}
+
 /* ------------------------------------------------------------ entrada hero */
 
 /**

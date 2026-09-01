@@ -36,6 +36,10 @@ export const img = {
 
   salaJuntas: `${IMG}/sala-juntas.jpg`,
   ejecutivo: `${IMG}/ejecutivo-1x1.jpg`,
+  /* Maqueta de portatil recortada: el fondo es transparente de verdad —la
+     mitad de los pixeles—, asi que se apoya sobre el negro de la pagina sin
+     recuadro que la delate. */
+  mockupPortatil: `${IMG}/estudio/mockup-portatil.webp`,
   proyectoAutointel: `${IMG}/proyecto-autointel.jpg`,
   proyectoDermai: `${IMG}/proyecto-dermai.jpg`,
   proyectoBanca: `${IMG}/proyecto-banca.jpg`,
@@ -53,6 +57,7 @@ export const img = {
   pompon: `${IMG}/formas/pompon.webp`,
   marca997: `${IMG}/webs/marca-997.png`,
   webHeroPoster: `${IMG}/webs/hero-poster.jpg`,
+  estudioHeroPoster: `${IMG}/estudio/hero-poster.jpg`,
   muestra1: `${IMG}/webs/muestra-01.webp`,
   muestra2: `${IMG}/webs/muestra-02.webp`,
   brujula: `${IMG}/cargando/brujula.webp`,
