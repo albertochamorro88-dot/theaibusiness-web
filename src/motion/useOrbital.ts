@@ -169,18 +169,18 @@ export function useTapado(ready: boolean) {
     if (!hero || !tapa) return;
     if (reducido()) return;
 
-    /* El titular salio de `.orb-hero-copy` al ganar el ancho entero, asi que
-       hay que nombrarlo aparte: si no, se queda quieto mientras el resto del
-       encabezado retrocede. */
-    const dentro = hero.querySelectorAll<HTMLElement>(
-      ".orb-h1, .orb-lienzo, .orb-hero-copy, .orb-hero-pie",
-    );
+    /* El texto y el pie retroceden juntos. El titular NO se nombra aparte
+       —vive dentro de `.orb-hero-copy`— porque entonces el escalado se
+       aplicaria dos veces. */
+    const dentro = hero.querySelectorAll<HTMLElement>(".orb-hero-copy, .orb-hero-pie");
+    const fondo = hero.querySelector<HTMLElement>(".orb-hero-panel");
 
     /* Se limpia lo que hubiera escrito una ejecucion anterior. Un `to` graba
        como punto de partida el valor que encuentra: si el montaje previo dejo
        el encabezado a 0,7 de opacidad, el nuevo animaria de 0,7 a 0,7 y el
        encabezado se quedaria apagado para siempre. */
-    gsap.set(dentro, { clearProps: "opacity,transform" });
+    gsap.set([...dentro, fondo].filter(Boolean) as HTMLElement[],
+      { clearProps: "opacity,transform" });
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -196,6 +196,9 @@ export function useTapado(ready: boolean) {
        oscura con una franja arriba. Se queda al 0,7 y se aleja un poco, que es
        lo que da la sensacion de profundidad. */
     tl.to(dentro, { scale: 0.94, yPercent: -6, opacity: 0.7, ease: "none" }, 0);
+    /* El fondo se apaga, pero NO se escala: encogerlo dejaria a la vista el
+       negro del borde justo cuando el video ocupa la pantalla entera. */
+    if (fondo) tl.to(fondo, { opacity: 0.45, ease: "none" }, 0);
 
     return () => { tl.scrollTrigger?.kill(); tl.kill(); };
   }, [ready]);

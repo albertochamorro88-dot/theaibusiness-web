@@ -74,15 +74,16 @@ export default function Orbital() {
 
       {/* ------------------------------------------------------------ hero */}
       <header className="orb-hero">
-        <div className="orb-hero-fila">
-          {/* El video pasa a la izquierda y en formato 4:3: ocupa mas del
-              doble de superficie que el apaisado que tenia. El encuadre
-              aguanta porque el shader recorta por proporcion —quita de los
-              lados, y la figura esta centrada. */}
-          <div className="orb-hero-panel">
-            <canvas ref={lienzo} className="orb-lienzo" aria-hidden="true" />
-          </div>
+        {/* El video es el FONDO del encabezado: ocupa la pantalla entera por
+            detras de todo. Lleva su propio velo encima —oscurece la derecha
+            para que el titular se lea, y el borde de arriba y el de abajo
+            para la barra y el pie—; sin el, texto blanco sobre el foco azul
+            del video no se sostiene. */}
+        <div className="orb-hero-panel">
+          <canvas ref={lienzo} className="orb-lienzo" aria-hidden="true" />
+        </div>
 
+        <div className="orb-hero-fila">
           {/* El titular a la derecha, alineado al canto. La palabra en
               degradado es la primera del titular, no un adorno suelto: se lee
               "websites que convierten" de corrido. Ocupa el sitio donde antes

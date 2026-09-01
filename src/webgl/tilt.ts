@@ -25,7 +25,16 @@ void main() {
      mismo y no describa un arco. */
   float ax = (uMouse.y - 0.5) * 0.44;
   float ay = (0.5 - uMouse.x) * 0.44;
-  vec3 p = vec3(aPos, 0.0);
+  /* El plano se dibuja un 26 % mas grande de lo que ocupa la pantalla.
+     Al girar, la esquina que se aleja se mete hacia dentro y a sangre eso
+     deja una cuna sin cubrir en el borde —con el lienzo a pantalla completa
+     se llego a medir una banda de 33 px—. El margen sale de resolver la
+     propia proyeccion en el peor caso: con el giro maximo (0,219 rad en los
+     dos ejes) la esquina cae a 0,929 del centro y la division por w la
+     encoge otro tanto, lo que exige un factor de 1,20; 1,26 deja holgura.
+     La textura se lee del aPos SIN escalar, asi que lo unico que cambia es
+     que la imagen se acerca un poco. */
+  vec3 p = vec3(aPos * 1.26, 0.0);
   p = vec3(p.x, p.y * cos(ax) - p.z * sin(ax), p.y * sin(ax) + p.z * cos(ax));
   p = vec3(p.x * cos(ay) + p.z * sin(ay), p.y, -p.x * sin(ay) + p.z * cos(ay));
   /* Perspectiva minima: sin ella la rotacion se ve plana y no hay volumen. */
@@ -47,11 +56,17 @@ uniform float uVoltear;  // 1 = fuente de video, hay que dar la vuelta a la Y
 
 void main() {
   /* Encaje por proporcion (equivalente a object-fit: cover) calculado contra
-     la resolucion del lienzo, no la del archivo. */
+     la resolucion del lienzo, no la del archivo.
+     Se MULTIPLICA por la escala, no se divide. Dividiendo, el muestreo se
+     sale de 0..1 y lo que se obtiene es un contain con los bordes
+     embadurnados por el clamp. No se noto durante mucho tiempo porque el
+     marco era exactamente 16:9 igual que el video —con las dos proporciones
+     iguales la escala vale 1 y da lo mismo multiplicar que dividir—; a
+     pantalla completa en vertical el video se quedaba en una tira estrecha. */
   float aImg = uImgRes.x / uImgRes.y;
   float aRes = uRes.x / uRes.y;
   vec2 escala = aRes < aImg ? vec2(aRes / aImg, 1.0) : vec2(1.0, aImg / aRes);
-  vec2 uv = (vUV - 0.5) / escala + 0.5;
+  vec2 uv = (vUV - 0.5) * escala + 0.5;
 
   /* El eje Y.
      La pantalla tiene el origen arriba y la textura abajo, asi que el video

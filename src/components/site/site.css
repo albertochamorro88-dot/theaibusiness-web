@@ -1742,22 +1742,26 @@ body:has(.webs){background:var(--fondo)}
   display:flex;flex-direction:column;justify-content:center;
   max-width:100rem;margin:0 auto;
   padding:clamp(6rem,12vh,8.5rem) clamp(1.25rem,4vw,4rem) clamp(5rem,9vh,7rem)}
-/* El video se lleva la parte ancha. Antes ocupaba el hueco que sobraba debajo
-   del titular y quedaba pequeño; ahora manda la mitad izquierda entera. */
-.orb-hero-fila{display:grid;grid-template-columns:1.06fr .94fr;
-  gap:clamp(2rem,4vw,3.5rem);align-items:center}
+/* La capa de texto va por encima del video. El titular se pega al canto
+   derecho y la mitad izquierda se deja libre: es donde esta la figura. */
+.orb-hero-fila{position:relative;z-index:1;width:100%;
+  display:flex;justify-content:flex-end}
 @supports (height:100svh){ .orb-hero{min-height:100svh} }
-/* El marco del video. El negro alrededor es parte del diseno: sin borde, la
-   inclinacion hacia el cursor no se percibe porque no hay nada fijo con lo que
-   compararla. */
-.orb-hero-panel{position:relative;width:100%;
-  border-radius:1rem;overflow:hidden;background:#000;
-  box-shadow:0 2rem 5rem rgba(0,0,0,.8), 0 0 0 1px rgba(250,250,250,.07)}
-/* 4:3 y no 16:9: en apaisado el video se quedaba en una banda estrecha. El
-   shader encaja por proporcion —recorta de los lados, no deforma— y la figura
-   esta centrada, asi que el encuadre aguanta el cambio. */
-.orb-lienzo{display:block;width:100%;aspect-ratio:4/3;height:auto;max-height:64vh}
-.orb-hero-copy{position:relative;z-index:1;padding:0;margin:0;width:100%;
+/* El video, a sangre y por detras de todo. El plano del shader se dibuja un
+   12 % mas grande que la pantalla para que el giro hacia el cursor no descubra
+   el borde. */
+.orb-hero-panel{position:absolute;inset:0;z-index:0;overflow:hidden;background:#000}
+/* El velo. Sin el, el titular blanco cae sobre el foco azul del video y deja
+   de leerse. Tres pasadas: la derecha —donde va el texto—, el canto de arriba
+   para la barra y el de abajo para el pie. El centro se queda casi limpio,
+   que es donde esta la figura. */
+.orb-hero-panel::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(270deg,rgba(10,10,10,.9) 0%,rgba(10,10,10,.68) 28%,rgba(10,10,10,.26) 56%,rgba(10,10,10,0) 80%),
+    linear-gradient(180deg,rgba(10,10,10,.62) 0%,rgba(10,10,10,0) 20%,rgba(10,10,10,0) 60%,rgba(10,10,10,.8) 100%)}
+.orb-lienzo{display:block;width:100%;height:100%}
+.orb-hero-copy{position:relative;z-index:1;padding:0;margin:0;
+  width:min(48%,42rem);
   display:flex;flex-direction:column;align-items:flex-end;text-align:right}
 /* El titular: una palabra por linea, apiladas contra el canto derecho.
    Mayusculas: la frase pasa a funcionar como rotulo, no como oracion, y en
@@ -1960,9 +1964,19 @@ body:has(.webs){background:var(--fondo)}
   .orb-hero{padding:6rem 1.25rem 5rem}
   /* En estrecho manda el titular: va primero y el video debajo. */
   .orb-h1{font-size:clamp(2.75rem,13.5vw,5rem)}
-  .orb-hero-fila{grid-template-columns:1fr;gap:2.25rem;align-items:stretch}
-  .orb-hero-copy{order:1}
-  .orb-hero-panel{order:2}
-  .orb-lienzo{aspect-ratio:16/9;max-height:none}
-  .orb-hero-pie{position:static;padding:2rem 1.25rem 0;flex-wrap:wrap}
+  .orb-hero-copy{width:100%}
+  /* El pie se queda abajo del todo, sobre el video. En 390 px solo cabe un
+     dato: se queda el precio. Las ciudades ya estan en el pie de pagina, y
+     "mueve el cursor" no significa nada en una pantalla tactil. */
+  .orb-hero-pie{padding-bottom:2rem}
+  .orb-hero-pie span:nth-child(2),
+  .orb-hero-pie span:nth-child(3){display:none}
+  /* En vertical el recorte deja la figura a pantalla completa y el velo
+     lateral ya no basta: hace falta una pasada uniforme por debajo del
+     texto. */
+  .orb-hero-panel::after{
+    background:
+      linear-gradient(180deg,rgba(10,10,10,.6) 0%,rgba(10,10,10,.2) 22%,rgba(10,10,10,.25) 55%,rgba(10,10,10,.85) 100%),
+      linear-gradient(0deg,rgba(10,10,10,.42),rgba(10,10,10,.42))}
+
 }
