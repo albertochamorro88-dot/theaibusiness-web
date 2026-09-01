@@ -24,11 +24,11 @@ import "./site.css";
    son huecos declarados, con su medida escrita dentro para sustituir. */
 const G = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/media/img/estudio`;
 const muestras = [
-  { src: img.muestra1, nombre: "Portátil", alt: "Web en un portátil sobre luz roja y azul." },
-  { src: img.muestra2, nombre: "Tableta", alt: "Web en una tableta sostenida con las dos manos." },
-  { src: `${G}/web-03.png`, nombre: "Pendiente", alt: "" },
-  { src: `${G}/web-04.png`, nombre: "Pendiente", alt: "" },
-  { src: `${G}/web-05.png`, nombre: "Pendiente", alt: "" },
+  { src: `${G}/web-01.png`, nombre: "Web 01" },
+  { src: `${G}/web-02.png`, nombre: "Web 02" },
+  { src: `${G}/web-03.png`, nombre: "Web 03" },
+  { src: `${G}/web-04.png`, nombre: "Web 04" },
+  { src: `${G}/web-05.png`, nombre: "Web 05" },
 ];
 
 /**
@@ -113,7 +113,7 @@ export default function Orbital() {
           {muestras.map((m, i) => (
             <article key={m.src} className="orb-pieza">
               <div className="orb-pieza-marco">
-                <img src={m.src} alt={m.alt} loading="lazy" />
+                <img src={m.src} alt={`Diseño de web: ${m.nombre}.`} loading="lazy" />
               </div>
               <div className="orb-pieza-pie">
                 <span>{m.nombre}</span>

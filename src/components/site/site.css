@@ -1813,7 +1813,12 @@ body:has(.webs){background:var(--fondo)}
 /* --- ajustes de la propuesta orbital al pasarla a la linea de webs --- */
 /* Las maquetas de web son VERTICALES (0,60 y 0,75); la orbita estaba en
    apaisado y las recortaba por arriba y por abajo. */
-.orb-pieza-marco{aspect-ratio:.72}
+/* Las piezas pasan a APAISADAS: lo que van a enseñar son capturas de web
+   completas (~1,5), no maquetas de dispositivo en vertical. A 0,72 les
+   recortaba la mitad del diseño. Y al ser mas anchas, la pieza se ensancha
+   para que el diseño se siga leyendo dentro de la orbita. */
+.orb-pieza{width:clamp(15rem,25vw,23rem)}
+.orb-pieza-marco{aspect-ratio:1.5}
 .orb-precio{font-style:normal;
   background:linear-gradient(90deg,#FA4D4D,#5A70FA);
   -webkit-background-clip:text;background-clip:text;color:transparent}
