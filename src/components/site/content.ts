@@ -40,6 +40,9 @@ export const img = {
      mitad de los pixeles—, asi que se apoya sobre el negro de la pagina sin
      recuadro que la delate. */
   mockupPortatil: `${IMG}/estudio/mockup-portatil.webp`,
+  /* La pieza grande de la seccion del proceso. Vertical (0,8) y oscura, con
+     la web de dentro en rojo y azul de la casa. */
+  mockupGrande: `${IMG}/estudio/mockup-grande.webp`,
   proyectoAutointel: `${IMG}/proyecto-autointel.jpg`,
   proyectoDermai: `${IMG}/proyecto-dermai.jpg`,
   proyectoBanca: `${IMG}/proyecto-banca.jpg`,

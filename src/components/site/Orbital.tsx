@@ -174,9 +174,9 @@ export default function Orbital() {
       <section className="section glitch orb-brecha">
         <div className="glitch-img-w">
           <img
-            src={img.ejecutivo}
+            src={img.mockupGrande}
             loading="lazy"
-            alt="Ejecutivo en un ascensor con un maletín de The AI Business."
+            alt="Maqueta de una web nuestra en la pantalla de un portátil, sobre luz roja y azul."
             className="img-ascenseur"
           />
         </div>

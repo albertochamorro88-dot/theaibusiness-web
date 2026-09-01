@@ -1812,7 +1812,7 @@ body:has(.webs){background:var(--fondo)}
   text-transform:uppercase;opacity:.45}
 
 /* --- premisa --- */
-.orb-premisa{padding:clamp(6rem,16vh,12rem) 0}
+.orb-premisa{padding:clamp(7rem,19vh,14rem) 0}
 .orb-premisa .orb-cont{display:grid;grid-template-columns:1.05fr .95fr;
   gap:clamp(2rem,5vw,4.5rem);align-items:center}
 .orb-premisa .orb-eti{grid-column:1/-1}
@@ -1859,7 +1859,9 @@ body:has(.webs){background:var(--fondo)}
 .orb-galeria.orb-plana .orb-pieza{width:auto;opacity:1!important}
 
 /* --- capacidad --- */
-.orb-capacidad{padding:clamp(6rem,16vh,12rem) 0;border-top:1px solid rgba(250,250,250,.12)}
+/* Sin borde arriba: viene detras de una foto que se apaga en negro, y una
+   linea justo ahi delata el corte que precisamente se esta disimulando. */
+.orb-capacidad{padding:clamp(8rem,22vh,16rem) 0 clamp(7rem,19vh,14rem)}
 .orb-h2-incluye{margin-bottom:clamp(2rem,5vh,3.5rem)}
 .orb-h2-incluye span{display:block}
 /* El degradado se mueve: recorre el texto en diez segundos y vuelve a
@@ -1880,7 +1882,7 @@ body:has(.webs){background:var(--fondo)}
 .orb-lista-fila:hover{background:linear-gradient(90deg,rgba(250,77,77,.14),transparent)}
 
 /* --- cierre --- */
-.orb-cierre{padding:clamp(4rem,10vh,7rem) 0 0;overflow:hidden}
+.orb-cierre{padding:clamp(6rem,14vh,9rem) 0 clamp(3rem,7vh,4.5rem);overflow:hidden}
 .orb-cinta-w{overflow:hidden;white-space:nowrap}
 .orb-cinta{display:inline-block;font-size:clamp(3rem,11vw,9rem);line-height:1;
   letter-spacing:-.05em;font-weight:500;
@@ -1890,7 +1892,7 @@ body:has(.webs){background:var(--fondo)}
   max-width:90rem;margin:clamp(3rem,8vh,6rem) auto 0;padding:0 clamp(1.25rem,4vw,4rem)}
 .orb-marcos figure{margin:0;overflow:hidden;border-radius:.5rem;aspect-ratio:1.3}
 .orb-marcos img{display:block;width:100%;height:126%;object-fit:cover}
-.orb-cierre-c{text-align:center;padding-top:clamp(4rem,10vh,7rem);padding-bottom:2.5rem}
+.orb-cierre-c{text-align:center;padding-top:clamp(5rem,13vh,9rem);padding-bottom:2.5rem}
 .orb-cierre-p{margin:0 0 2rem;font-size:clamp(1rem,1.4vw,1.25rem);opacity:.7}
 /* El boton: el degradado entra barriendo de izquierda a derecha y el texto se
    pasa a blanco a la vez. Barrido y no cambio de color de fondo porque un
@@ -1987,11 +1989,53 @@ body:has(.webs){background:var(--fondo)}
 .orbital .orb-brecha,
 .orbital .orb-capacidad,
 .orbital .orb-cierre{position:relative;z-index:1;background:#0A0A0A}
-/* La seccion del ascensor viene de la portada, que es blanca sobre negro con
-   otras variables; aqui hay que devolverle el color de esta pagina. */
+/* La seccion del proceso. Viene de la portada, que corre con otras
+   variables; aqui hay que devolverle el color de esta pagina. */
 .orbital .orb-brecha{color:#FAFAFA;overflow:hidden}
+/* La maqueta NO va a sangre. A ancho completo la pantalla del portatil ocupa
+   el encuadre entero: se pierde el aparato —que es lo que hay que ver— y la
+   web de dentro, que es de otra marca y esta en ingles, se lee como si fuera
+   el titular de esta pagina. Centrada y contenida se lee como lo que es, una
+   maqueta, y ademas libera los dos margenes para el texto. */
+.orbital .orb-brecha .glitch-img-w{position:relative;height:126vh;
+  display:flex;justify-content:center;align-items:center}
+.orbital .orb-brecha .img-ascenseur{width:min(62%,50rem);height:auto;
+  aspect-ratio:1600/1999;object-fit:cover;opacity:.92;
+  -webkit-mask-image:radial-gradient(53% 53% at 50% 47%,#000 30%,rgba(0,0,0,.82) 66%,transparent 97%);
+  mask-image:radial-gradient(53% 53% at 50% 47%,#000 30%,rgba(0,0,0,.82) 66%,transparent 97%)}
+/* El fundido de abajo va en MASCARA sobre la propia imagen —asi desaparece de
+   verdad— y ademas hay una pasada de negro en la seccion para rematar el
+   canto contra lo que viene despues. Arriba, otra que cose la costura con la
+   galeria, que termina justo encima sin un pixel de separacion. */
+.orbital .orb-brecha .glitch-img-w::before,
+.orbital .orb-brecha .glitch-img-w::after{content:"";position:absolute;
+  left:0;right:0;pointer-events:none;z-index:1}
+.orbital .orb-brecha .glitch-img-w::before{top:0;height:18%;
+  background:linear-gradient(180deg,#0A0A0A 0%,rgba(10,10,10,.45) 55%,rgba(10,10,10,0) 100%)}
+.orbital .orb-brecha .glitch-img-w::after{bottom:0;height:26%;
+  background:linear-gradient(180deg,rgba(10,10,10,0) 0%,#0A0A0A 100%)}
 .orbital .orb-brecha .img-glitch-w{
   background-image:linear-gradient(0deg,#0A0A0A,rgba(10,10,10,0))}
+
+/* El texto, en los dos margenes que deja la maqueta.
+   Venia de la portada colocado sobre una figura centrada; encima de una
+   pantalla llena de tipografia no se leia ni el suyo ni el nuestro. */
+/* Sin `nowrap` la linea partia en "onli / ne": el margen que deja la maqueta
+   es mas estrecho que la frase. */
+.orbital .orb-brecha .text-block-6{font-size:.6875rem;letter-spacing:.02em;
+  line-height:2.1;opacity:.42;white-space:nowrap}
+.orbital .orb-brecha .text-block-6._1{inset:15% auto auto 1.5%}
+.orbital .orb-brecha .text-block-6._2{inset:56% auto auto 1.5%}
+.orbital .orb-brecha .text-block-6._6{inset:11% 1.5% auto auto}
+.orbital .orb-brecha .text-block-6._4{inset:38% 1.5% auto auto}
+.orbital .orb-brecha .text-block-6._3{inset:auto 1.5% 24% auto}
+/* La frase que se recompone es el remate de la seccion. Sube a tamaño de
+   titular y baja al tercio inferior, que es donde la mascara ya ha apagado la
+   imagen y hay negro limpio debajo. */
+.orbital .orb-brecha .finaltext{top:auto;bottom:9%;left:50%;
+  transform:translateX(-50%);text-align:center;width:min(90%,52rem);
+  font-size:clamp(1.75rem,4vw,3.5rem);line-height:1.06;letter-spacing:-.04em;
+  font-weight:500}
 /* El canto que separa la tapa del encabezado: sin el, las dos superficies
    negras se funden y no se percibe que una cubre a la otra. */
 /* El canto de la tapa. Sobre negro, una sombra y una linea gris no se ven:
