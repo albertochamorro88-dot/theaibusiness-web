@@ -294,10 +294,12 @@ export default function AiAct() {
               <p className="act-sust-acento">{actSust.citaAcento}</p>
             </blockquote>
 
+            {/* La cifra manda y el rotulo la explica: por eso van uno encima
+                del otro y no en la misma linea. */}
             <div className="act-sust-pie">
-              <span><b>{actSust.pie[0]}</b> {actSust.pie[1]}</span>
+              <span><b>{actSust.pie[0]}</b><em>{actSust.pie[1]}</em></span>
               <i aria-hidden="true" />
-              <span><b>{actSust.pie[2]}</b> {actSust.pie[3]}</span>
+              <span><b>{actSust.pie[2]}</b><em>{actSust.pie[3]}</em></span>
             </div>
           </div>
         </div>
