@@ -2049,10 +2049,16 @@ body:has(.webs){background:var(--fondo)}
 /* El degradado se mueve: recorre el texto en diez segundos y vuelve a
    empezar. El desplazamiento es de un mosaico entero, asi que el bucle no
    tiene salto. */
+/* `background-clip:text` recorta el degradado a la CAJA del elemento, no a
+   los trazos. Con interlineado por debajo de 1, la caja acaba mas arriba que
+   el rabo de la "g" y la letra sale cortada —se veia en "arreglamos" y en
+   "tecnologia"—. El relleno da caja de sobra por arriba y por abajo y el
+   margen negativo devuelve el hueco, asi que no se mueve nada de sitio. */
 .orb-degradado{
   background-image:linear-gradient(90deg,#FA4D4D,#5A70FA,#FA4D4D);
   background-size:200% 100%;
   -webkit-background-clip:text;background-clip:text;color:transparent;
+  padding-block:.08em .22em;margin-block:-.08em -.22em;
   animation:orb-deriva 10s linear infinite}
 @keyframes orb-deriva{from{background-position:0 0}to{background-position:-200% 0}}
 @media (prefers-reduced-motion:reduce){ .orb-degradado{animation:none} }
@@ -2394,46 +2400,75 @@ body:has(.webs){background:var(--fondo)}
 
 /* ==========================================================================
    01 · la sustitucion
-   Una frase tacha a la otra. La escena entera cabe en una pantalla clavada
-   porque la gracia es ver el cambio, no bajar buscandolo.
+   Una marquesina de metro. El panel iluminado de la foto ES el sitio del
+   texto, asi que la frase no va "encima del fondo": va escrita en el cartel.
    ========================================================================== */
-.act-sust-pin{min-height:100vh;display:flex;align-items:center;
-  padding:clamp(5rem,12vh,9rem) 0}
-.act-sust-c{display:block;width:100%}
+.act-sust-pin{position:relative;min-height:100vh;overflow:hidden;isolation:isolate}
 
-.act-sust-frases{position:relative;margin:clamp(2rem,6vh,4rem) 0 0}
+/* La foto se dibuja a lo ancho y se coloca por el CARTEL, no por si misma:
+   `translate` en porcentaje se mide sobre el propio elemento, asi que
+   -41,51 % —el centro del panel dentro de la foto— deja el cartel siempre a
+   la misma altura de pantalla, caiga donde caiga el resto de la estacion.
+   `min(100%,243vh)` es el seguro para pantallas muy anchas y bajas: sin el,
+   el cartel crece mas que el alto disponible y se sale por los dos cantos. */
+.act-escena{position:absolute;left:50%;top:42%;
+  width:min(100%,243vh);aspect-ratio:1536/1024;
+  translate:-50% -41.51%}
+.act-escena-f{position:absolute;inset:0;display:block;width:100%;height:100%;
+  object-fit:fill}
+/* Un velo tenue. El panel va de rojo brillante a azul y a rayas negras; sin
+   igualarlo un poco, el blanco se lee en unas zonas y se pierde en otras. */
+.act-escena-vel{position:absolute;inset:0;display:block;pointer-events:none;
+  background:linear-gradient(102deg,rgba(6,6,10,.4) 0%,rgba(6,6,10,.12) 46%,
+    rgba(6,6,10,.3) 100%)}
 
-.act-sust-fuera{position:relative;display:inline-block;margin:0;
-  font-size:clamp(1.75rem,6.2vw,5.4rem);line-height:1;letter-spacing:-.05em;
-  font-weight:500;color:#FAFAFA}
-/* El tachon se traza de izquierda a derecha, como se tacha a mano. Va en
-   degradado de marca porque no esta borrando: esta corrigiendo. */
-.act-tachon{position:absolute;left:-.015em;right:-.015em;top:52%;
-  height:clamp(3px,.5vw,6px);display:block;border-radius:3px;
-  transform-origin:left center;
-  background:linear-gradient(90deg,#FA4D4D,#5A70FA)}
+/* El panel, medido sobre el original: x 63->1495, y 142->702 de 1536x1024. */
+.act-cartel{position:absolute;left:4.10%;top:13.87%;width:93.23%;height:54.69%;
+  container-type:inline-size;
+  display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
+  gap:1.3cqw;padding:0 2.6cqw;
+  color:#FFF;text-shadow:0 .015em .055em rgba(0,0,0,.42)}
+.act-cartel-eti{align-self:stretch;margin:0;
+  font-size:clamp(.5rem,1.15cqw,.82rem);color:rgba(255,255,255,.78)}
+.act-cartel-eti .orb-eti-l{background:rgba(255,255,255,.4)}
 
-/* La frase que se queda entra por una ventana que se abre, no cambiando de
-   ancho: recortando el ancho, el texto se recompondria linea a linea mientras
-   se descubre. Con `clip-path` el texto ya esta compuesto. */
-/* `inline-block` no es un capricho de maquetacion: en bloque, la caja ocupa
-   el ancho del contenedor y el degradado se reparte por todo el, asi que sobre
-   las letras solo cae el primer tercio y la frase acaba en morado en vez de
-   llegar al azul. Ajustando la caja al texto, el degradado es el de marca. */
-.act-sust-dentro{display:inline-block;margin:.1em 0 0;
-  font-size:clamp(2.4rem,9vw,7.5rem);line-height:.9;letter-spacing:-.055em;
-  font-weight:600;
-  background:linear-gradient(100deg,#FA4D4D 0%,#9B5BD6 52%,#5A70FA 100%);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-  will-change:clip-path}
+/* Los dos tamanos no son gusto: las dos frases tienen 24 y 14 caracteres, y
+   estas medidas son las que hacen que ambas ocupen casi todo el ancho del
+   panel. Por eso el texto LLENA el cartel en vez de flotar dentro. */
+.act-sust-fuera{position:relative;margin:0;
+  font-size:9cqw;line-height:.95;letter-spacing:-.045em;font-weight:500}
+.act-tachon{position:absolute;left:-.015em;right:-.015em;top:50%;
+  height:.055em;display:block;border-radius:2px;background:#FFF;
+  transform-origin:left center;box-shadow:0 0 .05em rgba(0,0,0,.35)}
 
-.act-sust-bajo{display:flex;flex-wrap:wrap;align-items:flex-end;
-  gap:clamp(1.5rem,4vw,4rem);margin-top:clamp(2.5rem,7vh,4.5rem)}
-.act-sust-cita{position:relative;margin:0;max-width:34ch;
+.act-sust-dentro{position:relative;margin:0;
+  font-size:15.2cqw;line-height:.9;letter-spacing:-.055em;font-weight:600}
+.act-sust-dentro span{display:block;white-space:nowrap}
+/* La copia hueca marca donde va a llegar el blanco. */
+.act-sust-borde{position:absolute;left:0;top:0;width:100%;
+  color:transparent;-webkit-text-stroke:.011em rgba(255,255,255,.5);
+  text-shadow:none}
+.act-sust-lleno{position:relative;color:#FFF;
+  clip-path:inset(-30% 0% -30% 0%);will-change:clip-path}
+
+/* --- el degradado que cose la foto con el negro de abajo ---
+   Va anclado a la FOTO, no a la pantalla. El fondo de la seccion es ese mismo
+   negro, asi que apagando la foto contra el en su propio canto la costura
+   queda invisible en cualquier tamano: si la foto acaba antes del borde de la
+   pantalla, lo que sigue ya es el mismo color. */
+.act-fundido{position:absolute;inset:0;display:block;pointer-events:none;
+  background:
+    linear-gradient(180deg,#0A0A0A 0%,rgba(10,10,15,.55) 6%,transparent 13%),
+    linear-gradient(180deg,transparent 67%,rgba(10,10,15,.82) 75%,#0A0A0A 82%)}
+
+/* --- la cita y el 20/80, ya sobre el negro --- */
+.act-sust-bajo{position:absolute;left:0;right:0;bottom:clamp(2rem,6vh,4rem);
+  display:flex;flex-wrap:wrap;align-items:flex-end;gap:clamp(1.5rem,4vw,4rem)}
+.act-sust-cita{position:relative;margin:0;max-width:42ch;
   padding-left:clamp(1rem,1.6vw,1.6rem)}
 .act-sust-cita::before{content:"";position:absolute;left:0;top:.18em;bottom:.18em;
   width:2px;background:linear-gradient(180deg,#FA4D4D,#5A70FA)}
-.act-sust-cita p{margin:0;font-size:clamp(1.05rem,1.8vw,1.6rem);line-height:1.24;
+.act-sust-cita p{margin:0;font-size:clamp(1.05rem,1.5vw,1.45rem);line-height:1.24;
   letter-spacing:-.025em;opacity:.55}
 .act-sust-acento{margin-top:.35em!important;opacity:1!important;color:#FAFAFA}
 
@@ -2577,6 +2612,9 @@ body:has(.webs){background:var(--fondo)}
   will-change:transform}
 .act-multa-n em{font-style:normal;font-size:.3em;letter-spacing:-.02em;
   margin-top:.3em}
+/* Mismo motivo que en `.orb-degradado`: con interlineado .82 la caja no
+   cubre ni el alto de los digitos. */
+.act-multa-n{padding-block:.1em .14em;margin-block:-.1em -.14em}
 /* El resplandor crece con la cifra. Va detras del propio numero —capa
    negativa dentro de su contexto de apilado— para que no lave el texto. */
 .act-multa-brillo{position:absolute;left:50%;top:50%;translate:-50% -50%;
@@ -2723,10 +2761,22 @@ body:has(.webs){background:var(--fondo)}
    Nada se clava por debajo de 900 px: robarle cuatro pantallas de scroll a un
    movil es secuestrarle la pagina. Cada escena degrada a su forma en columna.
    ========================================================================== */
+/* En un movil se probo a agrandar la foto para que el cartel llenase mas
+   pantalla, y no cabe: el cartel mide el 93 % del ancho de la foto, asi que
+   en cuanto la foto pasa del 107 % la frase se sale por los dos lados. La
+   marquesina se queda a tamano real y se compensa subiendola un poco. */
+@media screen and (max-width:620px){
+  .act-escena{top:46%}
+}
+
 @media screen and (max-width:900px){
-  .act-sust-pin{min-height:auto;padding:clamp(5rem,14vh,8rem) 0}
-  .act-sust-bajo{grid-template-columns:1fr;align-items:start;gap:1.75rem}
+  /* La marquesina se mantiene: el cartel encoge con la pantalla y el texto
+     con el, porque va medido en unidades del propio cartel. Lo unico que
+     cambia es que la cita se pone debajo en columna. */
+  .act-sust-bajo{flex-direction:column;align-items:flex-start;gap:1.25rem;
+    bottom:clamp(3.5rem,10vh,5.5rem)}
   .act-sust-cita{max-width:none}
+  .act-cartel{gap:1.8cqw}
 
   .act-pila-pin{min-height:auto;padding:clamp(5rem,14vh,8rem) 0}
   .act-pila-cuerpo{grid-template-columns:1fr}

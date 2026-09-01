@@ -245,32 +245,59 @@ export default function AiAct() {
       </header>
 
       {/* ============================================ 01 · una frase tacha a otra */}
+      {/* La escena entera es una marquesina de metro. El panel iluminado de la
+          foto es el sitio donde va el texto, asi que no hay "fondo" y "texto
+          encima": hay un cartel, y el cartel se escribe solo. */}
       <section className="act-sust act-tapa">
         <div className="act-sust-pin">
-          <div className="orb-cont act-sust-c">
-            <div line="" className="orb-eti">
-              ( 01 — {actSust.etiqueta} )<i className="orb-eti-l" aria-hidden="true" />
-            </div>
+          <div className="act-escena">
+            <img
+              className="act-escena-f"
+              src={actMedia.cartel}
+              alt=""
+              width={1536}
+              height={1024}
+              fetchPriority="high"
+            />
+            <i className="act-escena-vel" aria-hidden="true" />
+            {/* El degradado que cose la foto con el negro de la seccion
+                siguiente. Va DENTRO de la escena y antes del cartel: colgado
+                del clavado y despues, se pintaba tambien sobre el titular y le
+                comia medio blanco. */}
+            <i className="act-fundido" aria-hidden="true" />
 
-            <div className="act-sust-frases">
+            <div className="act-cartel">
+              <div line="" className="orb-eti act-cartel-eti">
+                ( 01 — {actSust.etiqueta} )<i className="orb-eti-l" aria-hidden="true" />
+              </div>
+
               <p className="act-sust-fuera">
                 <span>{actSust.fuera}</span>
                 <i className="act-tachon" aria-hidden="true" />
               </p>
-              <p className="act-sust-dentro">{actSust.dentro}</p>
+
+              {/* Dos copias de la misma frase: una hueca, de contorno, y otra
+                  llena de blanco que se descubre de izquierda a derecha. Lo que
+                  se ve no es un texto que aparece, es un texto que SE LLENA,
+                  como se enciende un cartel. La de contorno no se lee: es
+                  decorado, y por eso esta oculta a los lectores de pantalla. */}
+              <p className="act-sust-dentro">
+                <span className="act-sust-borde" aria-hidden="true">{actSust.dentro}</span>
+                <span className="act-sust-lleno">{actSust.dentro}</span>
+              </p>
             </div>
+          </div>
 
-            <div className="act-sust-bajo">
-              <blockquote className="act-sust-cita">
-                <p>{actSust.cita}</p>
-                <p className="act-sust-acento">{actSust.citaAcento}</p>
-              </blockquote>
+          <div className="orb-cont act-sust-bajo">
+            <blockquote className="act-sust-cita">
+              <p>{actSust.cita}</p>
+              <p className="act-sust-acento">{actSust.citaAcento}</p>
+            </blockquote>
 
-              <div className="act-sust-pie">
-                <span><b>{actSust.pie[0]}</b> {actSust.pie[1]}</span>
-                <i aria-hidden="true" />
-                <span><b>{actSust.pie[2]}</b> {actSust.pie[3]}</span>
-              </div>
+            <div className="act-sust-pie">
+              <span><b>{actSust.pie[0]}</b> {actSust.pie[1]}</span>
+              <i aria-hidden="true" />
+              <span><b>{actSust.pie[2]}</b> {actSust.pie[3]}</span>
             </div>
           </div>
         </div>

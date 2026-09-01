@@ -51,15 +51,17 @@ export function useSustitucion(ready: boolean) {
 
     const fuera = sec.querySelector<HTMLElement>(".act-sust-fuera");
     const tachon = sec.querySelector<HTMLElement>(".act-tachon");
-    const dentro = sec.querySelector<HTMLElement>(".act-sust-dentro");
+    /* Lo que se descubre es la copia LLENA, no el parrafo: debajo tiene que
+       quedarse la copia hueca marcando adonde va a llegar el blanco. */
+    const dentro = sec.querySelector<HTMLElement>(".act-sust-lleno");
     const cita = sec.querySelector<HTMLElement>(".act-sust-cita");
     const pie = sec.querySelector<HTMLElement>(".act-sust-pie");
     if (!fuera || !tachon || !dentro) return;
 
     const finales = () => {
       gsap.set(tachon, { scaleX: 1 });
-      gsap.set(fuera, { opacity: 0.16 });
-      gsap.set(dentro, { clipPath: "inset(0% 0% 0% 0%)", opacity: 1, y: 0 });
+      gsap.set(fuera, { opacity: 0.3 });
+      gsap.set(dentro, { clipPath: "inset(-30% 0% -30% 0%)", opacity: 1, y: 0 });
       if (cita) gsap.set(cita, { opacity: 1, y: 0 });
       if (pie) gsap.set(pie, { opacity: 1 });
     };
@@ -82,10 +84,14 @@ export function useSustitucion(ready: boolean) {
       });
 
       tl.fromTo(tachon, { scaleX: 0 }, { scaleX: 1, duration: 0.85, ease: "power2.inOut" }, 0);
-      tl.fromTo(fuera, { opacity: 1, y: 0 }, { opacity: 0.16, y: -14, duration: 0.8, ease: "power1.in" }, 0.7);
+      tl.fromTo(fuera, { opacity: 1, y: 0 }, { opacity: 0.3, y: -14, duration: 0.8, ease: "power1.in" }, 0.7);
+      /* Los -30 % de arriba y abajo no son un margen de seguridad cualquiera:
+         con interlineado por debajo de 1, la caja del bloque termina antes que
+         el rabo de la "g", y un `inset(0)` se lo comia. El recorte solo debe
+         mover el canto derecho. */
       tl.fromTo(dentro,
-        { clipPath: "inset(0% 100% 0% 0%)", opacity: 1, y: 26 },
-        { clipPath: "inset(0% 0% 0% 0%)", y: 0, duration: 1, ease: "power2.out" }, 0.75);
+        { clipPath: "inset(-30% 100% -30% 0%)", opacity: 1, y: 26 },
+        { clipPath: "inset(-30% 0% -30% 0%)", y: 0, duration: 1, ease: "power2.out" }, 0.75);
       if (cita) tl.fromTo(cita, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.6 }, 1.15);
       if (pie) tl.fromTo(pie, { opacity: 0 }, { opacity: 1, duration: 0.45 }, 1.35);
       /* Un compas al final. Sin el, lo ultimo en entrar llegaba justo en el
@@ -103,10 +109,10 @@ export function useSustitucion(ready: boolean) {
         scrollTrigger: { trigger: sec, start: "top 70%", once: true },
       });
       tl.fromTo(tachon, { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power2.inOut" }, 0);
-      tl.fromTo(fuera, { opacity: 1 }, { opacity: 0.2, duration: 0.5 }, 0.5);
+      tl.fromTo(fuera, { opacity: 1 }, { opacity: 0.3, duration: 0.5 }, 0.5);
       tl.fromTo(dentro,
-        { clipPath: "inset(0% 100% 0% 0%)", y: 18 },
-        { clipPath: "inset(0% 0% 0% 0%)", y: 0, duration: 0.9, ease: "power2.out" }, 0.55);
+        { clipPath: "inset(-30% 100% -30% 0%)", y: 18 },
+        { clipPath: "inset(-30% 0% -30% 0%)", y: 0, duration: 0.9, ease: "power2.out" }, 0.55);
       if (cita) tl.fromTo(cita, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 }, 1);
       if (pie) tl.fromTo(pie, { opacity: 0 }, { opacity: 1, duration: 0.5 }, 1.15);
       return () => { tl.scrollTrigger?.kill(); tl.kill(); };

@@ -19,6 +19,12 @@ export const actMedia = {
      la pagina no pide nada a Google hasta que alguien le da al play. */
   videoPortada: `${MEDIA}/img/aiact/video-portada.jpg`,
   alejandro: `${MEDIA}/img/aiact/alejandro.jpg`,
+  /* La marquesina del metro. El panel iluminado ocupa, sobre los 1536x1024 del
+     original, de x=63 a x=1495 y de y=142 a y=702; esos cuatro numeros son los
+     que colocan el texto DENTRO del cartel en cualquier pantalla, y por eso
+     estan medidos y no estimados. Si se cambia la foto hay que volver a
+     medirlos: van en `.act-cartel`. */
+  cartel: `${MEDIA}/img/aiact/cartel.jpg`,
 } as const;
 
 /* -------------------------------------------------------------- 00 · hero */
