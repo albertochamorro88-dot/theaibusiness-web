@@ -2108,20 +2108,37 @@ body:has(.webs){background:var(--fondo)}
      en los margenes que deja la maqueta, y en 390 px no hay margenes. Se
      medio uno a x=-150, o sea fuera de la pantalla. Aqui el texto sale del
      posicionamiento absoluto y se apila debajo de la maqueta. */
-  .orbital .orb-brecha{padding-top:clamp(4rem,12vh,7rem)}
-  .orbital .orb-brecha .glitch-img-w{height:auto;padding:0 0 2.5rem}
-  .orbital .orb-brecha .img-ascenseur{width:94%;height:auto;aspect-ratio:1600/1999}
-  .orbital .orb-brecha .glitch-text-w{position:relative;inset:auto;
-    display:block;padding:0 1.25rem 3rem}
+  /* El texto va ENCIMA de la maqueta, no debajo. Apilado quedaba a media
+     pantalla de distancia de la foto y el efecto se perdia: lo que hace la
+     seccion es que el texto se descomponga SOBRE la imagen.
+     La caja de la imagen deja de tener altura fija —de ahi salia el hueco
+     enorme de negro— y la seccion mide lo que mide la maqueta. */
+  .orbital .orb-brecha{padding-top:clamp(2.5rem,7vh,4.5rem)}
+  .orbital .orb-brecha .glitch-img-w{height:auto;padding:0}
+  .orbital .orb-brecha .img-ascenseur{width:100%;height:auto;aspect-ratio:1600/1999}
+  .orbital .orb-brecha .glitch-text-w{position:absolute;inset:0;display:block;padding:0}
   .orbital .orb-brecha .glitch-text-sticky-w{position:static;display:block;
-    width:100%;min-height:0}
-  /* De los seis bloques se quedan dos: seis apilados son seis parrafos
-     iguales seguidos, y eso deja de ser un efecto para ser ruido. */
-  .orbital .orb-brecha .div-block-5{display:none}
+    width:100%;min-height:0;height:100%}
+  /* Los bloques se colocan contra la CAPA de texto, no contra su propia
+     rejilla: por eso su contenedor pasa a estatico. De los seis se quedan
+     dos —seis en 390 px es una pared de texto igual repetido—. */
+  .orbital .orb-brecha .div-block-5{position:static;display:none}
   .orbital .orb-brecha .div-block-5:nth-child(1),
   .orbital .orb-brecha .div-block-5:nth-child(4){display:block}
-  .orbital .orb-brecha .text-block-6{position:static;inset:auto;
-    text-align:center;margin:0 0 .75rem;white-space:normal;font-size:.75rem}
-  .orbital .orb-brecha .finaltext{position:static;transform:none;
-    width:auto;margin:1.75rem 0 0;text-align:center}
+  /* Se centra con `left`/`right`, NO con `translateX`: la caida de los
+     bloques se anima con `yPercent`, y GSAP reescribe el `transform` entero.
+     Con translate el bloque se descolocaria en cuanto empezara a caer. */
+  .orbital .orb-brecha .text-block-6{position:absolute;left:5%;right:5%;
+    width:auto;text-align:center;white-space:normal;font-size:.6875rem;
+    line-height:1.9;opacity:.5}
+  /* Las reglas de escritorio llevan `._3` y `._4` encima, o sea un selector
+     mas: ganan a la generica y dejaban el bloque pegado al canto derecho con
+     el ancho de su propio texto. Hay que igualar la especificidad. */
+  .orbital .orb-brecha .text-block-6._3,
+  .orbital .orb-brecha .text-block-6._4{left:5%;right:5%;width:auto}
+  .orbital .orb-brecha .div-block-5:nth-child(1) .text-block-6{top:5%;bottom:auto}
+  .orbital .orb-brecha .div-block-5:nth-child(4) .text-block-6{top:auto;bottom:26%}
+  .orbital .orb-brecha .finaltext{position:absolute;left:4%;right:4%;
+    top:auto;bottom:6%;width:auto;transform:none;text-align:center;
+    font-size:clamp(1.5rem,7.5vw,2.5rem);line-height:1.1}
 }
