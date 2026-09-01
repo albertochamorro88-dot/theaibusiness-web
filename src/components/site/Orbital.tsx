@@ -24,11 +24,11 @@ import "./site.css";
    son huecos declarados, con su medida escrita dentro para sustituir. */
 const G = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/media/img/estudio`;
 const muestras = [
-  { src: `${G}/web-01.png`, nombre: "Web 01" },
-  { src: `${G}/web-02.png`, nombre: "Web 02" },
-  { src: `${G}/web-03.png`, nombre: "Web 03" },
-  { src: `${G}/web-04.png`, nombre: "Web 04" },
-  { src: `${G}/web-05.png`, nombre: "Web 05" },
+  { src: `${G}/web-01.webp`, nombre: "Web 01" },
+  { src: `${G}/web-02.webp`, nombre: "Web 02" },
+  { src: `${G}/web-03.webp`, nombre: "Web 03" },
+  { src: `${G}/web-04.webp`, nombre: "Web 04" },
+  { src: `${G}/web-05.webp`, nombre: "Web 05" },
 ];
 
 /**
