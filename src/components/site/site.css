@@ -1903,7 +1903,7 @@ body:has(.webs){background:var(--fondo)}
    personaje se queda clavado en el centro—. Lo que se desplaza es la CAJA:
    un 18 %. El hueco que deja por la izquierda cae bajo la parte opaca del
    velo, asi que no se ve, y lo que sobra por la derecha lo recorta la lamina. */
-.orb-tj-lamina{--cara-o:22px;--cara-z:1.09;--cara-cx:.74;--cara-cy:.4}
+.orb-tj-lamina{--cara-o:22px;--cara-z:1.06;--cara-cx:.72;--cara-cy:.27;--cara-libre:.24}
 /* La caja de la IMAGEN. La coloca el JS; aqui solo va lo que no depende de la
    medida. Es el sistema de referencia de los ojos: dentro de ella los dos
    puntos van en porcentajes fijos y no se despegan de la cara pase lo que
@@ -1918,7 +1918,7 @@ body:has(.webs){background:var(--fondo)}
    El plano ademas va estabilizado fotograma a fotograma —la cabeza derivaba
    21 px— porque si el monitor se pasea, unos ojos clavados en un punto fijo
    se salen de la cara. */
-.orb-ojo{position:absolute;display:block;width:3.52%;height:5.36%;
+.orb-ojo{position:absolute;display:block;width:3.13%;height:5.59%;
   border-radius:50%;will-change:transform}
 /* El nucleo NO es un color plano. Un disco de un solo tono se lee como una
    pegatina; lo que hace que parezca encendido es el punto caliente casi
@@ -1930,9 +1930,9 @@ body:has(.webs){background:var(--fondo)}
 .orb-ojo::after{content:"";position:absolute;inset:-125%;border-radius:50%;
   background:radial-gradient(circle,currentColor 0%,transparent 56%);
   opacity:.42}
-.orb-ojo-r{left:70.32%;top:32.57%;color:#FA4D4D;
+.orb-ojo-r{left:44.39%;top:21.62%;color:#FA4D4D;
   --nucleo:radial-gradient(circle at 42% 34%,#FFE2E6 0%,#FC7B7B 34%,#FA4D4D 72%,#D9394A 100%)}
-.orb-ojo-a{left:77.39%;top:33.19%;color:#5A70FA;
+.orb-ojo-a{left:51.22%;top:22.18%;color:#5A70FA;
   --nucleo:radial-gradient(circle at 42% 34%,#E6EBFF 0%,#8A9AFC 34%,#5A70FA 72%,#3F52D8 100%)}
 /* Los velos. Sin la caja, el texto se apoya directamente sobre la imagen y
    hace falta apagarla debajo de el: negro macizo bajo la columna de la
@@ -2273,7 +2273,7 @@ body:has(.webs){background:var(--fondo)}
   .orb-tj-lamina{position:relative;inset:auto;grid-column:auto;
     order:1;flex:1 1 30vh;min-height:26vh}
   .orb-luz{display:none}
-  .orb-tj-lamina{--cara-o:0px;--cara-z:1.75;--cara-cx:.5;--cara-cy:.4}
+  .orb-tj-lamina{--cara-o:0px;--cara-z:1.55;--cara-cx:.5;--cara-cy:.34;--cara-libre:0}
   .orb-lamina-vel{inset:auto;left:0;right:0;bottom:0;height:46%;
     background:linear-gradient(180deg,transparent,rgba(11,11,15,.85))}
   .orb-tj-copy{grid-column:auto;order:2;flex:0 0 auto;

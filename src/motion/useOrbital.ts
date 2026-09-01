@@ -668,7 +668,7 @@ export function useMiraPuntero(ready: boolean) {
  */
 /* El fotograma: medida y, dentro de el, el punto entre los ojos y el ancho de
    la cabeza. Todo lo demas se coloca respecto a ese punto. */
-const CARA = { w: 1280, h: 840, ax: 0.756, ay: 0.355 };
+const CARA = { w: 1280, h: 716, ax: 0.4937, ay: 0.2469 };
 
 /* Margen que hay que dejar libre por cada lado para que el seguimiento del
    puntero no destape el canto de la tarjeta. */
@@ -696,6 +696,7 @@ export function useCara(ready: boolean) {
       const z = num("--cara-z", 1);      // acercamiento sobre el encuadre justo
       const cx = num("--cara-cx", 0.5);  // donde cae la cara, a lo ancho
       const cy = num("--cara-cy", 0.5);  // y a lo alto
+      const libre = num("--cara-libre", 0); // canto izquierdo que puede quedar al aire
 
       const bw = Lw;
       const bh = Lh + holg * 2;
@@ -718,7 +719,7 @@ export function useCara(ready: boolean) {
         (hi - m) - (lo + m) >= 0
           ? Math.min(hi - m, Math.max(lo + m, v))
           : Math.min(hi, Math.max(lo, v));
-      left = apretar(left, bw - iw, 0, MX);
+      left = apretar(left, bw - iw, libre * bw, MX);
       top = apretar(top, by + bh - ih, by, MY);
 
       cara.style.width = `${iw}px`;
