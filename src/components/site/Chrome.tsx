@@ -45,8 +45,9 @@ export function Nav({ cta }: { cta?: Cta } = {}) {
           </svg>
         </div>
         <div className="menu-links-w">
+          <Link href="/orbital" className="link-boiler">webs</Link>
+          <Link href="/ai-act" className="link-boiler">ai act</Link>
           <Link href="/#casos" className="link-boiler">casos</Link>
-          <Link href="/#enfoque" className="link-boiler">enfoque</Link>
           <Link href="/#contacto" className="link-boiler">contacto</Link>
         </div>
       </div>
@@ -61,6 +62,8 @@ export function MenuWrapper() {
       <div className="fake-el-menu" />
       <div className="div-block-10">
         <div className="link-menu">
+          <Link href="/orbital" className="link-mob w-inline-block"><div>webs</div></Link>
+          <Link href="/ai-act" className="link-mob w-inline-block"><div>ai act</div></Link>
           <Link href="/#casos" className="link-mob w-inline-block"><div>casos</div></Link>
           <Link href="/#enfoque" className="link-mob w-inline-block"><div>enfoque</div></Link>
         </div>

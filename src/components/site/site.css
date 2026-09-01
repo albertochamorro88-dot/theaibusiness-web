@@ -2174,7 +2174,11 @@ body:has(.webs){background:var(--fondo)}
 .orbital .orb-galeria,
 .orbital .orb-brecha,
 .orbital .orb-capacidad,
-.orbital .orb-cierre{position:relative;z-index:1;background:#0A0A0A}
+.orbital .orb-cierre,
+.act-banda,
+.act-linea,
+.act-cifras,
+.act-rivales{position:relative;z-index:1;background:#0A0A0A}
 /* La seccion del proceso. Viene de la portada, que corre con otras
    variables; aqui hay que devolverle el color de esta pagina.
    El margen y el relleno de arriba son la separacion que faltaba: la galeria
@@ -2353,4 +2357,191 @@ body:has(.webs){background:var(--fondo)}
   .orbital .orb-brecha .finaltext{position:absolute;left:4%;right:4%;
     top:auto;bottom:6%;width:auto;transform:none;text-align:center;
     font-size:clamp(1.5rem,7.5vw,2.5rem);line-height:1.1}
+}
+
+/* ==========================================================================
+   AI ACT
+   Mismo lenguaje que la pagina de webs —tarjeta sobre marco de color, titular
+   en domino, filetes que se trazan, rotulos entre parentesis— con el contenido
+   aprobado del reglamento. Todo lo que no cambia se hereda de las clases
+   `orb-`; aqui solo va lo propio.
+   ========================================================================== */
+
+/* El encuadre del plano. El video del AI Act es abstracto —una linea de luz,
+   no una cara—, asi que el ancla es el centro del fotograma y no el punto
+   entre unos ojos que aqui no existen. */
+.act-hero .orb-tj-lamina{
+  --cara-o:22px;--cara-z:1.08;--cara-cx:.62;--cara-cy:.5;
+  --cara-ax:.5;--cara-ay:.5;--cara-libre:.22}
+@media screen and (max-width:900px){
+  .act-hero .orb-tj-lamina{--cara-o:0px;--cara-z:1.15;--cara-cx:.5;--cara-cy:.5;--cara-libre:0}
+}
+/* Sin personaje no hay foco que seguir: el halo de color sobra y ensuciaria
+   una imagen que ya es color puro. */
+.act-hero .orb-luz{display:none}
+
+/* --- el calendario en corto, en el hueco de la columna izquierda --- */
+.act-fases li{gap:.9rem}
+.act-fases li i{min-width:4.6rem;opacity:.42;font-variant-numeric:tabular-nums}
+/* Lo vencido se marca en rojo. No es decoracion: la primera fecha ya paso y
+   ese es el argumento entero de la pagina. */
+.act-fases li[data-pasado]::after{background:#FA4D4D;transform:scale(1);opacity:.55}
+.act-fases li[data-pasado] span{opacity:.78}
+.act-dias{font-weight:500;font-style:normal;color:#FA4D4D;opacity:.95}
+
+/* --- 01 · por que te afecta --- */
+.act-claim{padding:clamp(7rem,19vh,14rem) 0}
+.act-claim .orb-cont{display:block}
+.act-claim-rejilla{display:grid;grid-template-columns:1.15fr .85fr;
+  gap:clamp(2rem,5vw,4.5rem) clamp(2.5rem,6vw,6rem);align-items:start;
+  margin-top:clamp(2.5rem,6vh,4.5rem)}
+.act-lead{grid-column:1;margin:0;max-width:16ch}
+/* La cita, a la derecha y con su filete: se lee como una nota al margen, que
+   es lo que es. */
+.act-cita{grid-column:2;grid-row:1/3;margin:0;position:relative;
+  padding-left:clamp(1.25rem,2vw,2rem);align-self:center}
+.act-cita::before{content:"";position:absolute;left:0;top:.2em;bottom:.2em;width:2px;
+  background:linear-gradient(180deg,#FA4D4D,#5A70FA)}
+.act-cita p{margin:0;font-size:clamp(1.25rem,2vw,1.75rem);line-height:1.24;
+  letter-spacing:-.02em;font-weight:400}
+.act-cita-acento{margin-top:.5em!important;
+  background:linear-gradient(90deg,#FA4D4D,#5A70FA);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.act-cuerpo{grid-column:1;margin:0;max-width:52ch;
+  font-size:clamp(1rem,1.15vw,1.125rem);line-height:1.62;opacity:.72}
+
+/* --- 02 · los niveles: la lista heredada, con su etiqueta --- */
+.act-chip{display:inline-block;margin-left:.8rem;padding:.22em .7em;
+  border:1px solid rgba(255,255,255,.18);border-radius:999px;
+  font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:400;opacity:.6;vertical-align:middle;white-space:nowrap}
+.act-lista li:first-child .act-chip{border-color:rgba(250,77,77,.5);color:#FA4D4D;opacity:.9}
+
+/* --- 03 · el calendario --- */
+.act-linea{padding:clamp(7rem,19vh,14rem) 0}
+.act-linea-h{margin:clamp(1.5rem,4vh,2.5rem) 0 clamp(3rem,7vh,5rem);max-width:18ch}
+.act-hitos{list-style:none;margin:0;padding:0;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(1.5rem,3vw,3rem)}
+/* La linea de tiempo es literal: un filete que cruza los cuatro hitos y un
+   punto en cada uno. */
+.act-hito{position:relative;padding-top:2.75rem}
+.act-hito::before{content:"";position:absolute;left:0;right:calc(-1 * clamp(1.5rem,3vw,3rem));
+  top:1.5rem;height:1px;background:rgba(255,255,255,.14)}
+.act-hito:last-child::before{right:0}
+.act-hito-p{position:absolute;left:0;top:calc(1.5rem - 4px);width:9px;height:9px;
+  border-radius:50%;background:#2A2A33;display:block;
+  box-shadow:0 0 0 4px #0B0B0F}
+.act-hito[data-pasado] .act-hito-p{background:linear-gradient(135deg,#FA4D4D,#5A70FA)}
+.act-hito-f{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  font-variant-numeric:tabular-nums;opacity:.85}
+.act-hito-e{display:inline-block;margin-top:.5rem;padding:.2em .6em;
+  border:1px solid rgba(255,255,255,.16);border-radius:999px;
+  font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;opacity:.5}
+.act-hito[data-pasado] .act-hito-e{border-color:rgba(250,77,77,.45);color:#FA4D4D;opacity:.9}
+.act-hito-t{margin:1.1rem 0 .6rem;font-size:clamp(1rem,1.35vw,1.3rem);
+  line-height:1.2;letter-spacing:-.02em;font-weight:500}
+.act-hito-c{margin:0;font-size:.86rem;line-height:1.56;opacity:.6}
+
+/* --- 04 · las cifras --- */
+.act-cifras{padding:clamp(6rem,15vh,11rem) 0}
+.act-cifras-r{display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(2rem,4vw,4rem);margin-top:clamp(2.5rem,6vh,4rem)}
+.act-cifra{position:relative;padding-top:1.75rem;
+  border-top:1px solid rgba(255,255,255,.12)}
+.act-cifra-n{display:block;font-size:clamp(3rem,7vw,7rem);line-height:.86;
+  letter-spacing:-.055em;font-weight:500;font-variant-numeric:tabular-nums;
+  background:linear-gradient(100deg,#FA4D4D,#5A70FA);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.act-cifra-n em{font-style:normal;font-size:.5em;letter-spacing:-.02em}
+.act-cifra-e{display:block;margin-top:1.1rem;max-width:26ch;
+  font-size:.82rem;line-height:1.5;opacity:.58}
+
+/* --- 05 · con quien nos comparan --- */
+.act-rivales{padding:clamp(7rem,19vh,14rem) 0}
+.act-rivales-r{display:grid;grid-template-columns:repeat(4,1fr);
+  gap:clamp(1.25rem,2.5vw,2.5rem);margin-top:clamp(2.5rem,6vh,4rem)}
+.act-rival{position:relative;padding:1.75rem 0 0}
+.act-rival-l{position:absolute;left:0;right:0;top:0;height:1px;display:block;
+  background:rgba(255,255,255,.14);transform:scaleX(0);transform-origin:left center}
+.act-rival-q{margin:0;font-size:clamp(1.05rem,1.5vw,1.45rem);line-height:1.15;
+  letter-spacing:-.025em;font-weight:500}
+.act-rival-w{margin:.5rem 0 1rem;font-size:.65rem;letter-spacing:.14em;
+  text-transform:uppercase;opacity:.45}
+.act-rival-c{margin:0;font-size:.86rem;line-height:1.56;opacity:.6}
+/* La cuarta columna somos nosotros: se enciende, y el filete de arriba pasa a
+   degradado. Es la unica jerarquia que necesita el bloque. */
+.act-rival[data-nosotros]{padding-left:clamp(1rem,1.6vw,1.5rem);
+  padding-right:clamp(1rem,1.6vw,1.5rem);padding-bottom:1.75rem;
+  background:linear-gradient(180deg,rgba(250,77,77,.07),rgba(90,112,250,.05))}
+.act-rival[data-nosotros] .act-rival-l{background:linear-gradient(90deg,#FA4D4D,#5A70FA);height:2px}
+.act-rival[data-nosotros] .act-rival-q{
+  background:linear-gradient(90deg,#FA4D4D,#5A70FA);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.act-rival[data-nosotros] .act-rival-c{opacity:.82}
+
+/* --- las bandas de llamada --- */
+.act-banda{padding:clamp(3rem,8vh,5.5rem) 0;
+  border-top:1px solid rgba(255,255,255,.08);
+  border-bottom:1px solid rgba(255,255,255,.08)}
+.act-banda-c{display:flex;align-items:center;justify-content:space-between;
+  gap:clamp(1.5rem,4vw,3rem);flex-wrap:wrap}
+.act-banda-l{margin:0;max-width:22ch;
+  font-size:clamp(1.25rem,2.6vw,2.25rem);line-height:1.12;letter-spacing:-.03em;
+  font-weight:500}
+.act-banda-b{margin:0}
+
+/* --- el cierre --- */
+.act-cierre-r{display:grid;grid-template-columns:1.05fr .95fr;
+  gap:clamp(2rem,5vw,5rem);align-items:start;text-align:left}
+.act-cierre-c{text-align:left}
+.act-cierre-h{margin:0 0 clamp(1.25rem,3vh,2rem);max-width:none;text-align:left}
+.act-cierre-p{margin:0 0 2rem;max-width:44ch;text-align:left}
+.act-form{display:flex;flex-direction:column;gap:1rem;
+  padding:clamp(1.5rem,2.5vw,2.5rem);border:1px solid rgba(255,255,255,.12);
+  border-radius:.75rem;background:rgba(255,255,255,.02)}
+.act-form-h{margin:0;font-size:clamp(1.15rem,1.6vw,1.5rem);letter-spacing:-.025em;
+  font-weight:500}
+.act-form-p{margin:-.4rem 0 .6rem;font-size:.82rem;opacity:.55}
+.act-campo{display:flex;flex-direction:column;gap:.4rem}
+.act-campo span{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;opacity:.45}
+.act-campo input{width:100%;padding:.7rem 0;color:inherit;font:inherit;font-size:.95rem;
+  background:transparent;border:0;border-bottom:1px solid rgba(255,255,255,.16);
+  border-radius:0;outline:none;transition:border-color .3s ease}
+.act-campo input:focus{border-bottom-color:#5A70FA}
+.act-casos{margin:.5rem 0 0;padding:0;border:0}
+.act-casos legend{padding:0;margin-bottom:.75rem;
+  font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;opacity:.45}
+.act-caso{display:flex;align-items:center;gap:.6rem;padding:.4rem 0;
+  font-size:.88rem;opacity:.75;cursor:pointer;transition:opacity .3s ease}
+.act-caso:hover{opacity:1}
+.act-caso input{appearance:none;width:14px;height:14px;flex:0 0 14px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.3);margin:0;transition:all .3s ease}
+.act-caso input:checked{border-color:transparent;
+  background:linear-gradient(135deg,#FA4D4D,#5A70FA);box-shadow:inset 0 0 0 3px #0B0B0F}
+.act-enviar{margin-top:1rem;align-self:flex-start;border:0;cursor:pointer;font:inherit}
+
+/* --- en estrecho --- */
+@media screen and (max-width:900px){
+  .act-claim-rejilla{grid-template-columns:1fr;gap:2rem}
+  .act-lead,.act-cuerpo{grid-column:1;max-width:none}
+  .act-cita{grid-column:1;grid-row:auto}
+  .act-hitos{grid-template-columns:1fr;gap:2.25rem}
+  .act-hito::before{right:0}
+  .act-cifras-r{grid-template-columns:1fr;gap:2.5rem}
+  .act-cifra-e{max-width:none}
+  .act-rivales-r{grid-template-columns:1fr;gap:1.75rem}
+  .act-banda-c{flex-direction:column;align-items:flex-start}
+  .act-banda-l{max-width:none}
+  .act-cierre-r{grid-template-columns:1fr;gap:2.5rem}
+}
+
+/* El cierre del AI Act: dos columnas, asi que el titular no puede ir al mismo
+   cuerpo que en la otra pagina —alli ocupa el ancho entero— o se come el
+   formulario. Y la cinta necesita aire por debajo: pasaba justo por detras de
+   la caja y se leian encima. */
+.act-cierre .orb-cinta-w{margin-bottom:clamp(2.5rem,7vh,5rem)}
+.act-cierre-h{font-size:clamp(1.9rem,3.9vw,3.4rem);line-height:1.02;max-width:16ch}
+.act-cierre .orb-pie{margin-top:clamp(3rem,8vh,5rem)}
+@media screen and (max-width:900px){
+  .act-cierre-h{font-size:clamp(1.9rem,8.4vw,2.6rem);max-width:none}
 }

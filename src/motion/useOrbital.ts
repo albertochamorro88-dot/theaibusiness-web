@@ -697,20 +697,30 @@ export function useCara(ready: boolean) {
       const cx = num("--cara-cx", 0.5);  // donde cae la cara, a lo ancho
       const cy = num("--cara-cy", 0.5);  // y a lo alto
       const libre = num("--cara-libre", 0); // canto izquierdo que puede quedar al aire
+      /* El ancla: que punto del fotograma es "la cara". En el plano del
+         personaje es el punto entre los ojos; en uno abstracto, el centro. */
+      const ax = num("--cara-ax", CARA.ax);
+      const ay = num("--cara-ay", CARA.ay);
 
       const bw = Lw;
       const bh = Lh + holg * 2;
       const by = -holg;
 
+      /* La medida real del fotograma cuando el video ya la sabe: asi la cuenta
+         vale para cualquier plano y no solo para el que se midio a mano. */
+      const v = cara.querySelector<HTMLVideoElement>("video");
+      const fw = v && v.videoWidth ? v.videoWidth : CARA.w;
+      const fh = v && v.videoHeight ? v.videoHeight : CARA.h;
+
       /* `cover`: se escala por el lado que falta, nunca por el que sobra. */
-      const s = Math.max(bw / CARA.w, bh / CARA.h) * z;
-      const iw = CARA.w * s;
-      const ih = CARA.h * s;
+      const s = Math.max(bw / fw, bh / fh) * z;
+      const iw = fw * s;
+      const ih = fh * s;
 
       /* Se coloca por la CARA, no por el canto: "los ojos van al 68 % del
          ancho de la tarjeta" se lee y se corrige; "left: -17 %" no. */
-      let left = cx * bw - CARA.ax * iw;
-      let top = by + cy * bh - CARA.ay * ih;
+      let left = cx * bw - ax * iw;
+      let top = by + cy * bh - ay * ih;
 
       /* Y sin dejar de cubrir la tarjeta ni un pixel, contando el recorrido
          del puntero. Si lo pedido no cabe, se pega al canto: mas vale la cara
@@ -729,12 +739,20 @@ export function useCara(ready: boolean) {
     };
 
     medir();
+    /* Y otra vez cuando el video ya sabe cuanto mide: al montar, `videoWidth`
+       todavia es 0 y la cuenta saldria con la medida de reserva. */
+    const v0 = cara.querySelector<HTMLVideoElement>("video");
+    v0?.addEventListener("loadedmetadata", medir);
     /* `ResizeObserver` y no `resize`: la lamina tambien cambia de medida
        cuando lo hace la tarjeta, sin que la ventana se mueva. */
     const ro = new ResizeObserver(medir);
     ro.observe(lamina);
     window.addEventListener("orientationchange", medir);
-    return () => { ro.disconnect(); window.removeEventListener("orientationchange", medir); };
+    return () => {
+      ro.disconnect();
+      v0?.removeEventListener("loadedmetadata", medir);
+      window.removeEventListener("orientationchange", medir);
+    };
   }, [ready]);
 }
 
@@ -784,5 +802,69 @@ export function useParpadeo(ready: boolean) {
       tw?.kill();
       gsap.set(ojos, { clearProps: "scaleY,transformOrigin" });
     };
+  }, [ready]);
+}
+
+/* -------------------------------------------------------------- AI Act */
+
+/**
+ * Las cifras se cuentan y los filetes se trazan al llegar.
+ *
+ * Vale para cualquier `[data-cuenta]` que NO viva en el encabezado —ese lo
+ * lleva la entrada del hero— y para los filetes de las columnas de la
+ * comparativa.
+ *
+ * `once: true`: el numero sube una vez. Un contador que se rebobina cada vez
+ * que pasas por delante convierte un dato en un juguete.
+ */
+export function useActo(ready: boolean) {
+  useEffect(() => {
+    if (!ready) return;
+    registerGsap();
+
+    const suave = !reducido();
+    const limpiar: Array<() => void> = [];
+
+    const cifras = [...document.querySelectorAll<HTMLElement>("[data-cuenta]")]
+      .filter((el) => !el.closest(".orb-hero"));
+
+    cifras.forEach((el) => {
+      const fin = Number(el.dataset.cuenta) || 0;
+      if (!suave) { el.textContent = String(fin); return; }
+      const obj = { v: 0 };
+      el.textContent = "0";
+      const tw = gsap.to(obj, {
+        v: fin,
+        duration: 1.35,
+        ease: "power2.out",
+        snap: { v: 1 },
+        onUpdate: () => { el.textContent = String(Math.round(obj.v)); },
+        onComplete: () => { el.textContent = String(fin); },
+        scrollTrigger: { trigger: el, start: "top 82%", once: true },
+      });
+      limpiar.push(() => { tw.scrollTrigger?.kill(); tw.kill(); });
+    });
+
+    const filetes = [...document.querySelectorAll<HTMLElement>(".act-rival-l")];
+    if (filetes.length) {
+      if (!suave) {
+        gsap.set(filetes, { scaleX: 1 });
+      } else {
+        filetes.forEach((f, i) => {
+          const tw = gsap.fromTo(f,
+            { scaleX: 0 },
+            {
+              scaleX: 1,
+              duration: 0.9,
+              ease: "power3.inOut",
+              delay: i * 0.08,
+              scrollTrigger: { trigger: f, start: "top 88%", once: true },
+            });
+          limpiar.push(() => { tw.scrollTrigger?.kill(); tw.kill(); });
+        });
+      }
+    }
+
+    return () => { limpiar.forEach((f) => f()); };
   }, [ready]);
 }
