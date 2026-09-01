@@ -1996,8 +1996,7 @@ body:has(.webs){background:var(--fondo)}
    mitad los pies de las piezas. Ahora hay una franja de negro entre las dos
    antes de que empiece nada. */
 .orbital .orb-brecha{color:#FAFAFA;overflow:hidden;
-  margin-top:clamp(5rem,12vh,8rem);
-  padding-top:clamp(6rem,15vh,10rem)}
+  padding-top:clamp(9rem,26vh,16rem)}
 /* La maqueta NO va a sangre. A ancho completo la pantalla del portatil ocupa
    el encuadre entero: se pierde el aparato —que es lo que hay que ver— y la
    web de dentro, que es de otra marca y esta en ingles, se lee como si fuera
