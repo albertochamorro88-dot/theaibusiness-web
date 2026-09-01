@@ -43,6 +43,9 @@ export const img = {
   /* La pieza grande de la seccion del proceso. Vertical (0,8) y oscura, con
      la web de dentro en rojo y azul de la casa. */
   mockupGrande: `${IMG}/estudio/mockup-grande.webp`,
+  /* Las dos piezas del cierre. */
+  cierre1: `${IMG}/estudio/cierre-01.webp`,
+  cierre2: `${IMG}/estudio/cierre-02.webp`,
   proyectoAutointel: `${IMG}/proyecto-autointel.jpg`,
   proyectoDermai: `${IMG}/proyecto-dermai.jpg`,
   proyectoBanca: `${IMG}/proyecto-banca.jpg`,

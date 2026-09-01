@@ -227,8 +227,8 @@ Diagnóstico. <br />Diseño. <br />Desarrollo. <br />Online.
         </div>
 
         <div className="orb-marcos">
-          <figure><img src={img.proyectoBanca} alt="" loading="lazy" data-orb-par="13" /></figure>
-          <figure><img src={img.proyectoFundos} alt="" loading="lazy" data-orb-par="15" /></figure>
+          <figure><img src={img.cierre1} alt="" loading="lazy" data-orb-par="13" /></figure>
+          <figure><img src={img.cierre2} alt="" loading="lazy" data-orb-par="15" /></figure>
         </div>
 
         <div className="orb-cont orb-cierre-c">
