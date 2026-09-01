@@ -17,6 +17,7 @@ import {
   actMedia,
   actNiveles,
   actRivales,
+  actVideo,
 } from "./aiact-content";
 
 import { useGlitch } from "@/motion/useGlitch";
@@ -268,10 +269,33 @@ export default function AiAct() {
         </div>
       </section>
 
-      {/* ------------------------------------------------- 03 · el calendario */}
+      {/* ------------------------------------------- 03 · miralo explicado */}
+      <section id="video" className="act-video">
+        <div className="orb-cont">
+          <div line="" className="orb-eti">( 03 — {actVideo.etiqueta} )<i className="orb-eti-l" aria-hidden="true" /></div>
+          <h2 data-letras="" className="orb-h2 act-video-h">{actVideo.titulo}</h2>
+
+          {/* Fachada: hasta que no se pulsa, esto es una imagen nuestra. El
+              iframe de YouTube pesa cientos de kilobytes y planta cookies de
+              Google en cuanto se monta, asi que no se monta hasta que alguien
+              quiere ver el video. */}
+          <Reproductor />
+
+          <div className="act-autor">
+            <img className="act-autor-f" src={actMedia.alejandro} alt={actVideo.autor.nombre} loading="lazy" width={320} height={320} />
+            <div className="act-autor-t">
+              <p className="act-autor-n">{actVideo.autor.nombre}</p>
+              <p className="act-autor-r">{actVideo.autor.rol}</p>
+            </div>
+            <p className="act-autor-b">{actVideo.autor.bio}</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------- 04 · el calendario */}
       <section id="calendario" className="act-linea">
         <div className="orb-cont">
-          <div line="" className="orb-eti">( 03 — El calendario )<i className="orb-eti-l" aria-hidden="true" /></div>
+          <div line="" className="orb-eti">( 04 — El calendario )<i className="orb-eti-l" aria-hidden="true" /></div>
           <h2 data-letras="" className="orb-h2 act-linea-h">Las fechas ya corren.</h2>
 
           <ol className="act-hitos">
@@ -294,7 +318,7 @@ export default function AiAct() {
       {/* --------------------------------------------------- 04 · las cifras */}
       <section className="act-cifras">
         <div className="orb-cont">
-          <div line="" className="orb-eti">( 04 — Lo que hay en juego )<i className="orb-eti-l" aria-hidden="true" /></div>
+          <div line="" className="orb-eti">( 05 — Lo que hay en juego )<i className="orb-eti-l" aria-hidden="true" /></div>
           <div className="act-cifras-r">
             {actCifras.map((c) => (
               <div key={c.etiqueta} className="act-cifra">
@@ -312,7 +336,7 @@ export default function AiAct() {
       {/* --------------------------------------------- 05 · con quien comparan */}
       <section className="act-rivales">
         <div className="orb-cont">
-          <div line="" className="orb-eti">( 05 — Con quién nos comparan )<i className="orb-eti-l" aria-hidden="true" /></div>
+          <div line="" className="orb-eti">( 06 — Con quién nos comparan )<i className="orb-eti-l" aria-hidden="true" /></div>
           <h2 className="orb-h2 orb-h2-incluye">
             <span data-letras="">Todos te dicen qué falla.</span>
             <span className="orb-degradado">Nosotros lo arreglamos.</span>
@@ -413,6 +437,43 @@ export default function AiAct() {
           </div>
         </div>
       </footer>
+    </div>
+  );
+}
+
+/* El reproductor.
+ *
+ * Arranca como una imagen con su boton: la pagina no le pide NADA a Google
+ * hasta que alguien decide ver el video. Al pulsar se cambia por el iframe con
+ * `autoplay`, que es lo que hace que el gesto no se pierda por el camino.
+ * `youtube-nocookie.com` para que el visionado no deje rastro de publicidad.
+ */
+function Reproductor() {
+  const [puesto, setPuesto] = useState(false);
+  return (
+    <div className="act-video-m">
+      {puesto ? (
+        <iframe
+          className="act-video-i"
+          src={`https://www.youtube-nocookie.com/embed/${actVideo.id}?autoplay=1&rel=0&modestbranding=1`}
+          title={actVideo.titulo}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        />
+      ) : (
+        <button
+          type="button"
+          className="act-video-b"
+          onClick={() => { evento("act_video", { id: actVideo.id }); setPuesto(true); }}
+          aria-label={actVideo.duracionAlt}
+        >
+          <img src={actMedia.videoPortada} alt="" loading="lazy" width={1000} height={563} />
+          <span className="act-play" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="26" height="26" focusable="false"><path d="M8 5v14l11-7z" fill="currentColor" /></svg>
+          </span>
+        </button>
+      )}
     </div>
   );
 }

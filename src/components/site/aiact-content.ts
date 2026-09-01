@@ -14,6 +14,23 @@ const MEDIA = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/media`;
 export const actMedia = {
   heroVideo: `${MEDIA}/video/aiact/hero.mp4`,
   heroPoster: `${MEDIA}/img/aiact/hero-poster.jpg`,
+  /* La portada del video de YouTube, servida desde aqui y no desde ytimg: asi
+     la pagina no pide nada a Google hasta que alguien le da al play. */
+  videoPortada: `${MEDIA}/img/aiact/video-portada.jpg`,
+  alejandro: `${MEDIA}/img/aiact/alejandro.jpg`,
+} as const;
+
+/** El video de YouTube en el que Alejandro explica el reglamento. */
+export const actVideo = {
+  id: "T4eKjJMs9Ak",
+  etiqueta: "Míralo explicado",
+  titulo: "El AI Act, contado por quien construye los sistemas.",
+  duracionAlt: "Ver el vídeo en YouTube",
+  autor: {
+    nombre: "Alejandro Ríos",
+    rol: "Cofundador y CTO · The AI Business",
+    bio: "Ha diseñado e implementado sistemas de IA en más de 200 empresas. Conoce la ley desde dentro: traduce cada obligación en controles reales, no en teoría jurídica.",
+  },
 } as const;
 
 export const actHero = {

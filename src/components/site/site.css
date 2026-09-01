@@ -2545,3 +2545,50 @@ body:has(.webs){background:var(--fondo)}
 @media screen and (max-width:900px){
   .act-cierre-h{font-size:clamp(1.9rem,8.4vw,2.6rem);max-width:none}
 }
+
+/* --- 03 · el video: fachada primero, iframe solo si se pulsa --- */
+.act-video{padding:clamp(7rem,19vh,14rem) 0;position:relative;z-index:1;background:#0A0A0A}
+.act-video-h{margin:clamp(1.5rem,4vh,2.5rem) 0 clamp(2.5rem,6vh,4rem);max-width:20ch}
+.act-video-m{position:relative;max-width:62rem;margin:0 auto;
+  aspect-ratio:16/9;overflow:hidden;border-radius:.75rem;
+  border:1px solid rgba(255,255,255,.1);background:#000}
+.act-video-i{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+.act-video-b{position:absolute;inset:0;padding:0;border:0;cursor:pointer;
+  display:block;width:100%;height:100%;background:#000;overflow:hidden}
+.act-video-b img{display:block;width:100%;height:100%;object-fit:cover;
+  transition:transform .8s cubic-bezier(.22,1,.36,1),opacity .5s ease}
+/* El disco de play, en el degradado de marca. El triangulo va un pelo a la
+   derecha: centrado geometricamente parece descentrado, porque su masa esta a
+   la izquierda. */
+.act-play{position:absolute;left:50%;top:50%;translate:-50% -50%;
+  display:grid;place-items:center;width:clamp(4rem,6vw,5.5rem);aspect-ratio:1;
+  border-radius:50%;color:#fff;
+  background:linear-gradient(135deg,#FA4D4D,#5A70FA);
+  box-shadow:0 1rem 3rem rgba(0,0,0,.5);
+  transition:transform .5s cubic-bezier(.22,1,.36,1)}
+.act-play svg{margin-left:.12em}
+@media (hover:hover){
+  .act-video-b:hover img{transform:scale(1.03);opacity:.82}
+  .act-video-b:hover .act-play{transform:scale(1.08)}
+}
+.act-video-b:focus-visible{outline:2px solid #5A70FA;outline-offset:3px}
+
+/* La firma de autoridad: quien lo cuenta y por que se le cree. */
+.act-autor{display:grid;grid-template-columns:auto 1fr;
+  gap:.4rem clamp(1rem,2vw,1.5rem);align-items:center;
+  max-width:62rem;margin:clamp(2rem,5vh,3rem) auto 0}
+.act-autor-f{grid-row:1/3;width:clamp(3.25rem,4.5vw,4rem);height:auto;
+  aspect-ratio:1;border-radius:50%;object-fit:cover;display:block}
+.act-autor-t{display:block}
+.act-autor-n{margin:0;font-size:clamp(1rem,1.2vw,1.125rem);letter-spacing:-.02em;font-weight:500}
+.act-autor-r{margin:.15rem 0 0;font-size:.78rem;
+  background:linear-gradient(90deg,#FA4D4D,#5A70FA);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.act-autor-b{grid-column:2;margin:.9rem 0 0;padding-top:.9rem;max-width:56ch;
+  border-top:1px solid rgba(255,255,255,.1);
+  font-size:.84rem;line-height:1.56;opacity:.58}
+@media screen and (max-width:900px){
+  .act-video-h{max-width:none}
+  .act-autor{grid-template-columns:auto 1fr}
+  .act-autor-b{grid-column:1/-1;margin-top:1.1rem}
+}
