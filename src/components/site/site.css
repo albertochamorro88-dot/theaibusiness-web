@@ -1742,57 +1742,91 @@ body:has(.webs){background:var(--fondo)}
 .orb-h2-cierre{margin:0 auto clamp(1.5rem,4vh,2.5rem);max-width:16ch;
   font-size:clamp(2.25rem,7vw,6rem);line-height:.94;letter-spacing:-.05em;font-weight:500}
 
-/* --- encabezado: el video grande a la izquierda, el titular a la derecha --- */
-.orb-hero{position:relative;min-height:100vh;overflow:hidden;
-  display:flex;flex-direction:column;justify-content:center;
-  max-width:100rem;margin:0 auto;
-  padding:clamp(6rem,12vh,8.5rem) clamp(1.25rem,4vw,4rem) clamp(5rem,9vh,7rem)}
-/* Titular a la izquierda, video a la derecha.
-   El reparto no es a ojo: el video tenia que crecer un 40 % —de 574 a 804 px
-   de ancho— y esos 230 px salen de la columna del titular, que a cambio baja
-   de 100 a 84 px. Es el intercambio, no hay mas sitio. */
-.orb-hero-fila{position:relative;z-index:1;width:100%;
-  display:grid;grid-template-columns:.4fr .6fr;
-  gap:clamp(2rem,4vw,3.5rem);align-items:center}
+/* --------------------------------------------------------------------------
+   ENCABEZADO: tarjeta sobre marco de color.
+
+   La composicion no es "texto sobre un fondo" sino un objeto recortado: una
+   lamina de color a sangre y, flotando dentro, una tarjeta negra con tres
+   columnas —ficha tecnica a la izquierda, la imagen de canto a canto en el
+   centro, cifra y navegacion a la derecha—. El canto de color es lo que hace
+   que la pagina se lea como una pieza impresa y no como una web.
+   -------------------------------------------------------------------------- */
+.orb-hero{position:relative;min-height:100vh;overflow:hidden;background:#0B0B0F;
+  display:block;max-width:none;margin:0;padding:0}
 @supports (height:100svh){ .orb-hero{min-height:100svh} }
-/* El video, a la derecha y SIN recuadro. No lleva borde, ni esquinas
-   redondeadas, ni sombra: los cuatro cantos se apagan contra el negro de la
-   pagina, que es lo que evita que se lea como una lamina pegada encima. */
-/* Se come el margen derecho del encabezado y termina justo en el canto de la
-   pagina. No hay corte: la mascara ya ha apagado el video antes de llegar
-   ahi, asi que el borde de la ventana no lo parte, lo recoge apagado. */
-/* El video conserva sus 965 px y NO se mueve: la columna del titular crece y
-   el panel se mete 10 rem por debajo de ella. Puede hacerlo porque su canto
-   izquierdo ya esta apagado por la mascara —ahi no hay imagen que tapar—, y
-   asi el titular sube de 58 a 81 px sin quitarle un pixel al video. */
-.orb-hero-panel{position:relative;background:#0A0A0A;overflow:hidden;
-  width:calc(100% + clamp(1.25rem,4vw,4rem) + 10rem);margin-left:-10rem}
-/* El fundido se hace con MASCARA, no pintando un degradado del color del
-   fondo encima. Encima queda siempre el escalon: basta un pixel de diferencia
-   entre el negro del velo y el de la pagina para que el canto se vea, y se
-   veia. Con mascara el video se vuelve transparente de verdad y lo que asoma
-   es el fondo, sea cual sea. Una sola imagen de mascara, sin componer varias:
-   `mask-composite` no esta en todos los navegadores, un radial si. */
-/* Los radios van al 53 %, no al 118 %. En `radial-gradient` el porcentaje se
-   mide contra el ANCHO y el ALTO enteros de la caja, no contra la mitad: con
-   118 % el canto caia al 42 % del degradado —opaco del todo— y la mascara no
-   hacia nada, que es exactamente lo que se vio. Con 53 %, el punto medio del
-   canto cae al 94 % y llega casi transparente. */
-.orb-hero-panel{
-  -webkit-mask-image:radial-gradient(53% 53% at 50% 50%,#000 30%,rgba(0,0,0,.82) 66%,transparent 97%);
-  mask-image:radial-gradient(53% 53% at 50% 50%,#000 30%,rgba(0,0,0,.82) 66%,transparent 97%)}
-/* El personaje crece un 16 % DENTRO del marco, no el marco. Asi gana
-   presencia sin robarle ancho al titular ni mover la composicion. */
-.orb-lienzo{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;
-  transform:scale(1.16);transform-origin:50% 46%}
-.orb-hero-copy{position:relative;z-index:1;padding:0;margin:0;width:100%;
-  display:flex;flex-direction:column;align-items:flex-start;text-align:left}
-/* El titular: una palabra por linea, apiladas contra el canto derecho.
-   Mayusculas: la frase pasa a funcionar como rotulo, no como oracion, y en
-   caja alta forma una banda solida en vez de un perfil dentado. */
+
+/* La lamina de color. Arranca POR DEBAJO de la barra de navegacion: la barra
+   va en `mix-blend-mode: difference`, y sobre el rojo de marca el blanco se
+   volveria cian. Dejandole una franja negra arriba, el logotipo y el menu
+   siguen cayendo sobre negro y se leen como en el resto de la pagina. */
+.orb-marco{position:absolute;inset:clamp(3.5rem,6vh,4.75rem) 0 0;
+  display:flex;overflow:hidden;isolation:isolate;
+  background:linear-gradient(116deg,#C6353E 0%,#6B3C97 53%,#3B4CC0 100%)}
+/* El personaje otra vez, desenfocado, DENTRO del marco. En `overlay` el color
+   conserva su tono: lo oscuro del retrato lo profundiza y el contraluz rojo y
+   azul abre dos claros. Sin esto el marco es un plastico plano. */
+.orb-marco-fondo{position:absolute;inset:-8%;
+  background-size:cover;background-position:60% 36%;
+  filter:blur(52px) saturate(1.3);opacity:.8;mix-blend-mode:overlay}
+/* Un velo interior en los cantos: el color no llega a tocar el borde de la
+   ventana a plena fuerza y la lamina parece tener grosor. */
+.orb-marco::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(130% 120% at 50% 42%,transparent 42%,rgba(11,11,15,.42) 100%)}
+
+/* La tarjeta. Cantos vivos, sin redondear: es una lamina recortada, no un
+   panel de interfaz. */
+.orb-tarjeta{position:relative;z-index:1;flex:1;
+  margin:clamp(.85rem,2.6vw,2.6rem);
+  background:#0B0B0F;overflow:hidden;
+  display:grid;grid-template-columns:1.04fr .92fr .62fr}
+
+/* --- columna izquierda: ficha tecnica arriba, titular abajo --- */
+.orb-tj-copy{position:relative;z-index:2;min-width:0;
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:clamp(1.35rem,2.3vw,2.5rem)}
+.orb-eti-tj{margin:0}
+.orb-eti-tj .orb-eti-l{max-width:6rem}
+/* Justificado y en caja alta. El bloque se convierte en una mancha
+   rectangular con calles anchas entre palabras: es un recurso de maqueta, no
+   de web, y es lo que hace que la esquina se lea como una ficha. */
+.orb-just{margin:clamp(1rem,2.4vh,1.6rem) 0 0;max-width:38ch;
+  text-align:justify;text-transform:uppercase;
+  font-size:clamp(.62rem,.72vw,.78rem);line-height:1.6;letter-spacing:.07em;
+  opacity:.6}
+/* El par etiqueta-valor, repartido de canto a canto de la columna. */
+.orb-par{display:flex;justify-content:space-between;gap:1rem;
+  margin:clamp(1rem,2.4vh,1.5rem) 0 0;padding-top:.85rem;
+  border-top:1px solid rgba(255,255,255,.11);
+  font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;opacity:.45}
+/* Las cuatro fases. Ocupan el hueco central de la columna, que sin esto eran
+   cuatrocientos pixeles de nada. Quietas casi no se ven —al 62 %— y al pasar
+   el cursor la fila se enciende y asoma un punto en degradado por el canto. */
+.orb-fases{list-style:none;margin:0;padding:0;max-width:24ch}
+.orb-fases li{display:flex;align-items:baseline;gap:1.1rem;
+  padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.08);
+  font-size:.62rem;letter-spacing:.13em;text-transform:uppercase}
+.orb-fases li i{font-style:normal;font-size:.56rem;opacity:.3}
+.orb-fases li span{opacity:.62;transition:opacity .35s ease}
+.orb-fases li::after{content:"";margin-left:auto;align-self:center;
+  width:5px;height:5px;border-radius:50%;
+  background:linear-gradient(90deg,#FA4D4D,#5A70FA);
+  transform:scale(0);transition:transform .45s cubic-bezier(.22,1,.36,1)}
+@media (hover:hover){
+  .orb-fases li:hover span{opacity:1}
+  .orb-fases li:hover::after{transform:scale(1)}
+}
+.orb-tj-bajo{margin-top:0}
+
+/* El titular, abajo a la izquierda y en tres lineas escalonadas: la segunda
+   entra, las otras dos vuelven al canto. El escalon es lo que evita el bloque
+   rectangular y da ritmo a la mancha. */
 .orb-h1{margin:0;display:flex;flex-direction:column;align-items:flex-start;
-  opacity:0;text-transform:uppercase;
-  font-size:clamp(2.25rem,5.6vw,6rem);line-height:.9;letter-spacing:-.05em;font-weight:500}
+  width:100%;opacity:0;text-transform:uppercase;
+  font-size:clamp(1.9rem,4.4vw,4.6rem);line-height:.88;letter-spacing:-.05em;
+  font-weight:500}
+.orb-h1-linea{display:flex;align-items:center;gap:.28em;width:100%;overflow:hidden}
+.orb-h1-linea > [data-marca]{flex:0 0 auto}
+.orb-h1-sangra{margin-left:.9em}
 /* Cada palabra es su propia mascara Y su propia perspectiva. La perspectiva
    solo alcanza a los HIJOS DIRECTOS: puesta en el h1 no llegaba a las letras,
    que cuelgan una generacion mas abajo, y `rotationX` se veia aplastado. */
@@ -1806,12 +1840,11 @@ body:has(.webs){background:var(--fondo)}
 .orb-h1-marca{
   background:linear-gradient(90deg,#FA4D4D,#5A70FA);
   -webkit-background-clip:text;background-clip:text;color:transparent}
-/* Rotulo sobre el titular: un dato, un filete que se traza y nada mas. Le da
-   al encabezado el mismo arranque que tienen las demas secciones. */
-.orb-hero-eti{display:flex;align-items:center;gap:1rem;width:100%;
-  margin:0 0 clamp(1.25rem,3vh,2rem);
-  font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;opacity:.5}
-.orb-hero-eti .orb-eti-l{max-width:9rem}
+/* El guion del original, aqui trazado. Ocupa lo que sobra de la linea y se
+   dibuja de izquierda a derecha. */
+.orb-h1-filete{flex:1 1 0;min-width:0;height:.055em;display:block;
+  background:linear-gradient(90deg,#FA4D4D,#5A70FA);
+  transform:scaleX(0);transform-origin:left center}
 /* Cada letra responde al raton por separado: la que se toca sube, y el resto
    del titular cede un pelo. Es el detalle que dice que esto esta vivo y no es
    una imagen. */
@@ -1821,20 +1854,74 @@ body:has(.webs){background:var(--fondo)}
   .orb-h1:hover .orb-ch{opacity:.55}
   .orb-h1 .orb-ch:hover{transform:translateY(-.09em) scale(1.06);opacity:1}
 }
-/* El subtitulo, con su propio filete a la izquierda en degradado. */
-.orb-sub{position:relative;margin:1.75rem 0 0;padding-left:1.25rem;
-  max-width:32ch;font-size:clamp(1rem,1.2vw,1.125rem);line-height:1.5;opacity:.78}
-.orb-sub::before{content:"";position:absolute;left:0;top:.25em;bottom:.25em;width:2px;
-  background:linear-gradient(180deg,#FA4D4D,#5A70FA)}
-.orb-precio{font-style:normal;font-size:clamp(2.5rem,5.6vw,4.75rem);line-height:.86;
-  letter-spacing:-.05em;font-weight:500;
+
+/* La pastilla: blanca, con el disco negro de la flecha metido dentro. Al
+   pasar el cursor el degradado de marca la barre de izquierda a derecha. El
+   fondo blanco del propio elemento se pinta ANTES que sus descendientes
+   posicionados, asi que el barrido va encima del blanco y debajo del texto
+   sin necesidad de indices negativos. */
+.orb-pastilla{position:relative;overflow:hidden;
+  display:inline-flex;align-items:center;gap:.85rem;
+  margin:clamp(1.15rem,2.8vh,2rem) 0 0;
+  padding:.42rem .42rem .42rem 1.35rem;border-radius:999px;
+  background:#fff;color:#0B0B0F;text-decoration:none;
+  font-size:.7rem;letter-spacing:.11em;text-transform:uppercase;font-weight:500;
+  transition:color .45s ease}
+.orb-pastilla::before{content:"";position:absolute;inset:0;
   background:linear-gradient(90deg,#FA4D4D,#5A70FA);
-  -webkit-background-clip:text;background-clip:text;color:transparent}
-.orb-hero-pie{position:absolute;left:0;right:0;bottom:0;z-index:1;
-  display:flex;justify-content:space-between;gap:1rem 2rem;width:100%;flex-wrap:wrap;
-  padding:0 clamp(1.25rem,4vw,4rem) clamp(1.75rem,4vh,2.5rem);
-  padding-left:clamp(4.5rem,6vw,5.5rem);font-size:.75rem;letter-spacing:.1em;
-  text-transform:uppercase;opacity:.45}
+  transform:scaleX(0);transform-origin:left center;
+  transition:transform .55s cubic-bezier(.22,1,.36,1)}
+.orb-pastilla > *{position:relative;z-index:1}
+.orb-pastilla-i{display:grid;place-items:center;width:2.05rem;height:2.05rem;
+  border-radius:50%;background:#0B0B0F;color:#fff;font-style:normal;
+  font-size:.8rem;line-height:1;
+  transition:transform .5s cubic-bezier(.22,1,.36,1)}
+@media (hover:hover){
+  .orb-pastilla:hover{color:#fff}
+  .orb-pastilla:hover::before{transform:scaleX(1)}
+  .orb-pastilla:hover .orb-pastilla-i{transform:rotate(45deg)}
+}
+
+/* --- la lamina del video: columna central, de canto a canto --- */
+.orb-tj-lamina{position:relative;min-width:0;overflow:hidden;background:#08080B}
+.orb-lienzo{display:block;width:100%;height:100%;aspect-ratio:auto;
+  object-fit:cover;object-position:61% 32%;transform:none}
+/* Un fundido a negro por el pie de la lamina: el corte inferior no se ve y la
+   imagen se apoya en la tarjeta en vez de terminar de golpe. */
+.orb-lamina-vel{position:absolute;left:0;right:0;bottom:0;height:34%;
+  display:block;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(11,11,15,.85))}
+
+/* --- rail derecho: navegacion arriba, cifra abajo --- */
+.orb-tj-rail{position:relative;z-index:2;min-width:0;
+  display:flex;flex-direction:column;justify-content:space-between;
+  align-items:flex-end;text-align:right;
+  padding:clamp(1.35rem,2.3vw,2.5rem)}
+.orb-rail-nav{display:flex;flex-wrap:wrap;justify-content:flex-end;
+  gap:.45rem 1.15rem;
+  font-size:.62rem;letter-spacing:.14em;text-transform:uppercase}
+.orb-rail-nav a{position:relative;color:inherit;text-decoration:none;
+  opacity:.5;transition:opacity .3s ease}
+.orb-rail-nav a::after{content:"";position:absolute;left:0;right:0;bottom:-3px;
+  height:1px;background:currentColor;
+  transform:scaleX(0);transform-origin:right center;
+  transition:transform .45s cubic-bezier(.22,1,.36,1)}
+@media (hover:hover){
+  .orb-rail-nav a:hover{opacity:1}
+  .orb-rail-nav a:hover::after{transform:scaleX(1);transform-origin:left center}
+}
+/* La cifra de la esquina. En el original es un numero entre parentesis que no
+   significa nada; aqui es el precio, que es el argumento entero de la pagina.
+   Los parentesis van apagados para que el numero sea lo que pesa. */
+.orb-cifra{max-width:100%}
+.orb-cifra-n{display:flex;align-items:baseline;justify-content:flex-end;
+  font-size:clamp(2.2rem,5.6vw,5.6rem);line-height:.84;letter-spacing:-.055em;
+  font-weight:500;font-variant-numeric:tabular-nums}
+.orb-cifra-n i{font-style:normal;font-weight:300;opacity:.26}
+.orb-cifra-n em{font-style:normal;font-size:.38em;letter-spacing:0;
+  margin:0 .04em 0 .1em;opacity:.55}
+.orb-cifra-p{display:block;margin-top:.75rem;
+  font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;opacity:.42}
 
 /* --- premisa --- */
 .orb-premisa{padding:clamp(7rem,19vh,14rem) 0}
@@ -2089,7 +2176,7 @@ body:has(.webs){background:var(--fondo)}
 /* El encabezado necesita margen inferior para que la tapa lo cubra desde
    fuera de pantalla y no aparezca ya pegada a el. */
 .orb-hero{margin-bottom:0}
-.orb-lienzo,.orb-hero-copy,.orb-hero-pie{will-change:transform,opacity}
+.orb-lienzo,.orb-tj-copy,.orb-tj-rail{will-change:transform,opacity}
 
 /* --- las letras asoman desde debajo de su linea --- */
 /* La mascara es la linea, no la letra: recortando cada caracter por separado
@@ -2100,22 +2187,38 @@ body:has(.webs){background:var(--fondo)}
 
 /* --- el hero en pantallas estrechas: el video pasa arriba --- */
 @media screen and (max-width:900px){
-  .orb-hero{padding:6rem 1.25rem 5rem}
-  /* En estrecho manda el titular: va primero y el video debajo. */
+  /* En estrecho la tarjeta deja de ser tres columnas y se apila: la lamina
+     arriba, la ficha y el titular debajo, y el rail convertido en la fila del
+     pie. El velo del video no es adorno: es lo que hace que la imagen se
+     funda con el negro de la tarjeta en vez de cortarse a media pantalla. */
+  .orb-marco{inset:3.4rem 0 0}
+  .orb-tarjeta{display:flex;flex-direction:column;
+    grid-template-columns:none;margin:.7rem}
+  .orb-tj-lamina{order:1;flex:1 1 30vh;min-height:26vh}
+  .orb-lienzo{object-position:60% 26%}
+  .orb-lamina-vel{height:46%}
+  .orb-tj-copy{order:2;flex:0 0 auto;padding:1.15rem 1.25rem .25rem}
+  .orb-tj-bajo{margin-top:1.25rem}
+  .orb-just{max-width:none;font-size:.66rem;line-height:1.55}
+  .orb-fases{display:none}
   /* 14,3vw es el techo: a mas, "CONVIERTEN" no cabe en 390 px y como lleva
      `nowrap` no rompe, se sale. */
-  .orb-h1{font-size:clamp(2.75rem,14.3vw,5.5rem)}
-  .orb-hero-panel{margin-left:0}
-  .orb-hero-fila{grid-template-columns:1fr;gap:2.25rem}
-  .orb-hero-copy{width:100%}
-  /* Sin columna al lado, el sangrado descentra el video. */
-  .orb-hero-panel{width:100%}
-  /* En 390 px solo cabe un dato en el pie: se queda el precio. Las ciudades
-     ya estan en el pie de pagina, y el aviso de bajar sobra en una pantalla
-     donde bajar es lo unico que se puede hacer. */
-  .orb-hero-pie{padding-bottom:2rem}
-  .orb-hero-pie span:nth-child(2),
-  .orb-hero-pie span:nth-child(3){display:none}
+  .orb-h1{font-size:clamp(2.6rem,13.9vw,5.5rem)}
+  .orb-tj-rail{order:3;align-items:flex-end;padding:0 1.25rem 1.25rem}
+  .orb-rail-nav{display:none}
+  .orb-cifra{text-align:right}
+  .orb-cifra-n{font-size:2.6rem}
+  .orb-cifra-p{margin-top:.45rem}
+}
+
+/* Por debajo de 400 px el marco y el acolchado dejan de ser un detalle: son 62
+   de los 360 px de pantalla. "CONVIERTEN" se salia tres pixeles por el canto
+   en 360 px —medido, no a ojo— y la unica forma de recuperarlos sin encoger el
+   titular es apretar la tarjeta contra el marco. */
+@media screen and (max-width:400px){
+  .orb-tarjeta{margin:.55rem}
+  .orb-tj-copy{padding:1.05rem 1rem .25rem}
+  .orb-tj-rail{padding:0 1rem 1rem}
 
   /* --- la galeria: carrusel de verdad, no una rejilla quieta ---
      La orbita se apaga en movil a proposito —clavar 4500 px de scroll en un

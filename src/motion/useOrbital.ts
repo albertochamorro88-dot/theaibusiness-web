@@ -169,11 +169,11 @@ export function useTapado(ready: boolean) {
     if (!hero || !tapa) return;
     if (reducido()) return;
 
-    /* El texto y el pie retroceden juntos. El titular NO se nombra aparte
-       —vive dentro de `.orb-hero-copy`— porque entonces el escalado se
+    /* Las dos columnas de texto retroceden juntas. El titular NO se nombra
+       aparte —vive dentro de `.orb-tj-copy`— porque entonces el escalado se
        aplicaria dos veces. */
-    const dentro = hero.querySelectorAll<HTMLElement>(".orb-hero-copy, .orb-hero-pie");
-    const fondo = hero.querySelector<HTMLElement>(".orb-hero-panel");
+    const dentro = hero.querySelectorAll<HTMLElement>(".orb-tj-copy, .orb-tj-rail");
+    const fondo = hero.querySelector<HTMLElement>(".orb-tj-lamina");
 
     /* Se limpia lo que hubiera escrito una ejecucion anterior. Un `to` graba
        como punto de partida el valor que encuentra: si el montaje previo dejo
@@ -420,44 +420,48 @@ export function useHeroEntrada(ready: boolean) {
     const h1 = document.querySelector<HTMLElement>(".orb-h1");
     if (!h1) return;
 
-    const sub = document.querySelector<HTMLElement>(".orb-sub");
-    const pie = document.querySelector<HTMLElement>(".orb-hero-pie");
+    const hero = h1.closest<HTMLElement>(".orb-hero");
+    const lamina = hero?.querySelector<HTMLElement>(".orb-tj-lamina") ?? null;
+    const filete = hero?.querySelector<HTMLElement>(".orb-h1-filete") ?? null;
+    const cuenta = hero?.querySelector<HTMLElement>("[data-cuenta]") ?? null;
+    const piezas = hero ? [...hero.querySelectorAll<HTMLElement>("[data-entra]")] : [];
+
+    const marca = h1.querySelector<HTMLElement>("[data-marca]");
 
     if (reducido()) {
-      [h1, sub, pie].forEach((e) => e && (e.style.opacity = "1"));
+      h1.style.opacity = "1";
+      if (filete) filete.style.transform = "scaleX(1)";
       return;
     }
 
     /* Igual que en el tapado: `from` graba como destino el valor actual, y si
-       un montaje anterior dejo el subtitulo a cero, el nuevo lo animaria de
-       cero a cero. Se limpia primero y se declara el destino a mano. */
-    const marca = h1.querySelector<HTMLElement>("[data-marca]");
-    gsap.set([h1, sub, pie, marca].filter(Boolean) as HTMLElement[], { clearProps: "opacity,transform" });
+       un montaje anterior dejo una pieza a cero, el nuevo la animaria de cero
+       a cero. Se limpia primero y se declara el destino a mano. */
+    gsap.set([h1, marca, lamina, ...piezas].filter(Boolean) as HTMLElement[],
+      { clearProps: "opacity,transform,clipPath" });
     const opacidadFinal = (el: HTMLElement) => Number(getComputedStyle(el).opacity) || 1;
-    const opSub = sub ? opacidadFinal(sub) : 1;
-    const opPie = pie ? opacidadFinal(pie) : 1;
+    const finales = piezas.map(opacidadFinal);
 
     h1.style.opacity = "1";
 
-    /* Se parte PALABRA A PALABRA, no el titular entero.
-       El titular reparte sus tres palabras con `space-between`, y partir el h1
-       de una vez lo sustituye por divs de linea: las tres palabras caerian
-       dentro de una sola caja y el reparto se perderia. Partiendo cada palabra
-       por dentro, la caja sobrevive y sigue siendo un elemento del reparto.
-       Cada palabra lleva ademas su propia mascara, asi que ya no hace falta la
-       clase de linea. */
-    const palabras = [...h1.querySelectorAll<HTMLElement>("[data-palabra]")];
-    const dianas = palabras.length ? palabras : [h1];
-    const sp = dianas.map((el) => new SplitText(el, { type: "chars", charsClass: "orb-ch" }));
-    const letras = sp.flatMap((s) => s.chars);
-
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-    /* El lienzo NO se anima desde fuera. Escalarlo con GSAP agranda su caja,
-       y la funcion que ajusta la resolucion reescribe `canvas.width`, lo que
-       REINICIA el buffer de dibujo de WebGL: el video desaparecia y el lienzo
-       acababa a 3226x2016 en vez de 2880x1800. Su entrada ya la hace el propio
-       shader con el uniforme `uEntrada`. */
+    /* La lamina se DESTAPA de abajo arriba, no se funde. Un recorte que sube
+       hace que la imagen parezca sacada del propio negro de la tarjeta; un
+       fundido solo la enciende. El video empuja un pelo hacia dentro a la vez,
+       que es lo que impide que el destape se lea como una persiana. */
+    if (lamina) {
+      tl.fromTo(lamina,
+        { clipPath: "inset(100% 0% 0% 0%)" },
+        {
+          clipPath: "inset(0% 0% 0% 0%)",
+          duration: 1.25,
+          ease: "power3.inOut",
+          onComplete: () => { gsap.set(lamina, { clearProps: "clipPath" }); },
+        }, 0);
+      const v = lamina.querySelector<HTMLElement>(".orb-lienzo");
+      if (v) tl.fromTo(v, { scale: 1.14 }, { scale: 1, duration: 1.6, ease: "power2.out" }, 0);
+    }
 
     /* La caida en domino.
      *
@@ -472,6 +476,11 @@ export function useHeroEntrada(ready: boolean) {
      * Al terminar se limpian los `transform` en linea: si no, el estilo que
      * GSAP deja escrito gana al del `:hover` y las letras dejan de responder
      * al raton para siempre. */
+    const palabras = [...h1.querySelectorAll<HTMLElement>("[data-palabra]")];
+    const dianas = palabras.length ? palabras : [h1];
+    const sp = dianas.map((el) => new SplitText(el, { type: "chars", charsClass: "orb-ch" }));
+    const letras = sp.flatMap((s) => s.chars);
+
     tl.fromTo(letras,
       {
         yPercent: 104,
@@ -487,15 +496,43 @@ export function useHeroEntrada(ready: boolean) {
         ease: "back.out(1.6)",
         stagger: { each: 0.038, from: "start" },
         onComplete: () => { gsap.set(letras, { clearProps: "transform,opacity" }); },
-      }, 0.2);
+      }, 0.42);
 
     /* La palabra en degradado sube ENTERA. No se puede partir en letras sin
        perder el degradado, asi que entra como bloque desde debajo de su
        mascara, un pelo antes que el resto. */
-    if (marca) tl.fromTo(marca, { yPercent: 118 }, { yPercent: 0, duration: 1.05 }, 0.18);
+    if (marca) tl.fromTo(marca, { yPercent: 118 }, { yPercent: 0, duration: 1.05 }, 0.4);
 
-    if (sub) tl.fromTo(sub, { y: 24, opacity: 0 }, { y: 0, opacity: opSub, duration: 0.9 }, "-=0.55");
-    if (pie) tl.fromTo(pie, { y: 14, opacity: 0 }, { y: 0, opacity: opPie, duration: 0.7 }, "-=0.5");
+    /* El filete se traza hasta topar con el canto, justo detras de la palabra
+       que acaba de subir. */
+    if (filete) {
+      tl.fromTo(filete, { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: "power3.inOut" }, 0.72);
+    }
+
+    /* La ficha, el par de datos, la pastilla, el rail y la cifra entran en
+       cascada, cada uno hasta SU opacidad —van del 42 al 100 %—, que es por lo
+       que no se puede animar el grupo entero a 1. */
+    piezas.forEach((el, i) => {
+      tl.fromTo(el,
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: finales[i], duration: 0.85 },
+        0.95 + i * 0.09);
+    });
+
+    /* La cifra se cuenta. Es el precio: verlo subir hasta pararse en 997 dice
+       "cerrado" mejor que escribirlo. */
+    if (cuenta) {
+      const fin = Number(cuenta.dataset.cuenta) || 0;
+      const obj = { v: 0 };
+      tl.to(obj, {
+        v: fin,
+        duration: 1.25,
+        ease: "power2.out",
+        snap: { v: 1 },
+        onUpdate: () => { cuenta.textContent = String(Math.round(obj.v)); },
+        onComplete: () => { cuenta.textContent = String(fin); },
+      }, 1.05);
+    }
 
     /* La respiracion posterior. Amplitud minima —seis pixeles en catorce
        segundos— porque lo que se busca es que no parezca congelado, no que se
@@ -506,7 +543,7 @@ export function useHeroEntrada(ready: boolean) {
       ease: "sine.inOut",
       yoyo: true,
       repeat: -1,
-      delay: 2,
+      delay: 2.4,
     });
 
     return () => { tl.kill(); respirar.kill(); sp.forEach((s) => s.revert()); };

@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 
 import { MenuWrapper, Nav } from "./Chrome";
-import { reserva } from "./analytics";
+import { evento, reserva } from "./analytics";
 import { enlaces, img, video, webs997 as w } from "./content";
 
 import { useGlitch } from "@/motion/useGlitch";
@@ -30,6 +30,18 @@ const G = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/media/img/estudio`;
 const LINEA_WEBS = (
   <>diagnóstico · diseño · desarrollo · online<br />diagnóstico · diseño · desarrollo · online<br />diagnóstico · diseño · desarrollo · online<br />997 € · precio cerrado · sin cuotas ocultas</>
 );
+/* Los enlaces del encabezado van a secciones de la propia pagina. Lenis lleva
+   el scroll REAL de la ventana —no un contenedor propio—, asi que un
+   `scrollIntoView` suave funciona sin pelearse con el. Sin esto el ancla salta
+   de golpe, y con un encabezado `sticky` delante el salto se lee como un
+   parpadeo. */
+const irA = (destino: string) => (e: React.MouseEvent) => {
+  const d = document.querySelector(destino);
+  if (!d) return;
+  e.preventDefault();
+  d.scrollIntoView({ behavior: "smooth", block: "start" });
+};
+
 const muestras = [
   { src: `${G}/web-01.webp`, nombre: "Web 01" },
   { src: `${G}/web-02.webp`, nombre: "Web 02" },
@@ -98,53 +110,118 @@ export default function Orbital() {
 
       {/* ------------------------------------------------------------ hero */}
       <header className="orb-hero">
-        <div className="orb-hero-fila">
-          {/* El titular a la izquierda. La palabra en degradado es la primera
-              del titular, no un adorno suelto: se lee "websites que
-              convierten" de corrido. Ocupa el sitio donde antes estaba el
-              precio. */}
-          <div className="orb-hero-copy">
-            <div className="orb-hero-eti">
-              <span>Estudio de webs</span>
-              <i className="orb-eti-l" aria-hidden="true" />
+        {/* El marco: una lamina de color a sangre sobre la que flota la
+            tarjeta negra. La composicion deja de ser "texto sobre fondo" y
+            pasa a ser un objeto con canto propio, que es de donde sale la
+            sensacion de pieza impresa. Empieza por debajo de la barra de
+            navegacion para que el logotipo y el menu sigan cayendo sobre
+            negro: la barra va en `mix-blend-mode: difference` y sobre rojo
+            el blanco se le volveria cian. */}
+        <div className="orb-marco">
+          {/* El propio personaje, desenfocado, dentro del marco. Sin esto el
+              color queda plano; con esto el marco tiene materia y se entiende
+              que la tarjeta esta recortada sobre la misma imagen. */}
+          <div
+            className="orb-marco-fondo"
+            aria-hidden="true"
+            style={{ backgroundImage: `url(${img.estudioHeroPoster})` }}
+          />
+
+          <div className="orb-tarjeta">
+            {/* ---------------------------------------- columna izquierda */}
+            <div className="orb-tj-copy">
+              <div className="orb-tj-alto">
+                <div className="orb-eti orb-eti-tj">
+                  ( 00 — Estudio )
+                  <i className="orb-eti-l" aria-hidden="true" />
+                </div>
+                {/* Justificado y en caja alta: el bloque se convierte en una
+                    mancha rectangular con calles anchas entre palabras. Es un
+                    recurso de maqueta, no de web, y es justo lo que hace que
+                    la esquina se lea como una ficha tecnica. */}
+                <p data-entra="" className="orb-just">
+                  {w.subA} {w.subB}
+                </p>
+                <div data-entra="" className="orb-par">
+                  <span>Trabajamos desde</span>
+                  <span>Madrid · Miami · Dubái</span>
+                </div>
+              </div>
+
+              {/* Las cuatro fases, en el hueco que en el original queda vacio.
+                  Aqui el vacio era demasiado —la columna medía cuatrocientos
+                  pixeles de nada— y esto es dato real, no relleno. */}
+              <ol data-entra="" className="orb-fases">
+                <li><i aria-hidden="true">01</i><span>Diagnóstico</span></li>
+                <li><i aria-hidden="true">02</i><span>Diseño</span></li>
+                <li><i aria-hidden="true">03</i><span>Desarrollo</span></li>
+                <li><i aria-hidden="true">04</i><span>Online</span></li>
+              </ol>
+
+              <div className="orb-tj-bajo">
+                <h1 className="orb-h1">
+                  <span className="orb-h1-linea">
+                    <span data-marca="" className="orb-h1-marca">websites</span>
+                    {/* El guion del original, aqui trazado: en vez de un
+                        caracter suelto es un filete que se dibuja de
+                        izquierda a derecha hasta topar con el canto. */}
+                    <i className="orb-h1-filete" aria-hidden="true" />
+                  </span>
+                  <span data-palabra="" className="orb-h1-sangra">que</span>
+                  <span data-palabra="">convierten</span>
+                </h1>
+                <a
+                  data-entra=""
+                  className="orb-pastilla"
+                  href="#trabajo"
+                  onClick={(e) => { evento("orb_hero_ver"); irA("#trabajo")(e); }}
+                >
+                  <span>Ver el trabajo</span>
+                  <i className="orb-pastilla-i" aria-hidden="true">→</i>
+                </a>
+              </div>
             </div>
-            <h1 className="orb-h1">
-              <span data-marca="" className="orb-h1-marca">websites</span>
-              <span data-palabra="">que</span>
-              <span data-palabra="">convierten</span>
-            </h1>
-            <p line="" className="orb-sub">
-              {w.subA} {w.subB}
-            </p>
-          </div>
 
-          {/* El video, a la derecha y sin recuadro: los cuatro cantos se
-              funden en el negro de la pagina, asi que no se lee como una
-              lamina pegada encima sino como algo que emerge del fondo.
-              Se quita la inclinacion hacia el cursor. */}
-          <div className="orb-hero-panel">
-            <video
-              ref={video1}
-              className="orb-lienzo"
-              preload="auto"
-              src={video.estudioHero}
-              poster={img.estudioHeroPoster}
-              autoPlay
-              muted
-              loop
-              playsInline
-              aria-hidden="true"
-            />
-          </div>
-        </div>
+            {/* -------------------------------------- la lamina del video.
+                De canto a canto en vertical y sin margen: es la columna
+                central del original, la que sostiene la composicion. */}
+            <div className="orb-tj-lamina">
+              <video
+                ref={video1}
+                className="orb-lienzo"
+                preload="auto"
+                src={video.estudioHero}
+                poster={img.estudioHeroPoster}
+                autoPlay
+                muted
+                loop
+                playsInline
+                aria-hidden="true"
+              />
+              <i className="orb-lamina-vel" aria-hidden="true" />
+            </div>
 
-        <div className="orb-hero-pie">
-          <span>{w.titularPrecio} · Precio cerrado</span>
-          <span>Madrid · Miami · Dubái</span>
-          {/* Decia "mueve el cursor" cuando el video se inclinaba hacia el
-              raton. Quitada la inclinacion, la frase pedia algo que ya no
-              pasa. */}
-          <span>Baja para ver <i className="orb-flecha" aria-hidden="true">↓</i></span>
+            {/* ------------------------------------------------ rail derecho */}
+            <div className="orb-tj-rail">
+              <nav data-entra="" className="orb-rail-nav" aria-label="Secciones">
+                <a href="#trabajo" onClick={irA("#trabajo")}>Trabajo</a>
+                <a href="#incluye" onClick={irA("#incluye")}>Incluye</a>
+                <a href="#contacto" onClick={irA("#contacto")}>Contacto</a>
+              </nav>
+              {/* La cifra grande de la esquina. En el original es un numero
+                  entre parentesis y no significa nada; aqui es el precio, que
+                  es el argumento entero de esta pagina. */}
+              <div data-entra="" className="orb-cifra">
+                <span className="orb-cifra-n">
+                  <i aria-hidden="true">(</i>
+                  <span data-cuenta="997">997</span>
+                  <em>€</em>
+                  <i aria-hidden="true">)</i>
+                </span>
+                <span className="orb-cifra-p">Precio cerrado · sin cuotas</span>
+              </div>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -170,7 +247,7 @@ export default function Orbital() {
       {/* ------------------------------------------------- galeria orbital */}
       {/* Se clava 4500 px y las piezas giran sobre una elipse; la que pasa por
           delante crece al doble. La medida sale de la referencia. */}
-      <section className="orb-galeria">
+      <section id="trabajo" className="orb-galeria">
         <div className="orb-galeria-cab">
           <div className="orb-eti">( 02 — Trabajo )<i className="orb-eti-l" aria-hidden="true" /></div>
           {/* Este rotulo decia "Cinco cosas. Un solo precio.", que es el
@@ -222,7 +299,7 @@ Diagnóstico. <br />Diseño. <br />Desarrollo. <br />Online.
       </section>
 
       {/* -------------------------------------------------------- capacidad */}
-      <section className="orb-capacidad">
+      <section id="incluye" className="orb-capacidad">
         <div className="orb-cont">
           <div line="" className="orb-eti">( 04 — Qué incluye )<i className="orb-eti-l" aria-hidden="true" /></div>
           {/* La segunda mitad va en degradado y NO se parte en letras: el
