@@ -104,6 +104,10 @@ export default function Orbital() {
               convierten" de corrido. Ocupa el sitio donde antes estaba el
               precio. */}
           <div className="orb-hero-copy">
+            <div className="orb-hero-eti">
+              <span>Estudio de webs</span>
+              <i className="orb-eti-l" aria-hidden="true" />
+            </div>
             <h1 className="orb-h1">
               <span data-marca="" className="orb-h1-marca">websites</span>
               <span data-palabra="">que</span>

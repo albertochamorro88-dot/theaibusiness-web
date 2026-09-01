@@ -448,7 +448,7 @@ export function useHeroEntrada(ready: boolean) {
        clase de linea. */
     const palabras = [...h1.querySelectorAll<HTMLElement>("[data-palabra]")];
     const dianas = palabras.length ? palabras : [h1];
-    const sp = dianas.map((el) => new SplitText(el, { type: "chars" }));
+    const sp = dianas.map((el) => new SplitText(el, { type: "chars", charsClass: "orb-ch" }));
     const letras = sp.flatMap((s) => s.chars);
 
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -459,13 +459,35 @@ export function useHeroEntrada(ready: boolean) {
        acababa a 3226x2016 en vez de 2880x1800. Su entrada ya la hace el propio
        shader con el uniforme `uEntrada`. */
 
-    tl.from(letras, {
-      yPercent: 120,
-      rotationX: -78,
-      transformOrigin: "50% 100% -30px",
-      duration: 1.05,
-      stagger: { each: 0.017, from: "start" },
-    }, 0.25);
+    /* La caida en domino.
+     *
+     * Cada letra empieza tumbada hacia atras sobre su propio canto inferior y
+     * se levanta con un rebote corto. Las tres cosas que lo convierten en
+     * domino y no en un desvanecido: el eje de giro esta en la BASE de la
+     * letra (`transformOrigin` al 100 % de altura) y no en su centro; el
+     * retraso entre una y otra sube a 38 milesimas, que es donde el ojo
+     * empieza a leer una secuencia en vez de un bloque; y el `back.out` pasa
+     * de largo y vuelve, que es lo que hace la ficha al asentarse.
+     *
+     * Al terminar se limpian los `transform` en linea: si no, el estilo que
+     * GSAP deja escrito gana al del `:hover` y las letras dejan de responder
+     * al raton para siempre. */
+    tl.fromTo(letras,
+      {
+        yPercent: 104,
+        rotationX: -94,
+        opacity: 0,
+        transformOrigin: "50% 100% -14px",
+      },
+      {
+        yPercent: 0,
+        rotationX: 0,
+        opacity: 1,
+        duration: 0.95,
+        ease: "back.out(1.6)",
+        stagger: { each: 0.038, from: "start" },
+        onComplete: () => { gsap.set(letras, { clearProps: "transform,opacity" }); },
+      }, 0.2);
 
     /* La palabra en degradado sube ENTERA. No se puede partir en letras sin
        perder el degradado, asi que entra como bloque desde debajo de su

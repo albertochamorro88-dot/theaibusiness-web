@@ -1752,7 +1752,7 @@ body:has(.webs){background:var(--fondo)}
    de ancho— y esos 230 px salen de la columna del titular, que a cambio baja
    de 100 a 84 px. Es el intercambio, no hay mas sitio. */
 .orb-hero-fila{position:relative;z-index:1;width:100%;
-  display:grid;grid-template-columns:.288fr .712fr;
+  display:grid;grid-template-columns:.4fr .6fr;
   gap:clamp(2rem,4vw,3.5rem);align-items:center}
 @supports (height:100svh){ .orb-hero{min-height:100svh} }
 /* El video, a la derecha y SIN recuadro. No lleva borde, ni esquinas
@@ -1761,8 +1761,12 @@ body:has(.webs){background:var(--fondo)}
 /* Se come el margen derecho del encabezado y termina justo en el canto de la
    pagina. No hay corte: la mascara ya ha apagado el video antes de llegar
    ahi, asi que el borde de la ventana no lo parte, lo recoge apagado. */
-.orb-hero-panel{position:relative;background:#0A0A0A;
-  width:calc(100% + clamp(1.25rem,4vw,4rem))}
+/* El video conserva sus 965 px y NO se mueve: la columna del titular crece y
+   el panel se mete 10 rem por debajo de ella. Puede hacerlo porque su canto
+   izquierdo ya esta apagado por la mascara —ahi no hay imagen que tapar—, y
+   asi el titular sube de 58 a 81 px sin quitarle un pixel al video. */
+.orb-hero-panel{position:relative;background:#0A0A0A;overflow:hidden;
+  width:calc(100% + clamp(1.25rem,4vw,4rem) + 10rem);margin-left:-10rem}
 /* El fundido se hace con MASCARA, no pintando un degradado del color del
    fondo encima. Encima queda siempre el escalon: basta un pixel de diferencia
    entre el negro del velo y el de la pagina para que el canto se vea, y se
@@ -1777,7 +1781,10 @@ body:has(.webs){background:var(--fondo)}
 .orb-hero-panel{
   -webkit-mask-image:radial-gradient(53% 53% at 50% 50%,#000 30%,rgba(0,0,0,.82) 66%,transparent 97%);
   mask-image:radial-gradient(53% 53% at 50% 50%,#000 30%,rgba(0,0,0,.82) 66%,transparent 97%)}
-.orb-lienzo{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+/* El personaje crece un 16 % DENTRO del marco, no el marco. Asi gana
+   presencia sin robarle ancho al titular ni mover la composicion. */
+.orb-lienzo{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;
+  transform:scale(1.16);transform-origin:50% 46%}
 .orb-hero-copy{position:relative;z-index:1;padding:0;margin:0;width:100%;
   display:flex;flex-direction:column;align-items:flex-start;text-align:left}
 /* El titular: una palabra por linea, apiladas contra el canto derecho.
@@ -1785,7 +1792,7 @@ body:has(.webs){background:var(--fondo)}
    caja alta forma una banda solida en vez de un perfil dentado. */
 .orb-h1{margin:0;display:flex;flex-direction:column;align-items:flex-start;
   opacity:0;text-transform:uppercase;
-  font-size:clamp(2.25rem,4vw,4.5rem);line-height:.9;letter-spacing:-.05em;font-weight:500}
+  font-size:clamp(2.25rem,5.6vw,6rem);line-height:.9;letter-spacing:-.05em;font-weight:500}
 /* Cada palabra es su propia mascara Y su propia perspectiva. La perspectiva
    solo alcanza a los HIJOS DIRECTOS: puesta en el h1 no llegaba a las letras,
    que cuelgan una generacion mas abajo, y `rotationX` se veia aplastado. */
@@ -1799,8 +1806,26 @@ body:has(.webs){background:var(--fondo)}
 .orb-h1-marca{
   background:linear-gradient(90deg,#FA4D4D,#5A70FA);
   -webkit-background-clip:text;background-clip:text;color:transparent}
-.orb-sub{margin:1.75rem 0 0;max-width:30ch;font-size:clamp(1rem,1.2vw,1.125rem);
-  line-height:1.5;opacity:.78}
+/* Rotulo sobre el titular: un dato, un filete que se traza y nada mas. Le da
+   al encabezado el mismo arranque que tienen las demas secciones. */
+.orb-hero-eti{display:flex;align-items:center;gap:1rem;width:100%;
+  margin:0 0 clamp(1.25rem,3vh,2rem);
+  font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;opacity:.5}
+.orb-hero-eti .orb-eti-l{max-width:9rem}
+/* Cada letra responde al raton por separado: la que se toca sube, y el resto
+   del titular cede un pelo. Es el detalle que dice que esto esta vivo y no es
+   una imagen. */
+.orb-ch{display:inline-block;
+  transition:transform .38s cubic-bezier(.22,1,.36,1),opacity .38s ease}
+@media (hover:hover){
+  .orb-h1:hover .orb-ch{opacity:.55}
+  .orb-h1 .orb-ch:hover{transform:translateY(-.09em) scale(1.06);opacity:1}
+}
+/* El subtitulo, con su propio filete a la izquierda en degradado. */
+.orb-sub{position:relative;margin:1.75rem 0 0;padding-left:1.25rem;
+  max-width:32ch;font-size:clamp(1rem,1.2vw,1.125rem);line-height:1.5;opacity:.78}
+.orb-sub::before{content:"";position:absolute;left:0;top:.25em;bottom:.25em;width:2px;
+  background:linear-gradient(180deg,#FA4D4D,#5A70FA)}
 .orb-precio{font-style:normal;font-size:clamp(2.5rem,5.6vw,4.75rem);line-height:.86;
   letter-spacing:-.05em;font-weight:500;
   background:linear-gradient(90deg,#FA4D4D,#5A70FA);
@@ -2077,7 +2102,10 @@ body:has(.webs){background:var(--fondo)}
 @media screen and (max-width:900px){
   .orb-hero{padding:6rem 1.25rem 5rem}
   /* En estrecho manda el titular: va primero y el video debajo. */
-  .orb-h1{font-size:clamp(2.75rem,13.5vw,5rem)}
+  /* 14,3vw es el techo: a mas, "CONVIERTEN" no cabe en 390 px y como lleva
+     `nowrap` no rompe, se sale. */
+  .orb-h1{font-size:clamp(2.75rem,14.3vw,5.5rem)}
+  .orb-hero-panel{margin-left:0}
   .orb-hero-fila{grid-template-columns:1fr;gap:2.25rem}
   .orb-hero-copy{width:100%}
   /* Sin columna al lado, el sangrado descentra el video. */
