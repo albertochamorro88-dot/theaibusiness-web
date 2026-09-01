@@ -1737,18 +1737,15 @@ body:has(.webs){background:var(--fondo)}
 .orb-h2-cierre{margin:0 auto clamp(1.5rem,4vh,2.5rem);max-width:16ch;
   font-size:clamp(2.25rem,7vw,6rem);line-height:.94;letter-spacing:-.05em;font-weight:500}
 
-/* --- encabezado: el titular de canto a canto y, debajo, precio y video --- */
-/* Deja de ser una rejilla de dos columnas. El titular necesita el ancho
-   ENTERO para poder repartirse; en media pagina solo cabia partiendolo en
-   lineas, que es justo lo que le quitaba fuerza. */
+/* --- encabezado: el video grande a la izquierda, el titular a la derecha --- */
 .orb-hero{position:relative;min-height:100vh;overflow:hidden;
   display:flex;flex-direction:column;justify-content:center;
-  gap:clamp(1.75rem,5vh,3.5rem);max-width:100rem;margin:0 auto;
+  max-width:100rem;margin:0 auto;
   padding:clamp(6rem,12vh,8.5rem) clamp(1.25rem,4vw,4rem) clamp(5rem,9vh,7rem)}
-/* La fila de debajo: el dato a la izquierda, el video a la derecha. Alineados
-   por abajo para que el bloque del precio se apoye en el canto del marco. */
-.orb-hero-fila{display:grid;grid-template-columns:1fr .82fr;
-  gap:clamp(2rem,5vw,4rem);align-items:end}
+/* El video se lleva la parte ancha. Antes ocupaba el hueco que sobraba debajo
+   del titular y quedaba pequeño; ahora manda la mitad izquierda entera. */
+.orb-hero-fila{display:grid;grid-template-columns:1.06fr .94fr;
+  gap:clamp(2rem,4vw,3.5rem);align-items:center}
 @supports (height:100svh){ .orb-hero{min-height:100svh} }
 /* El marco del video. El negro alrededor es parte del diseno: sin borde, la
    inclinacion hacia el cursor no se percibe porque no hay nada fijo con lo que
@@ -1756,36 +1753,41 @@ body:has(.webs){background:var(--fondo)}
 .orb-hero-panel{position:relative;width:100%;
   border-radius:1rem;overflow:hidden;background:#000;
   box-shadow:0 2rem 5rem rgba(0,0,0,.8), 0 0 0 1px rgba(250,250,250,.07)}
-.orb-lienzo{display:block;width:100%;aspect-ratio:16/9;height:auto}
-.orb-hero-copy{position:relative;z-index:1;padding:0;margin:0;width:100%}
-/* El titular: tres palabras repartidas de canto a canto.
-   `space-between` y no `text-align:justify` porque el titular se parte en
-   letras para la entrada, y la justificacion depende de que los espacios
-   sigan siendo espacios —al partirlo dejan de serlo y la linea se descuelga a
-   la izquierda. Repartiendo cajas el hueco lo pone el flex, no el texto, y
-   sobrevive a la particion.
+/* 4:3 y no 16:9: en apaisado el video se quedaba en una banda estrecha. El
+   shader encaja por proporcion —recorta de los lados, no deforma— y la figura
+   esta centrada, asi que el encuadre aguanta el cambio. */
+.orb-lienzo{display:block;width:100%;aspect-ratio:4/3;height:auto;max-height:64vh}
+.orb-hero-copy{position:relative;z-index:1;padding:0;margin:0;width:100%;
+  display:flex;flex-direction:column;align-items:flex-end;text-align:right}
+/* El titular: una palabra por linea, apiladas contra el canto derecho.
    Mayusculas: la frase pasa a funcionar como rotulo, no como oracion, y en
    caja alta forma una banda solida en vez de un perfil dentado. */
-.orb-h1{margin:0;display:flex;justify-content:space-between;align-items:baseline;
-  width:100%;opacity:0;text-transform:uppercase;
-  font-size:clamp(1.75rem,7.9vw,8rem);line-height:.9;letter-spacing:-.05em;font-weight:500}
+.orb-h1{margin:0;display:flex;flex-direction:column;align-items:flex-end;
+  opacity:0;text-transform:uppercase;
+  font-size:clamp(2.5rem,6.4vw,6rem);line-height:.9;letter-spacing:-.05em;font-weight:500}
 /* Cada palabra es su propia mascara Y su propia perspectiva. La perspectiva
    solo alcanza a los HIJOS DIRECTOS: puesta en el h1 no llegaba a las letras,
    que cuelgan una generacion mas abajo, y `rotationX` se veia aplastado. */
-.orb-h1 [data-palabra]{display:inline-block;overflow:hidden;
+.orb-h1 [data-palabra],
+.orb-h1 [data-marca]{display:inline-block;overflow:hidden;white-space:nowrap;
   padding:.08em 0 .12em;perspective:900px}
-/* El precio deja de ser parte del titulo: es el dato que lo sostiene. */
-.orb-precio-b{margin:0 0 1.25rem;display:flex;align-items:baseline;gap:.9rem;flex-wrap:wrap}
-.orb-precio-t{font-size:.8125rem;letter-spacing:.1em;text-transform:uppercase;opacity:.55}
-.orb-sub{margin:0;max-width:34ch;font-size:clamp(1rem,1.2vw,1.125rem);
+/* La primera palabra, en degradado. NO se parte en letras: el recorte del
+   degradado actua sobre el texto del propio elemento, y al partirlo el texto
+   se va a los hijos —el padre se queda sin nada que recortar y la palabra
+   desaparece—. Entra entera desde debajo de su mascara. */
+.orb-h1-marca{
+  background:linear-gradient(90deg,#FA4D4D,#5A70FA);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.orb-sub{margin:1.75rem 0 0;max-width:30ch;font-size:clamp(1rem,1.2vw,1.125rem);
   line-height:1.5;opacity:.78}
 .orb-precio{font-style:normal;font-size:clamp(2.5rem,5.6vw,4.75rem);line-height:.86;
   letter-spacing:-.05em;font-weight:500;
   background:linear-gradient(90deg,#FA4D4D,#5A70FA);
   -webkit-background-clip:text;background-clip:text;color:transparent}
 .orb-hero-pie{position:absolute;left:0;right:0;bottom:0;z-index:1;
-  display:flex;justify-content:space-between;gap:1rem;width:100%;
-  padding:0 clamp(1.25rem,4vw,4rem) clamp(1.75rem,4vh,2.5rem);font-size:.75rem;letter-spacing:.1em;
+  display:flex;justify-content:space-between;gap:1rem 2rem;width:100%;flex-wrap:wrap;
+  padding:0 clamp(1.25rem,4vw,4rem) clamp(1.75rem,4vh,2.5rem);
+  padding-left:clamp(4.5rem,6vw,5.5rem);font-size:.75rem;letter-spacing:.1em;
   text-transform:uppercase;opacity:.45}
 
 /* --- premisa --- */
@@ -1822,6 +1824,17 @@ body:has(.webs){background:var(--fondo)}
 /* --- capacidad --- */
 .orb-capacidad{padding:clamp(6rem,16vh,12rem) 0;border-top:1px solid rgba(250,250,250,.12)}
 .orb-h2-incluye{margin-bottom:clamp(2rem,5vh,3.5rem)}
+.orb-h2-incluye span{display:block}
+/* El degradado se mueve: recorre el texto en diez segundos y vuelve a
+   empezar. El desplazamiento es de un mosaico entero, asi que el bucle no
+   tiene salto. */
+.orb-degradado{
+  background-image:linear-gradient(90deg,#FA4D4D,#5A70FA,#FA4D4D);
+  background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:orb-deriva 10s linear infinite}
+@keyframes orb-deriva{from{background-position:0 0}to{background-position:-200% 0}}
+@media (prefers-reduced-motion:reduce){ .orb-degradado{animation:none} }
 .orb-lista{list-style:none;margin:0;padding:0}
 .orb-lista-fila{border-bottom:1px solid rgba(250,250,250,.12)}
 .orb-lista-fila a{display:block;padding:clamp(1rem,2.4vh,1.75rem) 0;color:inherit;
@@ -1871,14 +1884,38 @@ body:has(.webs){background:var(--fondo)}
   background:linear-gradient(90deg,#FA4D4D,#5A70FA);
   -webkit-background-clip:text;background-clip:text;color:transparent}
 /* La lista deja de ser de enlaces: son las cinco cosas que entran en el
-   precio, y cada una lleva su detalle al lado. */
-.orb-lista-fija{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(1rem,3vw,3rem);
-  align-items:baseline;padding:clamp(1rem,2.4vh,1.75rem) 0}
-.orb-lista-n{font-size:clamp(1.375rem,3.4vw,3rem);line-height:1.08;letter-spacing:-.04em}
-.orb-lista-d{font-size:clamp(.9375rem,1.2vw,1.0625rem);line-height:1.5;opacity:.65}
+   precio, y cada una lleva su numero, su nombre y su detalle.
+   Arranca oculta y la entra el JS escalonada; el filete se dibuja solo. */
+.orb-lista-fija{position:relative;opacity:0;border-bottom:0;
+  display:grid;grid-template-columns:3.25rem .9fr 1.1fr;gap:clamp(1rem,3vw,3rem);
+  align-items:baseline;padding:clamp(1rem,2.4vh,1.75rem) .75rem}
+/* El lavado de color del hover. Va en un pseudoelemento y no en `background`
+   para poder desvanecerlo: un degradado no se puede interpolar. */
+.orb-lista-fija::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(250,77,77,.18),rgba(90,112,250,.11) 55%,transparent);
+  opacity:0;transition:opacity .45s cubic-bezier(.22,1,.36,1)}
+.orb-lista-fija:hover::before{opacity:1}
 .orb-lista-fija:hover{background:none}
+.orb-lista-filete{position:absolute;left:0;right:0;bottom:0;height:1px;display:block;
+  background:linear-gradient(90deg,rgba(250,77,77,.55),rgba(90,112,250,.4) 45%,rgba(250,250,250,.12));
+  transform-origin:left center}
+.orb-lista-i{position:relative;font-size:1rem;letter-spacing:.06em;
+  font-variant-numeric:tabular-nums;opacity:.75;
+  background:linear-gradient(90deg,#FA4D4D,#5A70FA);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  transition:opacity .4s cubic-bezier(.22,1,.36,1)}
+.orb-lista-fija:hover .orb-lista-i{opacity:1}
+.orb-lista-n{position:relative;display:inline-block;
+  font-size:clamp(1.375rem,3.4vw,3rem);line-height:1.08;letter-spacing:-.04em;
+  transition:transform .5s cubic-bezier(.22,1,.36,1)}
+.orb-lista-fija:hover .orb-lista-n{transform:translateX(12px)}
+.orb-lista-d{position:relative;font-size:clamp(.9375rem,1.2vw,1.0625rem);line-height:1.5;
+  opacity:.65;transition:opacity .45s cubic-bezier(.22,1,.36,1)}
+.orb-lista-fija:hover .orb-lista-d{opacity:.92}
 @media screen and (max-width:992px){
-  .orb-lista-fija{grid-template-columns:1fr;gap:.5rem}
+  .orb-lista-fija{grid-template-columns:2.75rem 1fr;gap:.35rem .75rem}
+  .orb-lista-i{grid-row:1/3}
+  .orb-lista-fija:hover .orb-lista-n{transform:none}
 }
 
 /* --- el encabezado se queda pegado y la seccion siguiente lo tapa --- */
@@ -1920,13 +1957,12 @@ body:has(.webs){background:var(--fondo)}
 
 /* --- el hero en pantallas estrechas: el video pasa arriba --- */
 @media screen and (max-width:900px){
-  .orb-hero{gap:2rem;padding:6rem 1.25rem 5rem}
-  .orb-h1{font-size:clamp(1.5rem,7.2vw,4rem)}
-  /* El titular se queda en una linea repartida hasta abajo del todo: a 8,6vw
-     las tres palabras siguen cabiendo en 390 px. Lo que se apila es la fila
-     de debajo, con el video primero. */
-  .orb-hero-fila{grid-template-columns:1fr;gap:2rem;align-items:stretch}
-  .orb-hero-panel{order:1}
-  .orb-hero-copy{order:2}
+  .orb-hero{padding:6rem 1.25rem 5rem}
+  /* En estrecho manda el titular: va primero y el video debajo. */
+  .orb-h1{font-size:clamp(2.75rem,13.5vw,5rem)}
+  .orb-hero-fila{grid-template-columns:1fr;gap:2.25rem;align-items:stretch}
+  .orb-hero-copy{order:1}
+  .orb-hero-panel{order:2}
+  .orb-lienzo{aspect-ratio:16/9;max-height:none}
   .orb-hero-pie{position:static;padding:2rem 1.25rem 0;flex-wrap:wrap}
 }

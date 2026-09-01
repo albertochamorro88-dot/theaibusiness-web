@@ -11,7 +11,7 @@ import { useMenu } from "@/motion/useMenu";
 import { useNavLogo } from "@/motion/useNavLogo";
 import { useReveals, playIntroReveals } from "@/motion/useReveals";
 import { useSmoother } from "@/motion/useSmoother";
-import { useCintaScroll, useHeroEntrada, useLetras, useOrbita, useParalajeOrb, useTapado } from "@/motion/useOrbital";
+import { useCintaScroll, useHeroEntrada, useIncluye, useLetras, useOrbita, useParalajeOrb, useTapado } from "@/motion/useOrbital";
 import { useRodillo } from "@/motion/useDonut";
 import { montarTilt } from "@/webgl/tilt";
 
@@ -57,6 +57,7 @@ export default function Orbital() {
   useTapado(true);
   useLetras(true);
   useHeroEntrada(true);
+  useIncluye(true);
   useRodillo(true);
 
   useEffect(() => { playIntroReveals(); }, []);
@@ -73,37 +74,33 @@ export default function Orbital() {
 
       {/* ------------------------------------------------------------ hero */}
       <header className="orb-hero">
-        {/* Tres palabras repartidas de canto a canto. Antes eran dos lineas de
-            frase completa dentro de media pagina: cuarenta caracteres a 4,5
-            rem no son un titular, son un parrafo grande. El precio sale del
-            titulo y baja a su propio bloque, donde ademas se lee mejor. */}
-        <h1 className="orb-h1">
-          <span data-palabra="">Webs</span>
-          <span data-palabra="">que</span>
-          <span data-palabra="">convierten</span>
-        </h1>
-
         <div className="orb-hero-fila">
+          {/* El video pasa a la izquierda y en formato 4:3: ocupa mas del
+              doble de superficie que el apaisado que tenia. El encuadre
+              aguanta porque el shader recorta por proporcion —quita de los
+              lados, y la figura esta centrada. */}
+          <div className="orb-hero-panel">
+            <canvas ref={lienzo} className="orb-lienzo" aria-hidden="true" />
+          </div>
+
+          {/* El titular a la derecha, alineado al canto. La palabra en
+              degradado es la primera del titular, no un adorno suelto: se lee
+              "websites que convierten" de corrido. Ocupa el sitio donde antes
+              estaba el precio. */}
           <div className="orb-hero-copy">
-            <p className="orb-precio-b">
-              <em className="orb-precio">{w.titularPrecio}</em>
-              <span className="orb-precio-t">Precio cerrado</span>
-            </p>
+            <h1 className="orb-h1">
+              <span data-marca="" className="orb-h1-marca">websites</span>
+              <span data-palabra="">que</span>
+              <span data-palabra="">convierten</span>
+            </h1>
             <p line="" className="orb-sub">
               {w.subA} {w.subB}
             </p>
           </div>
-
-          {/* El video vive en su propio marco a la derecha, no a sangre:
-              rodeado de negro se lee como una pieza, y la inclinacion hacia el
-              cursor se percibe mucho mejor cuando hay borde contra el que
-              compararla. */}
-          <div className="orb-hero-panel">
-            <canvas ref={lienzo} className="orb-lienzo" aria-hidden="true" />
-          </div>
         </div>
 
         <div className="orb-hero-pie">
+          <span>{w.titularPrecio} · Precio cerrado</span>
           <span>Madrid · Miami · Dubái</span>
           <span>Mueve el cursor</span>
         </div>
@@ -152,14 +149,21 @@ export default function Orbital() {
       <section className="orb-capacidad">
         <div className="orb-cont">
           <div line="" className="orb-eti">( 03 — Qué incluye )</div>
-          <h2 data-letras="" className="orb-h2 orb-h2-incluye">
-            {w.pilaTitulo.replace("\n", " ")}
+          {/* La segunda mitad va en degradado y NO se parte en letras: el
+              recorte del degradado se aplica al texto del propio elemento, y
+              al partirlo el texto pasa a los hijos —el padre se queda sin
+              nada que recortar y la palabra desaparece. */}
+          <h2 className="orb-h2 orb-h2-incluye">
+            <span data-letras="">{w.pilaTitulo.split("\n")[0]}</span>
+            <span className="orb-degradado">{w.pilaTitulo.split("\n")[1]}</span>
           </h2>
           <ul className="orb-lista">
-            {w.incluye.map((it) => (
+            {w.incluye.map((it, i) => (
               <li key={it.nombre} className="orb-lista-fila orb-lista-fija">
+                <span className="orb-lista-i">{String(i + 1).padStart(2, "0")}</span>
                 <span className="orb-lista-n">{it.nombre}</span>
                 <span className="orb-lista-d">{it.detalle}</span>
+                <i className="orb-lista-filete" aria-hidden="true" />
               </li>
             ))}
           </ul>

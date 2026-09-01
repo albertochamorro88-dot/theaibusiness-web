@@ -263,6 +263,57 @@ export function useLetras(ready: boolean) {
 }
 
 
+/* --------------------------------------------------------- lo que incluye */
+
+/**
+ * La lista de lo que entra en el precio: entrada escalonada y filete que se
+ * dibuja.
+ *
+ * Cada fila sube desde abajo con nueve centesimas de retraso sobre la
+ * anterior, y su filete se traza de izquierda a derecha. El escalonado es lo
+ * que convierte cinco lineas identicas en una enumeracion: se leen de una en
+ * una porque aparecen de una en una.
+ *
+ * `fromTo` y no `from`: el destino se declara, no se muestrea. Con `from`, un
+ * remontaje graba como destino el valor que encuentra —cero, si la entrada
+ * anterior lo dejo oculto— y la lista no vuelve a aparecer nunca.
+ */
+export function useIncluye(ready: boolean) {
+  useEffect(() => {
+    if (!ready) return;
+    registerGsap();
+
+    const lista = document.querySelector<HTMLElement>(".orb-lista");
+    if (!lista) return;
+    const filas = [...lista.querySelectorAll<HTMLElement>(".orb-lista-fija")];
+    if (!filas.length) return;
+
+    if (reducido()) {
+      filas.forEach((f) => { f.style.opacity = "1"; });
+      return;
+    }
+
+    const filetes = filas
+      .map((f) => f.querySelector<HTMLElement>(".orb-lista-filete"))
+      .filter(Boolean) as HTMLElement[];
+
+    gsap.set([...filas, ...filetes], { clearProps: "opacity,transform" });
+
+    const tl = gsap.timeline({
+      scrollTrigger: { trigger: lista, start: "top 80%", once: true },
+    });
+
+    tl.fromTo(filas,
+      { y: 34, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.85, ease: "power3.out", stagger: 0.09 }, 0);
+    tl.fromTo(filetes,
+      { scaleX: 0 },
+      { scaleX: 1, duration: 0.95, ease: "power2.inOut", stagger: 0.09 }, 0.12);
+
+    return () => { tl.scrollTrigger?.kill(); tl.kill(); };
+  }, [ready]);
+}
+
 /* ------------------------------------------------------------ entrada hero */
 
 /**
@@ -299,7 +350,8 @@ export function useHeroEntrada(ready: boolean) {
     /* Igual que en el tapado: `from` graba como destino el valor actual, y si
        un montaje anterior dejo el subtitulo a cero, el nuevo lo animaria de
        cero a cero. Se limpia primero y se declara el destino a mano. */
-    gsap.set([h1, sub, pie].filter(Boolean) as HTMLElement[], { clearProps: "opacity,transform" });
+    const marca = h1.querySelector<HTMLElement>("[data-marca]");
+    gsap.set([h1, sub, pie, marca].filter(Boolean) as HTMLElement[], { clearProps: "opacity,transform" });
     const opacidadFinal = (el: HTMLElement) => Number(getComputedStyle(el).opacity) || 1;
     const opSub = sub ? opacidadFinal(sub) : 1;
     const opPie = pie ? opacidadFinal(pie) : 1;
@@ -333,6 +385,11 @@ export function useHeroEntrada(ready: boolean) {
       duration: 1.05,
       stagger: { each: 0.017, from: "start" },
     }, 0.25);
+
+    /* La palabra en degradado sube ENTERA. No se puede partir en letras sin
+       perder el degradado, asi que entra como bloque desde debajo de su
+       mascara, un pelo antes que el resto. */
+    if (marca) tl.fromTo(marca, { yPercent: 118 }, { yPercent: 0, duration: 1.05 }, 0.18);
 
     if (sub) tl.fromTo(sub, { y: 24, opacity: 0 }, { y: 0, opacity: opSub, duration: 0.9 }, "-=0.55");
     if (pie) tl.fromTo(pie, { y: 14, opacity: 0 }, { y: 0, opacity: opPie, duration: 0.7 }, "-=0.5");
