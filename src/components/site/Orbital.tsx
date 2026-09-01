@@ -11,7 +11,7 @@ import { useMenu } from "@/motion/useMenu";
 import { useNavLogo } from "@/motion/useNavLogo";
 import { useReveals, playIntroReveals } from "@/motion/useReveals";
 import { useSmoother } from "@/motion/useSmoother";
-import { useCintaScroll, useLetras, useOrbita, useParalajeOrb, useTapado } from "@/motion/useOrbital";
+import { useCintaScroll, useHeroEntrada, useLetras, useOrbita, useParalajeOrb, useTapado } from "@/motion/useOrbital";
 import { useRodillo } from "@/motion/useDonut";
 import { montarTilt } from "@/webgl/tilt";
 
@@ -56,6 +56,7 @@ export default function Orbital() {
   useCintaScroll(true);
   useTapado(true);
   useLetras(true);
+  useHeroEntrada(true);
   useRodillo(true);
 
   useEffect(() => { playIntroReveals(); }, []);
@@ -74,7 +75,7 @@ export default function Orbital() {
       <header className="orb-hero">
         <canvas ref={lienzo} className="orb-lienzo" aria-hidden="true" />
         <div className="orb-hero-copy">
-          <h1 data-letras="" className="orb-h1">
+          <h1 className="orb-h1">
             <span>Webs que convierten.</span>
             <span>Precio cerrado: <em className="orb-precio">997 €</em></span>
           </h1>

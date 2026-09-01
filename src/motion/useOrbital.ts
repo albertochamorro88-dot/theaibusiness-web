@@ -250,3 +250,75 @@ export function useLetras(ready: boolean) {
     };
   }, [ready]);
 }
+
+
+/* ------------------------------------------------------------ entrada hero */
+
+/**
+ * La entrada del encabezado.
+ *
+ * El titular estaba usando el mismo revelado que el resto de la pagina —una
+ * entrada por scroll— y en el encabezado eso no funciona: ya esta en pantalla
+ * al cargar, asi que se dispara antes de que el lector mire y lo que ve es un
+ * texto quieto. Aqui tiene su propia linea de tiempo, escalonada y con reloj.
+ *
+ * Las letras suben desde debajo de su linea, giradas hacia atras: `rotationX`
+ * con perspectiva hace que asomen como si volcasen sobre un eje, en vez de
+ * limitarse a deslizar. Es lo que le da peso.
+ *
+ * Y no termina: el titular respira despues, muy despacio. Un encabezado que se
+ * queda completamente inmovil tras la entrada se lee como una captura.
+ */
+export function useHeroEntrada(ready: boolean) {
+  useEffect(() => {
+    if (!ready) return;
+    registerGsap();
+
+    const h1 = document.querySelector<HTMLElement>(".orb-h1");
+    if (!h1) return;
+
+    const sub = document.querySelector<HTMLElement>(".orb-sub");
+    const pie = document.querySelector<HTMLElement>(".orb-hero-pie");
+
+    if (reducido()) {
+      [h1, sub, pie].forEach((e) => e && (e.style.opacity = "1"));
+      return;
+    }
+
+    h1.style.opacity = "1";
+    const sp = new SplitText(h1, { type: "lines,chars", linesClass: "orb-linea" });
+
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+    /* El lienzo NO se anima desde fuera. Escalarlo con GSAP agranda su caja,
+       y la funcion que ajusta la resolucion reescribe `canvas.width`, lo que
+       REINICIA el buffer de dibujo de WebGL: el video desaparecia y el lienzo
+       acababa a 3226x2016 en vez de 2880x1800. Su entrada ya la hace el propio
+       shader con el uniforme `uEntrada`. */
+
+    tl.from(sp.chars, {
+      yPercent: 120,
+      rotationX: -78,
+      transformOrigin: "50% 100% -30px",
+      duration: 1.05,
+      stagger: { each: 0.017, from: "start" },
+    }, 0.25);
+
+    if (sub) tl.from(sub, { y: 24, opacity: 0, duration: 0.9 }, "-=0.55");
+    if (pie) tl.from(pie, { y: 14, opacity: 0, duration: 0.7 }, "-=0.5");
+
+    /* La respiracion posterior. Amplitud minima —seis pixeles en catorce
+       segundos— porque lo que se busca es que no parezca congelado, no que se
+       mueva. */
+    const respirar = gsap.to(h1, {
+      y: -6,
+      duration: 7,
+      ease: "sine.inOut",
+      yoyo: true,
+      repeat: -1,
+      delay: 2,
+    });
+
+    return () => { tl.kill(); respirar.kill(); sp.revert(); };
+  }, [ready]);
+}

@@ -213,7 +213,12 @@ export function montarTilt(lienzo: HTMLCanvasElement, fuente: string) {
        vez deja el primer fotograma congelado. `readyState >= 2` es el minimo
        que garantiza que hay un fotograma que subir. */
     if (video && video.readyState >= 2) {
+      /* WebGL tiene el origen de textura ABAJO-izquierda y el video arriba-
+         izquierda: sin voltear, la escena sale del reves —el reflejo del suelo
+         arriba y el cubo de agua abajo—. */
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
     }
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     (window as unknown as Record<string, unknown>).__tilt = {

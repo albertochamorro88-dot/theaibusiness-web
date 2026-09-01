@@ -1733,7 +1733,9 @@ body:has(.webs){background:var(--fondo)}
 .orb-lienzo{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
 .orb-hero-copy{position:relative;z-index:1;padding:0 clamp(1.25rem,4vw,4rem);max-width:90rem;
   margin:0 auto;width:100%}
-.orb-h1{margin:0;display:flex;flex-direction:column;
+/* Perspectiva en el contenedor: sin ella `rotationX` en las letras no vuelca,
+   solo las aplasta en vertical. */
+.orb-h1{margin:0;display:flex;flex-direction:column;perspective:900px;opacity:0;
   font-size:clamp(2.5rem,7.6vw,7rem);line-height:.94;letter-spacing:-.05em;font-weight:500}
 .orb-sub{margin:1.75rem 0 0;max-width:42ch;font-size:clamp(1rem,1.3vw,1.1875rem);
   line-height:1.5;opacity:.78}
