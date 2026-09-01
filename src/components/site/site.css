@@ -1889,9 +1889,21 @@ body:has(.webs){background:var(--fondo)}
    corrido hacia la derecha. Con el video escalado a la altura de la tarjeta
    sobran 436 px de ancho, y para que la cabeza caiga en el mismo punto el
    corte tiene que empezar en 252 de esos 436: 58 %. */
-.orb-tj-lamina{position:absolute;inset:0;z-index:0;overflow:hidden;background:#08080B}
-.orb-lienzo{display:block;width:100%;height:100%;aspect-ratio:auto;
-  object-fit:cover;object-position:58% 32%;transform:none}
+.orb-tj-lamina{position:absolute;inset:0;z-index:0;overflow:hidden;background:#0B0B0F}
+/* El personaje, corrido a la derecha.
+   NO se puede hacer solo con `object-position`: a partir de ~1250 px la
+   tarjeta se vuelve mas ancha que el video escalado a su altura, `cover` pasa
+   a escalar por el ancho y el recorte horizontal desaparece —el porcentaje
+   deja de tener efecto y el personaje se queda clavado en el centro—. Se
+   desplaza la CAJA del video un 24 % hacia la derecha: el hueco que deja por
+   la izquierda cae bajo la parte opaca del velo, asi que no se ve, y lo que
+   sobra por la derecha lo recorta la lamina.
+   Va con `left` y no con `transform` porque la entrada anima la escala del
+   video con GSAP, y GSAP reescribe la matriz entera: un `translateX` en el CSS
+   se quedaria congelado en pixeles y no seguiria al cambiar el ancho. */
+.orb-lienzo{display:block;position:absolute;top:0;bottom:0;left:24%;
+  width:100%;aspect-ratio:auto;
+  object-fit:cover;object-position:50% 32%;transform:none}
 /* Los velos. Sin la caja, el texto se apoya directamente sobre la imagen y
    hace falta apagarla debajo de el: negro macizo bajo la columna de la
    izquierda, transparente del 42 al 74 % —que es justo donde esta el
@@ -1902,9 +1914,9 @@ body:has(.webs){background:var(--fondo)}
 .orb-lamina-vel{position:absolute;inset:0;display:block;pointer-events:none;
   background:
     linear-gradient(90deg,
-      #0B0B0F 0%, rgba(11,11,15,.97) 22%, rgba(11,11,15,.72) 34%,
-      rgba(11,11,15,.14) 44%, rgba(11,11,15,0) 56%,
-      rgba(11,11,15,.2) 70%, rgba(11,11,15,.72) 84%, rgba(11,11,15,.93) 100%),
+      #0B0B0F 0%, rgba(11,11,15,1) 33%, rgba(11,11,15,.78) 46%,
+      rgba(11,11,15,.22) 60%, rgba(11,11,15,0) 70%,
+      rgba(11,11,15,0) 96%, rgba(11,11,15,.24) 100%),
     linear-gradient(180deg,
       rgba(11,11,15,.5) 0%, rgba(11,11,15,0) 22%,
       rgba(11,11,15,0) 46%, rgba(11,11,15,.86) 100%)}
@@ -2219,7 +2231,8 @@ body:has(.webs){background:var(--fondo)}
      caja— y el personaje se ve entero. */
   .orb-tj-lamina{position:relative;inset:auto;grid-column:auto;
     order:1;flex:1 1 30vh;min-height:26vh}
-  .orb-lienzo{object-position:60% 26%}
+  .orb-lienzo{position:relative;top:auto;bottom:auto;left:auto;
+    height:100%;object-position:60% 26%}
   .orb-lamina-vel{inset:auto;left:0;right:0;bottom:0;height:46%;
     background:linear-gradient(180deg,transparent,rgba(11,11,15,.85))}
   .orb-tj-copy{grid-column:auto;order:2;flex:0 0 auto;
