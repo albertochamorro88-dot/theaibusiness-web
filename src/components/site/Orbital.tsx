@@ -191,18 +191,6 @@ export default function Orbital() {
 Diagnóstico. <br />Diseño. <br />Desarrollo. <br />Online.
             </div>
           </div>
-          {/* Aqui NO van capturas de web: entran recortadas y en claro, y
-              contra el ascensor se leen como recortes pegados. Van dos piezas
-              oscuras, que es lo que pide la escena. Y no las del cierre, que
-              ya salen mas abajo. */}
-          <div className="img-glitch-w">
-            <div className="merguez">
-              <img className="merguez-img" src={img.proyectoAutointel} alt="" loading="lazy" />
-            </div>
-            <div className="ballon">
-              <img className="ballon-img" src={img.proyectoDermai} alt="" loading="lazy" />
-            </div>
-          </div>
         </div>
       </section>
 
