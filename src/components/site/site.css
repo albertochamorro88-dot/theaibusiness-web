@@ -2186,7 +2186,6 @@ body:has(.webs){background:var(--fondo)}
 .act-sala,
 .act-multa,
 .act-banda,
-.act-video,
 .act-rivales{position:relative;z-index:1;background:#0A0A0A}
 /* La seccion del proceso. Viene de la portada, que corre con otras
    variables; aqui hay que devolverle el color de esta pagina.
@@ -2399,26 +2398,62 @@ body:has(.webs){background:var(--fondo)}
    defiende algo distinto. Todo lo que no cambia sigue viniendo de `orb-`.
    ========================================================================== */
 
-/* El encuadre del plano. El video del AI Act es abstracto —una linea de luz,
-   no una cara—, asi que el ancla es el centro del fotograma y no el punto
-   entre unos ojos que aqui no existen. */
-.act-hero .orb-tj-lamina{
-  --cara-o:22px;--cara-z:1.08;--cara-cx:.62;--cara-cy:.5;
-  --cara-ax:.5;--cara-ay:.5;--cara-libre:.22}
-@media screen and (max-width:900px){
-  .act-hero .orb-tj-lamina{--cara-o:0px;--cara-z:1.15;--cara-cx:.5;--cara-cy:.5;--cara-libre:0}
-}
-/* Sin personaje no hay foco que seguir: el halo de color sobra y ensuciaria
-   una imagen que ya es color puro. */
-.act-hero .orb-luz{display:none}
+/* --------------------------------------------------------------- portada
+   La portada ES el video. La tarjeta de la pagina de webs no vale aqui: alli
+   el encabezado vende un estudio y el protagonista es un plano; aqui vende un
+   reglamento y el protagonista es alguien explicandolo.
+   -------------------------------------------------------------------- */
+.act-portada-fondo{position:absolute;inset:0;z-index:0;overflow:hidden}
+/* El plano abstracto se queda de fondo, muy bajado y desenfocado. Esta para
+   que la pantalla no parezca congelada, no para mirarlo: a plena luz competia
+   con la portada del video, que es lo unico que hay que mirar. */
+.act-portada-f{position:absolute;inset:0;width:100%;height:100%;display:block;
+  object-fit:cover;opacity:.34;filter:blur(3px) saturate(1.1)}
+.act-portada-vel{position:absolute;inset:0;display:block;
+  background:
+    radial-gradient(115% 85% at 50% 38%,rgba(10,10,15,.45) 0%,rgba(10,10,15,.9) 68%,#0A0A0A 100%)}
 
-/* --- el calendario en corto, en el hueco de la columna izquierda --- */
-.act-fases li{gap:.9rem}
-.act-fases li i{min-width:4.6rem;opacity:.42;font-variant-numeric:tabular-nums}
-/* Lo vencido se marca en rojo. No es decoracion: la primera fecha ya paso y
-   ese es el argumento entero de la pagina. */
-.act-fases li[data-pasado]::after{background:#FA4D4D;transform:scale(1);opacity:.55}
-.act-fases li[data-pasado] span{opacity:.78}
+/* Cuatro filas: rotulo, titular, video y pie. El video se lleva TODO lo que
+   sobra —es la fila `1fr`— y se dimensiona por el alto, asi que crece con la
+   pantalla en vez de quedarse en un ancho fijo. */
+.act-portada{position:relative;z-index:1;min-height:100vh;
+  display:grid;grid-template-rows:auto auto 1fr auto;
+  gap:clamp(.9rem,2vh,1.6rem);
+  padding-top:clamp(4rem,8vh,6rem);
+  padding-bottom:clamp(1.25rem,3vh,2.5rem)}
+.act-portada-eti{margin:0}
+
+.act-portada-cab{display:grid;grid-template-columns:1fr auto;
+  gap:clamp(1.25rem,3.5vw,4rem);align-items:end}
+/* El `min` con 15vh es el techo por alto. Sin el, en una ventana corta el
+   titular se comia la fila del video y el marco se quedaba en el tamano del
+   boton de play. */
+.act-portada-h{font-size:clamp(2.4rem,min(8vw,15vh),7.5rem);line-height:.9}
+.act-portada-ficha{max-width:32ch;padding-bottom:.35em}
+.act-portada-p{margin:0;font-size:clamp(.88rem,1.05vw,1.05rem);line-height:1.5;
+  opacity:.6}
+.act-portada-fecha{margin:.7rem 0 0;font-size:.66rem;letter-spacing:.14em;
+  text-transform:uppercase;opacity:.5}
+
+/* El marco se mide contra su propia fila.
+   Con `aspect-ratio` no vale poner alto Y ancho: en cuanto los dos son
+   definidos —y un `max-width` los vuelve definidos— el navegador deja de
+   respetar la proporcion y estira la caja; el video salia recortado por los
+   lados en el movil. Aqui se declara SOLO el ancho, y se elige el menor de
+   tres: el tope de diseno, lo que mide la fila de ancho y lo que da la fila de
+   alto convertido a ancho. El alto sale solo de la proporcion, asi que nunca
+   se deforma ni se sale. */
+.act-portada-v{container-type:size;min-height:0;display:grid;place-items:center}
+.act-portada-v .act-video-m{margin:0;height:auto;
+  width:min(74rem,100cqw,calc(100cqh * 16 / 9))}
+
+.act-portada-pie{display:flex;align-items:center;justify-content:space-between;
+  gap:clamp(1rem,3vw,2.5rem);flex-wrap:wrap}
+.act-autor-pie{display:flex;align-items:center;gap:.85rem;margin:0;max-width:none}
+.act-autor-pie .act-autor-f{grid-row:auto;width:clamp(2.5rem,3.2vw,3.25rem)}
+.act-autor-pie .act-autor-n{font-size:clamp(.95rem,1.1vw,1.05rem)}
+.act-autor-pie .act-autor-r{font-size:.74rem}
+
 .act-dias{font-weight:500;font-style:normal;color:#FA4D4D;opacity:.95}
 
 /* ==========================================================================
@@ -2694,13 +2729,9 @@ body:has(.webs){background:var(--fondo)}
 /* ==========================================================================
    05 · el video
    ========================================================================== */
-.act-video{padding:clamp(6rem,16vh,11rem) 0 clamp(4rem,10vh,7rem)}
-.act-video-h{margin:clamp(1.5rem,4vh,2.5rem) 0 clamp(2.5rem,6vh,4rem);max-width:20ch}
-/* El marco llega como una rendija y se abre. `clip-path` y no altura: con
-   altura, la imagen de dentro se estiraria mientras se abre. */
 .act-video-m{position:relative;max-width:62rem;margin:0 auto;aspect-ratio:16/9;
   overflow:hidden;border-radius:.75rem;border:1px solid rgba(255,255,255,.1);
-  background:#000;will-change:clip-path,transform}
+  background:#000}
 .act-video-i{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
 .act-video-b{position:absolute;inset:0;padding:0;border:0;cursor:pointer;
   background:none;display:block;width:100%;height:100%}
@@ -2720,9 +2751,8 @@ body:has(.webs){background:var(--fondo)}
 .act-video-b:focus-visible{outline:2px solid #5A70FA;outline-offset:3px}
 
 .act-autor{display:grid;grid-template-columns:auto 1fr;
-  gap:.4rem clamp(1rem,2vw,1.5rem);align-items:center;
-  max-width:62rem;margin:clamp(2rem,5vh,3rem) auto 0}
-.act-autor-f{grid-row:1/3;width:clamp(3.25rem,4.5vw,4rem);height:auto;
+  gap:.4rem clamp(1rem,2vw,1.5rem);align-items:center}
+.act-autor-f{width:clamp(3.25rem,4.5vw,4rem);height:auto;
   border-radius:50%;display:block}
 .act-autor-t{display:block}
 .act-autor-n{margin:0;font-size:clamp(1rem,1.2vw,1.125rem);letter-spacing:-.02em;
@@ -2730,10 +2760,6 @@ body:has(.webs){background:var(--fondo)}
 .act-autor-r{margin:.15rem 0 0;font-size:.78rem;
   background:linear-gradient(90deg,#FA4D4D,#5A70FA);
   -webkit-background-clip:text;background-clip:text;color:transparent}
-.act-autor-b{grid-column:2;margin:.9rem 0 0;padding-top:.9rem;max-width:56ch;
-  border-top:1px solid rgba(250,250,250,.1);
-  font-size:.86rem;line-height:1.55;opacity:.55}
-
 /* ==========================================================================
    06 · la caida
    Tres columnas se hunden y una se queda. La comparacion la hace el scroll.
@@ -2857,6 +2883,40 @@ body:has(.webs){background:var(--fondo)}
    Nada se clava por debajo de 900 px: robarle cuatro pantallas de scroll a un
    movil es secuestrarle la pagina. Cada escena degrada a su forma en columna.
    ========================================================================== */
+/* --- portada en ventana baja ---
+   En una ventana de 390 px de alto, apilar titular sobre video deja al video
+   en el tamano del boton de play: solo el relleno de arriba ya se lleva el
+   16 % de la pantalla. Se pasa a dos columnas —texto a la izquierda, video a
+   la derecha ocupando dos filas— que es la unica reparticion en la que el
+   video conserva un tamano util. */
+@media screen and (max-height:560px) and (min-width:640px){
+  .act-portada{grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    grid-template-rows:auto 1fr auto;
+    column-gap:clamp(1.25rem,3vw,3rem);row-gap:.6rem;
+    padding-top:clamp(2.5rem,8vh,4rem);padding-bottom:.9rem}
+  .act-portada-eti{grid-column:1/-1}
+  .act-portada-cab{grid-column:1;grid-row:2;grid-template-columns:1fr;
+    align-items:start;gap:.7rem}
+  .act-portada-h{font-size:clamp(1.75rem,min(8vw,13vh),7.5rem)}
+  .act-portada-ficha{max-width:none;padding-bottom:0}
+  .act-portada-v{grid-column:2;grid-row:2/4}
+  .act-portada-pie{grid-column:1;grid-row:3}
+  .act-autor-pie .act-autor-f{width:2.1rem}
+}
+
+/* La portada solo se apila EN VERTICAL. Un movil tumbado es una ventana
+   ancha y baja: apilando, el titular y el pie se comian la fila entera y el
+   video desaparecia. Ahi la reparticion en dos columnas —la de escritorio— es
+   la que cabe. */
+@media screen and (max-width:900px) and (orientation:portrait){
+  /* Dos columnas en 390 px dejaban la ficha en una tira de doce caracteres. */
+  .act-portada-cab{grid-template-columns:1fr;gap:1rem;align-items:start}
+  .act-portada-h{font-size:clamp(2.4rem,min(12vw,15vh),4.25rem)}
+  .act-portada-ficha{max-width:none;padding-bottom:0}
+  .act-portada-pie{flex-direction:column;align-items:stretch;gap:1rem}
+  .act-portada-pie .orb-pastilla{justify-content:center}
+}
+
 @media screen and (max-width:900px){
   /* Los respiros entre secciones estaban medidos para una pantalla ancha.
      Apilados en un movil sumaban pantalla y media de negro entre bloque y
@@ -2865,7 +2925,6 @@ body:has(.webs){background:var(--fondo)}
   .act-pila-pin,
   .act-multa-pin{min-height:auto;padding:clamp(4rem,10vh,6rem) 0}
   .act-banda{padding:clamp(2.5rem,6vh,4rem) 0}
-  .act-video{padding:clamp(4rem,10vh,6rem) 0 clamp(3rem,7vh,4.5rem)}
   .act-rivales{padding:clamp(4rem,10vh,6rem) 0 clamp(3rem,7vh,4.5rem)}
 
   /* --- 01 --- */
@@ -2888,11 +2947,6 @@ body:has(.webs){background:var(--fondo)}
      en blanco antes de la seccion siguiente. */
   .act-multa-lados{flex-direction:row;gap:clamp(1.25rem,6vw,3rem)}
   .act-lado-e{letter-spacing:.1em}
-
-  /* --- 05 --- */
-  .act-video-h{max-width:none}
-  .act-autor{grid-template-columns:auto 1fr}
-  .act-autor-b{grid-column:1/-1;margin-top:1.1rem}
 
   /* --- 06 --- */
   .act-rivales-r{grid-template-columns:1fr;gap:1.75rem}

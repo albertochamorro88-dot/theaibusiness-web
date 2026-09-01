@@ -174,7 +174,7 @@ export function useTapado(ready: boolean) {
     /* Las dos columnas de texto retroceden juntas. El titular NO se nombra
        aparte —vive dentro de `.orb-tj-copy`— porque entonces el escalado se
        aplicaria dos veces. */
-    const dentro = hero.querySelectorAll<HTMLElement>(".orb-tj-copy, .orb-tj-rail");
+    const dentro = hero.querySelectorAll<HTMLElement>(".orb-tj-copy, .orb-tj-rail, [data-tapado]");
     const fondo = hero.querySelector<HTMLElement>(".orb-tj-lamina");
 
     /* Se limpia lo que hubiera escrito una ejecucion anterior. Un `to` graba

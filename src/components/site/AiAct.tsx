@@ -28,16 +28,13 @@ import { useReveals, playIntroReveals } from "@/motion/useReveals";
 import { useSmoother } from "@/motion/useSmoother";
 import {
   useActo,
-  useCara,
   useCintaScroll,
   useHeroEntrada,
   useLetras,
   useMicro,
-  useMiraPuntero,
   useTapado,
 } from "@/motion/useOrbital";
 import {
-  useApertura,
   useCaida,
   useMulta,
   usePila,
@@ -85,8 +82,6 @@ export default function AiAct() {
   useTapado(true);
   useLetras(true);
   useHeroEntrada(true);
-  useCara(true);
-  useMiraPuntero(true);
   useMicro(true);
   useActo(true);
   useGlitch(true);
@@ -97,7 +92,6 @@ export default function AiAct() {
   usePila(true);
   useSala(true);
   useMulta(true);
-  useApertura(true);
   useCaida(true);
   useRefresco(true);
 
@@ -142,104 +136,77 @@ export default function AiAct() {
       <MenuWrapper />
 
       {/* ------------------------------------------------------------ hero */}
+      {/* La portada ES el video. Detras corre el plano abstracto, muy bajado:
+          esta para que la pantalla no parezca congelada, no para mirarlo. */}
       <header className="orb-hero act-hero">
-        <div className="orb-marco">
-          <div
-            className="orb-marco-fondo"
-            aria-hidden="true"
-            style={{ backgroundImage: `url(${actMedia.heroPoster})` }}
+        <div className="act-portada-fondo" aria-hidden="true">
+          <video
+            ref={video1}
+            className="act-portada-f"
+            preload="auto"
+            src={actMedia.heroVideo}
+            poster={actMedia.heroPoster}
+            autoPlay
+            muted
+            loop
+            playsInline
           />
+          <i className="act-portada-vel" />
+        </div>
 
-          <div className="orb-tarjeta">
-            {/* ---------------------------------------- columna izquierda */}
-            <div className="orb-tj-copy">
-              <div className="orb-tj-alto">
-                <div className="orb-eti orb-eti-tj">
-                  ( 00 — {actHero.eyebrow} )
-                  <i className="orb-eti-l" aria-hidden="true" />
-                </div>
-                <p data-entra="" className="orb-just">{actFicha}</p>
-                <div data-entra="" className="orb-par">
-                  <span>En vigor desde</span>
-                  <span>
-                    2 feb 2025
-                    {dias !== null && <> · <b className="act-dias">{dias} días</b></>}
-                  </span>
-                </div>
-              </div>
+        <div className="orb-cont act-portada" data-tapado="">
+          <div className="orb-eti act-portada-eti">
+            ( 00 — {actHero.eyebrow} )
+            <i className="orb-eti-l" aria-hidden="true" />
+          </div>
 
-              {/* El calendario, en corto. En la otra pagina este hueco lo
-                  ocupan las cuatro fases del metodo; aqui, las cuatro fechas
-                  del reglamento, que es el dato que aprieta. */}
-              <ol data-entra="" className="orb-fases act-fases">
-                {actHitos.map((h) => (
-                  <li key={h.fecha} data-pasado={h.pasado ? "" : undefined}>
-                    <i aria-hidden="true">{h.corto}</i>
-                    <span>{h.titulo}</span>
-                  </li>
-                ))}
-              </ol>
+          <div className="act-portada-cab">
+            <h1 className="orb-h1 act-portada-h">
+              <span className="orb-h1-linea">
+                <span data-marca="" className="orb-h1-marca">{actHero.marca}</span>
+                <i className="orb-h1-filete" aria-hidden="true" />
+              </span>
+              <span data-palabra="">
+                {actHero.palabras[0]} {actHero.palabras[1]}
+              </span>
+            </h1>
 
-              <div className="orb-tj-bajo">
-                <h1 className="orb-h1">
-                  <span className="orb-h1-linea">
-                    <span data-marca="" className="orb-h1-marca">{actHero.marca}</span>
-                    <i className="orb-h1-filete" aria-hidden="true" />
-                  </span>
-                  <span data-palabra="" className="orb-h1-sangra">{actHero.palabras[0]}</span>
-                  <span data-palabra="">{actHero.palabras[1]}</span>
-                </h1>
-                <a
-                  data-entra=""
-                  className="orb-pastilla"
-                  href="#niveles"
-                  onClick={(e) => { evento("act_hero_ver"); irA("#niveles")(e); }}
-                >
-                  <span>{actHero.cta}</span>
-                  <i className="orb-pastilla-i" aria-hidden="true">→</i>
-                </a>
+            <div data-entra="" className="act-portada-ficha">
+              <p className="act-portada-p">{actFicha}</p>
+              <p className="act-portada-fecha">
+                En vigor desde 2 feb 2025
+                {dias !== null && <> · <b className="act-dias">{dias} días</b></>}
+              </p>
+            </div>
+          </div>
+
+          <div data-entra="" className="act-portada-v">
+            <Reproductor />
+          </div>
+
+          <div data-entra="" className="act-portada-pie">
+            <div className="act-autor act-autor-pie">
+              <img
+                className="act-autor-f"
+                src={actMedia.alejandro}
+                alt={actVideo.autor.nombre}
+                width={320}
+                height={320}
+              />
+              <div className="act-autor-t">
+                <p className="act-autor-n">{actVideo.autor.nombre}</p>
+                <p className="act-autor-r">{actVideo.autor.rol}</p>
               </div>
             </div>
 
-            {/* ------------------------------------------ la lamina del video */}
-            <div className="orb-tj-lamina">
-              <div className="orb-cara">
-                <video
-                  ref={video1}
-                  className="orb-lienzo"
-                  preload="auto"
-                  src={actMedia.heroVideo}
-                  poster={actMedia.heroPoster}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  aria-hidden="true"
-                />
-              </div>
-              <i className="orb-luz" aria-hidden="true" />
-              <i className="orb-lamina-vel" aria-hidden="true" />
-            </div>
-
-            {/* ------------------------------------------------ rail derecho */}
-            <div className="orb-tj-rail">
-              <nav data-entra="" className="orb-rail-nav" aria-label="Secciones">
-                <a href="#niveles" onClick={irA("#niveles")}>Niveles</a>
-                <a href="#calendario" onClick={irA("#calendario")}>Calendario</a>
-                <a href="#contacto" onClick={irA("#contacto")}>Contacto</a>
-              </nav>
-              {/* En la otra pagina esta esquina lleva el precio. Aqui lleva la
-                  sancion: es el numero que decide si sigues leyendo. */}
-              <div data-entra="" className="orb-cifra">
-                <span className="orb-cifra-n">
-                  <i aria-hidden="true">(</i>
-                  <span data-cuenta="35">35</span>
-                  <em>M€</em>
-                  <i aria-hidden="true">)</i>
-                </span>
-                <span className="orb-cifra-p">Sanción máxima · Art. 99</span>
-              </div>
-            </div>
+            <a
+              className="orb-pastilla"
+              href="#niveles"
+              onClick={(e) => { evento("act_hero_ver"); irA("#niveles")(e); }}
+            >
+              <span>{actHero.cta}</span>
+              <i className="orb-pastilla-i" aria-hidden="true">→</i>
+            </a>
           </div>
         </div>
       </header>
@@ -443,36 +410,11 @@ export default function AiAct() {
       {/* ------------------------------------------------------- banda 2 */}
       <Banda i={1} irA={irA} />
 
-      {/* ========================================================== 05 · el video */}
-      <section id="video" className="act-video">
-        <div className="orb-cont">
-          <div line="" className="orb-eti">
-            ( 05 — {actVideo.etiqueta} )<i className="orb-eti-l" aria-hidden="true" />
-          </div>
-          <h2 data-letras="" className="orb-h2 act-video-h">{actVideo.titulo}</h2>
-
-          {/* Fachada: hasta que no se pulsa, esto es una imagen nuestra. El
-              iframe de YouTube pesa cientos de kilobytes y planta cookies de
-              Google en cuanto se monta, asi que no se monta hasta que alguien
-              quiere ver el video. */}
-          <Reproductor />
-
-          <div className="act-autor">
-            <img className="act-autor-f" src={actMedia.alejandro} alt={actVideo.autor.nombre} loading="lazy" width={320} height={320} />
-            <div className="act-autor-t">
-              <p className="act-autor-n">{actVideo.autor.nombre}</p>
-              <p className="act-autor-r">{actVideo.autor.rol}</p>
-            </div>
-            <p className="act-autor-b">{actVideo.autor.bio}</p>
-          </div>
-        </div>
-      </section>
-
-      {/* ====================================================== 06 · la caida */}
+      {/* ====================================================== 05 · la caida */}
       <section className="act-rivales">
         <div className="orb-cont">
           <div line="" className="orb-eti">
-            ( 06 — Con quién nos comparan )<i className="orb-eti-l" aria-hidden="true" />
+            ( 05 — Con quién nos comparan )<i className="orb-eti-l" aria-hidden="true" />
           </div>
           <h2 className="orb-h2 orb-h2-incluye">
             <span data-letras="">Todos te dicen qué falla.</span>
