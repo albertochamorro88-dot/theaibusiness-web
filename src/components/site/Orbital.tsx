@@ -73,7 +73,13 @@ export default function Orbital() {
 
       {/* ------------------------------------------------------------ hero */}
       <header className="orb-hero">
-        <canvas ref={lienzo} className="orb-lienzo" aria-hidden="true" />
+        {/* El video vive en su propio marco a la derecha, no a sangre: rodeado
+            de negro se lee como una pieza, y la inclinacion hacia el cursor se
+            percibe mucho mejor cuando hay borde contra el que compararla. */}
+        <div className="orb-hero-panel">
+          <canvas ref={lienzo} className="orb-lienzo" aria-hidden="true" />
+        </div>
+
         <div className="orb-hero-copy">
           <h1 className="orb-h1">
             <span>Webs que convierten.</span>

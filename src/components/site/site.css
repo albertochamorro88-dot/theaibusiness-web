@@ -1727,21 +1727,33 @@ body:has(.webs){background:var(--fondo)}
   letter-spacing:-.03em;font-weight:500}
 
 /* --- encabezado: el lienzo a sangre y el texto encima --- */
-.orb-hero{position:relative;height:100vh;overflow:hidden;display:flex;
-  flex-direction:column;justify-content:flex-end;padding:0 0 clamp(2rem,5vh,4rem)}
-@supports (height:100svh){ .orb-hero{height:100svh} }
-.orb-lienzo{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
-.orb-hero-copy{position:relative;z-index:1;padding:0 clamp(1.25rem,4vw,4rem);max-width:90rem;
-  margin:0 auto;width:100%}
-/* Perspectiva en el contenedor: sin ella `rotationX` en las letras no vuelca,
-   solo las aplasta en vertical. */
+.orb-hero{position:relative;min-height:100vh;overflow:hidden;
+  display:grid;grid-template-columns:1.02fr .98fr;align-items:center;
+  gap:clamp(2rem,5vw,5rem);max-width:100rem;margin:0 auto;
+  padding:clamp(7rem,14vh,10rem) clamp(1.25rem,4vw,4rem) clamp(5rem,9vh,7rem)}
+@supports (height:100svh){ .orb-hero{min-height:100svh} }
+/* El marco del video. El negro alrededor es parte del diseno: sin borde, la
+   inclinacion hacia el cursor no se percibe porque no hay nada fijo con lo que
+   compararla. */
+.orb-hero-panel{position:relative;order:2;width:100%;
+  border-radius:1rem;overflow:hidden;background:#000;
+  box-shadow:0 2rem 5rem rgba(0,0,0,.8), 0 0 0 1px rgba(250,250,250,.07)}
+.orb-lienzo{display:block;width:100%;aspect-ratio:16/9;height:auto}
+.orb-hero-copy{position:relative;order:1;z-index:1;padding:0;max-width:none;margin:0;width:100%}
+/* Reglas del titular. Se perdieron al reescribir el bloque del hero y las dos
+   lineas quedaron pegadas en un parrafo continuo: los <span> son de linea, y
+   sin `flex-direction:column` no rompen. La perspectiva la necesita la entrada
+   letra a letra —sin ella `rotationX` no vuelca, solo aplasta. */
 .orb-h1{margin:0;display:flex;flex-direction:column;perspective:900px;opacity:0;
-  font-size:clamp(2.5rem,7.6vw,7rem);line-height:.94;letter-spacing:-.05em;font-weight:500}
-.orb-sub{margin:1.75rem 0 0;max-width:42ch;font-size:clamp(1rem,1.3vw,1.1875rem);
+  font-size:clamp(2.25rem,5.2vw,4.5rem);line-height:.98;letter-spacing:-.05em;font-weight:500}
+.orb-sub{margin:1.75rem 0 0;max-width:38ch;font-size:clamp(1rem,1.2vw,1.125rem);
   line-height:1.5;opacity:.78}
-.orb-hero-pie{position:relative;z-index:1;display:flex;justify-content:space-between;
-  gap:1rem;max-width:90rem;margin:clamp(2rem,5vh,3.5rem) auto 0;width:100%;
-  padding:0 clamp(1.25rem,4vw,4rem);font-size:.75rem;letter-spacing:.1em;
+.orb-precio{font-style:normal;
+  background:linear-gradient(90deg,#FA4D4D,#5A70FA);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.orb-hero-pie{position:absolute;left:0;right:0;bottom:0;z-index:1;
+  display:flex;justify-content:space-between;gap:1rem;width:100%;
+  padding:0 clamp(1.25rem,4vw,4rem) clamp(1.75rem,4vh,2.5rem);font-size:.75rem;letter-spacing:.1em;
   text-transform:uppercase;opacity:.45}
 
 /* --- premisa --- */
@@ -1870,3 +1882,13 @@ body:has(.webs){background:var(--fondo)}
    se comen las tildes y los rabos de la g y la j. */
 .orb-linea{overflow:hidden;padding-bottom:.06em}
 [data-letras]{opacity:0}
+
+
+/* --- el hero en pantallas estrechas: el video pasa arriba --- */
+@media screen and (max-width:900px){
+  .orb-hero{grid-template-columns:1fr;gap:2.5rem;
+    padding:6rem 1.25rem 5rem;align-content:center}
+  .orb-hero-panel{order:1}
+  .orb-hero-copy{order:2}
+  .orb-hero-pie{position:static;padding:2rem 1.25rem 0;flex-wrap:wrap}
+}
