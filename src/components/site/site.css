@@ -1895,13 +1895,13 @@ body:has(.webs){background:var(--fondo)}
    tarjeta se vuelve mas ancha que el video escalado a su altura, `cover` pasa
    a escalar por el ancho y el recorte horizontal desaparece —el porcentaje
    deja de tener efecto y el personaje se queda clavado en el centro—. Se
-   desplaza la CAJA del video un 24 % hacia la derecha: el hueco que deja por
+   desplaza la CAJA del video un 18 % hacia la derecha: el hueco que deja por
    la izquierda cae bajo la parte opaca del velo, asi que no se ve, y lo que
    sobra por la derecha lo recorta la lamina.
    Va con `left` y no con `transform` porque la entrada anima la escala del
    video con GSAP, y GSAP reescribe la matriz entera: un `translateX` en el CSS
    se quedaria congelado en pixeles y no seguiria al cambiar el ancho. */
-.orb-lienzo{display:block;position:absolute;top:0;bottom:0;left:24%;
+.orb-lienzo{display:block;position:absolute;top:0;bottom:0;left:18%;
   width:100%;aspect-ratio:auto;
   object-fit:cover;object-position:50% 32%;transform:none}
 /* Los velos. Sin la caja, el texto se apoya directamente sobre la imagen y
@@ -1914,9 +1914,9 @@ body:has(.webs){background:var(--fondo)}
 .orb-lamina-vel{position:absolute;inset:0;display:block;pointer-events:none;
   background:
     linear-gradient(90deg,
-      #0B0B0F 0%, rgba(11,11,15,1) 33%, rgba(11,11,15,.78) 46%,
-      rgba(11,11,15,.22) 60%, rgba(11,11,15,0) 70%,
-      rgba(11,11,15,0) 96%, rgba(11,11,15,.24) 100%),
+      #0B0B0F 0%, rgba(11,11,15,1) 30%, rgba(11,11,15,.76) 44%,
+      rgba(11,11,15,.2) 57%, rgba(11,11,15,0) 67%,
+      rgba(11,11,15,0) 93%, rgba(11,11,15,.3) 100%),
     linear-gradient(180deg,
       rgba(11,11,15,.5) 0%, rgba(11,11,15,0) 22%,
       rgba(11,11,15,0) 46%, rgba(11,11,15,.86) 100%)}
