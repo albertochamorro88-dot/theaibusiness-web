@@ -25,6 +25,12 @@ export const actMedia = {
      estan medidos y no estimados. Si se cambia la foto hay que volver a
      medirlos: van en `.act-cartel`. */
   cartel: `${MEDIA}/img/aiact/cartel.jpg`,
+  /* La sala de exposicion. El muro de led ocupa, sobre los 1402x1122 del
+     original, de x=98 a x=1281 y de y=266 a y=858. Las siluetas de la gente
+     tapan el cuarto de abajo del muro, asi que el texto se queda arriba.
+     Mismo aviso que con el cartel: si se cambia la foto, hay que volver a
+     medir. Van en `.act-muro`. */
+  sala: `${MEDIA}/img/aiact/sala.jpg`,
 } as const;
 
 /* -------------------------------------------------------------- 00 · hero */

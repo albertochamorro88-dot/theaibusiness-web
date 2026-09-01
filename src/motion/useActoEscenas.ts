@@ -234,55 +234,69 @@ export function usePila(ready: boolean) {
 }
 
 /* ==========================================================================
-   03 · el reloj
+   03 · la sala
    ========================================================================== */
 
 /**
- * El calendario se mueve mientras lo lees.
+ * El muro exhibe una fecha cada vez.
  *
- * Es la unica seccion cuyo tema es el paso del tiempo, asi que es la unica que
- * se recorre en horizontal: bajas y las fechas pasan de largo. La linea se
- * traza al mismo ritmo y cada hito se enciende JUSTO cuando cruza el centro de
- * la pantalla.
+ * Las otras tres no estan atenuadas: no estan. Un calendario en el que se ven
+ * los cuatro plazos a la vez se ojea; uno que solo ensena el que toca se lee,
+ * y ademas es lo que hace un muro de sala: exponer una cosa.
  *
- * Ese instante no se estima: se calcula. Se mide donde esta cada hito dentro
- * del tren, se resta medio ancho de pantalla y se divide por el recorrido
- * total. Asi el encendido cae en el fotograma en que la fecha esta centrada,
- * en cualquier pantalla.
+ * La fecha que sale se va por arriba y la que entra sube desde abajo. Ese
+ * sentido —siempre hacia arriba, nunca de vuelta— es el del tiempo, que es de
+ * lo que va la seccion.
+ *
+ * Aqui SI se clava en movil, al reves que en el resto de la pagina. Sin
+ * clavar no hay recorrido con el que cambiar de fecha, y quitar el cambio es
+ * quedarse sin seccion; se compensa acortando el paso.
  */
-export function useReloj(ready: boolean) {
+export function useSala(ready: boolean) {
   useEffect(() => {
     if (!ready) return;
     registerGsap();
 
-    const sec = document.querySelector<HTMLElement>(".act-reloj");
+    const sec = document.querySelector<HTMLElement>(".act-sala");
     if (!sec) return;
 
-    const pin = sec.querySelector<HTMLElement>(".act-reloj-pin");
-    const tren = sec.querySelector<HTMLElement>(".act-tren");
-    const via = sec.querySelector<HTMLElement>(".act-via-l");
-    const hitos = [...sec.querySelectorAll<HTMLElement>(".act-hito")];
-    if (!pin || !tren || !hitos.length) return;
+    const pin = sec.querySelector<HTMLElement>(".act-sala-pin");
+    const fechas = [...sec.querySelectorAll<HTMLElement>(".act-fecha")];
+    const puntos = [...sec.querySelectorAll<HTMLElement>(".act-rail-p")];
+    const relleno = sec.querySelector<HTMLElement>(".act-rail-f");
+    if (!pin || fechas.length < 2) return;
+
+    const n = fechas.length;
+
+    const APAGADO = { scale: 1, backgroundColor: "#1B1B22", borderColor: "rgba(255,255,255,0.4)" };
+    const ENCENDIDO = { scale: 1.7, backgroundColor: "#FFFFFF", borderColor: "rgba(255,255,255,0)" };
 
     if (reducido()) {
-      gsap.set(hitos, { opacity: 1 });
-      if (via) gsap.set(via, { scaleX: 1 });
+      /* Sin movimiento no hay forma de pasar de una a otra, asi que se ensena
+         la primera y se deja el rail al principio. */
+      gsap.set(fechas, { opacity: (i) => (i === 0 ? 1 : 0), yPercent: (i) => (i === 0 ? 0 : 100) });
+      gsap.set(puntos, APAGADO);
+      if (puntos[0]) gsap.set(puntos[0], ENCENDIDO);
+      if (relleno) gsap.set(relleno, { scaleX: 0 });
       return;
     }
 
     const mm = gsap.matchMedia();
 
-    mm.add(GRANDE, () => {
-      const recorrido = () => Math.max(0, tren.scrollWidth - window.innerWidth + 96);
-
-      gsap.set(hitos, { opacity: 0.24 });
-      if (via) gsap.set(via, { scaleX: 0 });
+    const montar = (paso: number) => {
+      gsap.set(fechas, {
+        yPercent: (i) => (i === 0 ? 0 : 100),
+        opacity: (i) => (i === 0 ? 1 : 0),
+      });
+      gsap.set(puntos, APAGADO);
+      if (puntos[0]) gsap.set(puntos[0], ENCENDIDO);
+      if (relleno) gsap.set(relleno, { scaleX: 0 });
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sec,
           start: "top top",
-          end: () => `+=${recorrido() + window.innerHeight * 0.4}`,
+          end: () => `+=${(n - 1) * paso + 40}%`,
           scrub: 0.5,
           pin,
           pinSpacing: true,
@@ -290,33 +304,31 @@ export function useReloj(ready: boolean) {
         },
       });
 
-      tl.to(tren, { x: () => -recorrido(), ease: "none", duration: 1 }, 0);
-      if (via) tl.to(via, { scaleX: 1, ease: "none", duration: 1 }, 0);
-
-      /* El encendido de cada fecha, colocado en el punto del recorrido en que
-         esa fecha queda centrada. */
-      const D = recorrido();
-      hitos.forEach((h) => {
-        const centro = h.offsetLeft + h.offsetWidth / 2;
-        const t = D > 0 ? (centro - window.innerWidth / 2) / D : 0;
-        tl.to(h, { opacity: 1, duration: 0.14, ease: "none" },
-          Math.min(0.92, Math.max(0, t)));
-      });
+      for (let i = 1; i < n; i++) {
+        const t = i - 1;
+        /* La que sale y la que entra se cruzan, pero solo un poco. Sin cruce
+           quedaba un instante con el muro VACIO —parece averiado, no una
+           transicion—; con mucho cruce se veian las dos a la vez a media
+           opacidad, que es lo contrario de exhibir una cosa. En esta ventana
+           las separan mas de una altura de vitrina: nunca se pisan.
+           El cambio ocupa poco mas de la mitad del paso; el resto es pausa,
+           que es lo que da tiempo a leer la fecha. */
+        tl.to(fechas[i - 1], { yPercent: -100, opacity: 0, ease: "power2.in", duration: 0.32 }, t);
+        tl.fromTo(fechas[i],
+          { yPercent: 100, opacity: 0 },
+          { yPercent: 0, opacity: 1, ease: "power3.out", duration: 0.38 }, t + 0.2);
+        if (relleno) tl.to(relleno, { scaleX: i / (n - 1), ease: "none", duration: 0.5 }, t);
+        if (puntos[i - 1]) tl.to(puntos[i - 1], { ...APAGADO, duration: 0.4 }, t);
+        if (puntos[i]) tl.to(puntos[i], { ...ENCENDIDO, duration: 0.4 }, t + 0.15);
+      }
+      /* Un compas con la ultima fecha puesta antes de soltar. */
+      tl.to({}, { duration: 0.4 }, n - 1);
 
       return () => { tl.scrollTrigger?.kill(); tl.kill(); };
-    });
+    };
 
-    mm.add(CHICA, () => {
-      gsap.set(tren, { clearProps: "transform" });
-      if (via) gsap.set(via, { scaleX: 1 });
-      const tw = gsap.fromTo(hitos,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1, y: 0, duration: 0.7, ease: "power3.out", stagger: 0.1,
-          scrollTrigger: { trigger: sec, start: "top 72%", once: true },
-        });
-      return () => { tw.scrollTrigger?.kill(); tw.kill(); };
-    });
+    mm.add(GRANDE, () => montar(95));
+    mm.add(CHICA, () => montar(62));
 
     return () => mm.revert();
   }, [ready]);

@@ -2183,7 +2183,7 @@ body:has(.webs){background:var(--fondo)}
 .orbital .orb-cierre,
 .act-sust,
 .act-pila,
-.act-reloj,
+.act-sala,
 .act-multa,
 .act-banda,
 .act-video,
@@ -2556,49 +2556,72 @@ body:has(.webs){background:var(--fondo)}
   line-height:1.5;opacity:.62}
 
 /* ==========================================================================
-   03 · el reloj
-   La unica seccion cuyo tema es el paso del tiempo, y la unica que se recorre
-   en horizontal: bajas y las fechas pasan de largo.
+   03 · la sala
+   El calendario se exhibe. El muro de led muestra UNA fecha cada vez y las
+   demas no estan: no es una lista que ojear, es algo expuesto.
    ========================================================================== */
-.act-reloj-pin{min-height:100vh;display:flex;flex-direction:column;
-  justify-content:center;overflow:hidden;padding:clamp(4rem,10vh,7rem) 0}
-.act-reloj-h{margin:clamp(1rem,2.5vh,1.75rem) 0 0;
-  font-size:clamp(2rem,6vw,5rem);line-height:.98;letter-spacing:-.05em;
+.act-sala-pin{position:relative;min-height:100vh;overflow:hidden;isolation:isolate}
+
+/* El centro del muro coincide con el centro de la foto, asi que centrar la
+   foto centra el muro: no hace falta corregir nada.
+   `min(100%,205vh)` es el tope para pantallas anchas y bajas: sin el, el muro
+   crece mas que el alto de la ventana y se sale por arriba y por abajo. */
+.act-escenario{position:absolute;left:50%;top:50%;
+  width:min(100%,205vh);aspect-ratio:1402/1122;translate:-50% -50%}
+.act-escenario-f{position:absolute;inset:0;display:block;width:100%;height:100%;
+  object-fit:fill}
+/* Un apagado suave contra el negro de la seccion, arriba y abajo. La sala es
+   oscura en los dos cantos, asi que basta con muy poco. */
+.act-sala-vel{position:absolute;inset:0;display:block;pointer-events:none;
+  background:linear-gradient(180deg,#0A0A0A 0%,transparent 16%,transparent 84%,#0A0A0A 100%)}
+
+/* El muro, medido sobre el original: x 98->1281, y 266->858 de 1402x1122.
+   El relleno de abajo —un cuarto del alto del muro— no es aire: es la franja
+   que tapan las siluetas de la gente. */
+.act-muro{position:absolute;left:6.99%;top:23.71%;width:84.38%;height:52.76%;
+  container-type:inline-size;
+  display:flex;flex-direction:column;
+  padding:3.4cqw 3.6cqw 12.5cqw;color:#FFF;
+  text-shadow:0 .02em .1em rgba(0,0,0,.45)}
+
+.act-muro-cab{display:flex;flex-direction:column;gap:1cqw}
+.act-muro-eti{margin:0;font-size:clamp(.5rem,1.05cqw,.8rem);
+  color:rgba(255,255,255,.78)}
+.act-muro-eti .orb-eti-l{background:rgba(255,255,255,.38)}
+.act-muro-h{margin:0;font-size:3.4cqw;line-height:1;letter-spacing:-.045em;
   font-weight:500}
 
-.act-via{position:relative;margin-top:clamp(2.5rem,6vh,4.5rem)}
-/* La via se traza al mismo ritmo al que avanza el tren: la linea no decora,
-   mide cuanto llevas recorrido. */
-.act-via-l{position:absolute;left:0;right:0;top:0;height:1px;display:block;
-  transform-origin:left center;
-  background:linear-gradient(90deg,#FA4D4D,#5A70FA 55%,rgba(215,217,230,.25))}
-/* El hueco de la derecha no es un margen: es el recorrido. Sin el, en una
-   pantalla ancha las cuatro fechas caben casi enteras y el tren apenas se
-   mueve —quedaba una seccion clavada que no viajaba a ningun sitio—. Con el,
-   el recorrido crece con la pantalla y la ultima fecha llega a quedar
-   centrada, que es cuando se enciende. */
-.act-tren{position:relative;list-style:none;margin:0;display:flex;
-  gap:clamp(2.5rem,6vw,6.5rem);
-  padding:0 clamp(16rem,30vw,34rem) 0 clamp(1.25rem,4vw,4rem);
-  will-change:transform}
-.act-hito{position:relative;flex:0 0 clamp(17rem,25vw,25rem);padding-top:2.4rem}
-.act-hito-p{position:absolute;left:0;top:-5px;width:11px;height:11px;
-  display:block;border-radius:50%;background:#1B1B22;
-  border:1px solid rgba(250,250,250,.22)}
-.act-hito[data-pasado] .act-hito-p{border-color:transparent;
-  background:linear-gradient(135deg,#FA4D4D,#5A70FA);
-  box-shadow:0 0 0 6px rgba(250,77,77,.11)}
-.act-hito-e{display:inline-block;padding:.2em .65em;border-radius:99px;
-  border:1px solid rgba(250,250,250,.18);font-size:.57rem;letter-spacing:.16em;
-  text-transform:uppercase;opacity:.55}
-.act-hito[data-pasado] .act-hito-e{border-color:rgba(250,77,77,.45);
-  color:#FA4D4D;opacity:.95}
-.act-hito-f{display:block;margin-top:1rem;
-  font-size:clamp(1.9rem,4.2vw,3.5rem);line-height:.95;letter-spacing:-.05em;
-  font-weight:500;font-variant-numeric:tabular-nums}
-.act-hito-t{margin:.7rem 0 .35rem;font-size:clamp(1rem,1.4vw,1.35rem);
-  letter-spacing:-.025em;font-weight:500}
-.act-hito-n{margin:0;font-size:.86rem;line-height:1.5;opacity:.55}
+/* --- el rail de progreso --- */
+/* El relleno va en BLANCO y no en el degradado de marca: el muro ya es un
+   degradado de rojo a azul, y una linea de los mismos colores encima
+   desaparece. Aqui el contraste lo da el blanco. */
+.act-rail{position:relative;height:2px;margin:3.4cqw 0 0}
+.act-rail-l{position:absolute;inset:0;display:block;background:rgba(255,255,255,.24)}
+.act-rail-f{position:absolute;inset:0;display:block;
+  transform-origin:left center;background:#FFF}
+/* Los cuatro hitos. La posicion la pone el marcado —ver el comentario alli—;
+   aqui solo va la forma. */
+.act-rail-p{position:absolute;top:50%;width:7px;height:7px;display:block;
+  border-radius:50%;background:#1B1B22;border:1px solid rgba(255,255,255,.4);
+  translate:-50% -50%}
+
+/* --- la vitrina: solo se ve la fecha que toca --- */
+.act-vitrina{position:relative;flex:1;overflow:hidden;margin-top:2.4cqw}
+.act-fecha{position:absolute;left:0;top:0;width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
+  gap:.8cqw;will-change:transform}
+.act-fecha-e{display:inline-block;padding:.25em .8em;border-radius:99px;
+  border:1px solid rgba(255,255,255,.4);
+  font-size:clamp(.5rem,.88cqw,.7rem);letter-spacing:.16em;text-transform:uppercase;
+  opacity:.8;text-shadow:none}
+.act-fecha[data-pasado] .act-fecha-e{border-color:rgba(250,77,77,.75);color:#FF8A8A;
+  opacity:1}
+.act-fecha-f{margin:0;font-size:9.5cqw;line-height:.92;letter-spacing:-.055em;
+  font-weight:600;font-variant-numeric:tabular-nums;
+  padding-block:.02em .12em;margin-block:-.02em -.12em}
+.act-fecha-t{margin:0;font-size:2.6cqw;line-height:1.05;letter-spacing:-.035em;
+  font-weight:500}
+.act-fecha-n{margin:0;font-size:1.35cqw;line-height:1.45;opacity:.72}
 
 /* ==========================================================================
    04 · la multa
@@ -2793,16 +2816,12 @@ body:has(.webs){background:var(--fondo)}
   .act-nivel-i{font-size:clamp(2.75rem,14vw,4.5rem)}
   .act-nivel-p{max-width:none}
 
-  .act-reloj-pin{min-height:auto;padding:clamp(5rem,14vh,8rem) 0;overflow:visible}
-  .act-via{overflow:visible}
-  /* En vertical la via es una linea al margen, no un carril: la lectura
-     tambien pasa a ser de arriba abajo. */
-  .act-via-l{left:5px;right:auto;top:0;bottom:0;width:1px;height:auto;
-    background:linear-gradient(180deg,#FA4D4D,#5A70FA 60%,rgba(215,217,230,.25))}
-  .act-tren{flex-direction:column;gap:clamp(2rem,6vh,3rem);padding:0}
-  .act-hito{flex:none;width:auto;padding:0 0 0 2rem}
-  .act-hito-p{top:.3rem}
-  .act-hito-f{font-size:clamp(1.7rem,8vw,2.4rem)}
+  /* El muro ocupa el 84 % del ancho de la foto, asi que la foto puede crecer
+     hasta el 118 % antes de que el muro se salga de la pantalla. Se agranda
+     hasta ahi: en un movil, lo que importa es lo que pone en el muro. */
+  .act-escenario{width:116%}
+  .act-muro{padding:4.2cqw 4.4cqw 12.5cqw}
+  .act-fecha-n{display:none}
 
   .act-multa-pin{min-height:auto;padding:clamp(5rem,14vh,8rem) 0}
   .act-multa-lados{flex-direction:column;gap:1.75rem}

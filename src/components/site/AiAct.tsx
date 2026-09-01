@@ -42,7 +42,7 @@ import {
   useMulta,
   usePila,
   useRefresco,
-  useReloj,
+  useSala,
   useSustitucion,
 } from "@/motion/useActoEscenas";
 import { useRodillo } from "@/motion/useDonut";
@@ -95,7 +95,7 @@ export default function AiAct() {
   /* Lo propio del AI Act: una escena por seccion. */
   useSustitucion(true);
   usePila(true);
-  useReloj(true);
+  useSala(true);
   useMulta(true);
   useApertura(true);
   useCaida(true);
@@ -354,30 +354,60 @@ export default function AiAct() {
       {/* ------------------------------------------------------- banda 1 */}
       <Banda i={0} irA={irA} />
 
-      {/* ======================================================== 03 · el reloj */}
-      <section id="calendario" className="act-reloj">
-        <div className="act-reloj-pin">
-          <div className="orb-cont act-reloj-cab">
-            <div line="" className="orb-eti">
-              ( 03 — El calendario )<i className="orb-eti-l" aria-hidden="true" />
+      {/* ======================================================== 03 · la sala */}
+      {/* El calendario se exhibe. El muro de led de la sala muestra UNA fecha
+          cada vez —la que toca— y las demas no estan: no hay lista que ojear,
+          hay algo expuesto. El raíl de abajo dice por cual vas. */}
+      <section id="calendario" className="act-sala">
+        <div className="act-sala-pin">
+          <div className="act-escenario">
+            <img
+              className="act-escenario-f"
+              src={actMedia.sala}
+              alt=""
+              width={1402}
+              height={1122}
+              loading="lazy"
+            />
+
+            <div className="act-muro">
+              <div className="act-muro-cab">
+                <div line="" className="orb-eti act-muro-eti">
+                  ( 03 — El calendario )<i className="orb-eti-l" aria-hidden="true" />
+                </div>
+                <p className="act-muro-h">Las fechas ya corren.</p>
+              </div>
+
+              <div className="act-rail" aria-hidden="true">
+                <i className="act-rail-l" />
+                <i className="act-rail-f" />
+                {/* La posicion va en linea y no en la hoja de estilos: con
+                    `nth-of-type` el navegador cuenta TODOS los <i> hermanos
+                    —el rail y el relleno tambien lo son—, no los de esta
+                    clase, y los puntos salian corridos dos sitios. */}
+                {actHitos.map((h, i) => (
+                  <i
+                    key={h.fecha}
+                    className="act-rail-p"
+                    style={{ left: `${(i / (actHitos.length - 1)) * 100}%` }}
+                  />
+                ))}
+              </div>
+
+              <div className="act-vitrina">
+                {actHitos.map((h) => (
+                  <article key={h.fecha} className="act-fecha" data-pasado={h.pasado ? "" : undefined}>
+                    <span className="act-fecha-e">{h.estado}</span>
+                    <p className="act-fecha-f">{h.fecha}</p>
+                    <h3 className="act-fecha-t">{h.titulo}</h3>
+                    <p className="act-fecha-n">{h.nota}</p>
+                  </article>
+                ))}
+              </div>
             </div>
-            <h2 data-letras="" className="act-reloj-h">Las fechas ya corren.</h2>
           </div>
 
-          <div className="act-via">
-            <i className="act-via-l" aria-hidden="true" />
-            <ol className="act-tren">
-              {actHitos.map((h) => (
-                <li key={h.fecha} className="act-hito" data-pasado={h.pasado ? "" : undefined}>
-                  <span className="act-hito-e">{h.estado}</span>
-                  <i className="act-hito-p" aria-hidden="true" />
-                  <span className="act-hito-f">{h.fecha}</span>
-                  <h3 className="act-hito-t">{h.titulo}</h3>
-                  <p className="act-hito-n">{h.nota}</p>
-                </li>
-              ))}
-            </ol>
-          </div>
+          <i className="act-sala-vel" aria-hidden="true" />
         </div>
       </section>
 
