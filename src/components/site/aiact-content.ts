@@ -210,11 +210,25 @@ export const actBandas = [
 ] as const;
 
 export const actContacto = {
+  /* La cinta del cierre. Ya no es adorno: es la oferta. Va con guiones
+     largos porque la frase se repite en bucle y el guion es lo que empalma
+     el final de una copia con el principio de la siguiente. */
+  cinta: "Diagnóstico del AI Act — 15 minutos — Sin compromiso —",
   titulo: ["No esperes a una inspección", "para saber qué IA usas."],
   texto: "Evaluación de 15 minutos. Si no encaja con tu empresa, te lo decimos en la llamada.",
+  /* Lo que pasa en la llamada, en el orden en que pasa. Es el dato que
+     faltaba: hasta ahora el formulario pedia cuatro campos sin decir a cambio
+     de que, y eso es exactamente donde se cae la gente. No hay promesa nueva
+     —cada linea describe una seccion que ya esta mas arriba en la pagina. */
+  agendaLabel: "Qué pasa en esos 15 minutos",
+  agenda: [
+    "Repasamos qué IA usa tu equipo hoy, comprada o propia.",
+    "Te decimos en qué nivel de riesgo cae cada una.",
+    "Sales con el orden de lo que te toca hacer, y cuándo.",
+  ],
   formTitulo: "Reserva tu diagnóstico.",
   formTexto: "15 minutos. Sin preparación previa.",
-  campos: { nombre: "Nombre", email: "Email", empresa: "Empresa" },
+  campos: { nombre: "Nombre", email: "Email", empresa: "Empresa (opcional)" },
   necesidadLabel: "¿Qué describe mejor tu caso?",
   necesidades: [
     "Usamos IA comprada",
@@ -223,4 +237,6 @@ export const actContacto = {
     "No lo sé",
   ],
   enviar: "Reservar diagnóstico · 15 min",
+  /* Debajo del boton, donde se decide el ultimo clic. */
+  garantia: "Sin compromiso. No compartimos tus datos.",
 } as const;

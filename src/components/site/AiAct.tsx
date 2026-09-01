@@ -28,7 +28,7 @@ import { useReveals, playIntroReveals } from "@/motion/useReveals";
 import { useSmoother } from "@/motion/useSmoother";
 import {
   useActo,
-  useCintaScroll,
+  useCinta,
   useHeroEntrada,
   useLetras,
   useMicro,
@@ -69,6 +69,7 @@ function useDiasEnVigor() {
 
 export default function AiAct() {
   const video1 = useRef<HTMLVideoElement>(null);
+  const formTocado = useRef(false);
   const dias = useDiasEnVigor();
 
   useReveals(true);
@@ -78,7 +79,7 @@ export default function AiAct() {
   useSmoother(true, false);
 
   /* Lo que se hereda de la pagina de webs: el encabezado y sus detalles. */
-  useCintaScroll(true);
+  useCinta(true);
   useTapado(true);
   useLetras(true);
   useHeroEntrada(true);
@@ -439,8 +440,14 @@ export default function AiAct() {
 
       {/* ---------------------------------------------------------- cierre */}
       <footer id="contacto" className="orb-cierre act-cierre">
+        {/* Cuatro copias: media cinta —dos— sobra para cubrir cualquier
+            pantalla, que es la condicion para que el bucle no enseñe hueco. */}
         <div className="orb-cinta-w" aria-hidden="true">
-          <div className="orb-cinta" data-orb-cinta="1584">Reglamento UE 2024/1689 — Ya te obliga —</div>
+          <div className="orb-cinta" data-cinta="">
+            {[0, 1, 2, 3].map((i) => (
+              <span key={i} className="orb-cinta-p">{actContacto.cinta}</span>
+            ))}
+          </div>
         </div>
 
         <div className="orb-cont act-cierre-r">
@@ -449,6 +456,30 @@ export default function AiAct() {
               {actContacto.titulo[0]}<br />{actContacto.titulo[1]}
             </h2>
             <p data-letras="" className="orb-cierre-p act-cierre-p">{actContacto.texto}</p>
+
+            {/* El cambio que mas pesa de todo el cierre: decir a cambio de que
+                se rellenan cuatro campos. Antes el formulario pedia sin
+                ofrecer, y ahi es donde se cae la gente. */}
+            <div opacity="" className="act-agenda">
+              <p className="act-agenda-e">{actContacto.agendaLabel}</p>
+              <ol className="act-agenda-l">
+                {actContacto.agenda.map((a, i) => (
+                  <li key={a} className="act-agenda-i">
+                    <span className="act-agenda-n">{String(i + 1).padStart(2, "0")}</span>
+                    <span>{a}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            {/* El mismo contador de la portada, al final: es el unico dato de
+                urgencia de la pagina que no hay que inventarse. */}
+            {dias !== null && (
+              <p className="act-cierre-v">
+                El AI Act lleva <b className="act-dias">{dias} días</b> en vigor.
+              </p>
+            )}
+
             <a href={enlaces.email} data-rodillo="" className="drodillo orb-mail">
               <span>info@theaibusiness.com</span>
             </a>
@@ -459,6 +490,14 @@ export default function AiAct() {
               que se conecte la agenda. */}
           <form
             className="act-form"
+            /* Quien empieza el formulario y no lo manda es la fuga que no se
+               ve en ninguna metrica. Se marca el arranque una sola vez para
+               poder medir despues cuantos empiezan frente a cuantos envian. */
+            onFocusCapture={() => {
+              if (formTocado.current) return;
+              formTocado.current = true;
+              evento("act_form_inicio", { cta_position: "cierre" });
+            }}
             onSubmit={(e) => {
               e.preventDefault();
               const d = new FormData(e.currentTarget);
@@ -476,6 +515,20 @@ export default function AiAct() {
             <h3 className="act-form-h">{actContacto.formTitulo}</h3>
             <p className="act-form-p">{actContacto.formTexto}</p>
 
+            {/* La pregunta va PRIMERO y a un clic. Empezar por escribir el
+                nombre es empezar por lo que mas cuesta; empezar eligiendo el
+                propio caso ya deja el formulario a medias, y un formulario a
+                medias se termina. */}
+            <fieldset className="act-casos">
+              <legend>{actContacto.necesidadLabel}</legend>
+              {actContacto.necesidades.map((n) => (
+                <label key={n} className="act-caso">
+                  <input type="radio" name="caso" value={n} required />
+                  <span>{n}</span>
+                </label>
+              ))}
+            </fieldset>
+
             <label className="act-campo">
               <span>{actContacto.campos.nombre}</span>
               <input name="nombre" type="text" autoComplete="name" required />
@@ -489,20 +542,11 @@ export default function AiAct() {
               <input name="empresa" type="text" autoComplete="organization" />
             </label>
 
-            <fieldset className="act-casos">
-              <legend>{actContacto.necesidadLabel}</legend>
-              {actContacto.necesidades.map((n, i) => (
-                <label key={n} className="act-caso">
-                  <input type="radio" name="caso" value={n} defaultChecked={i === 0} />
-                  <span>{n}</span>
-                </label>
-              ))}
-            </fieldset>
-
             <button type="submit" className="orb-btn act-enviar" onClick={reserva("act_form", "cierre")}>
               <span>{actContacto.enviar}</span>
               <i className="orb-btn-f" aria-hidden="true">→</i>
             </button>
+            <p className="act-form-g">{actContacto.garantia}</p>
           </form>
         </div>
 

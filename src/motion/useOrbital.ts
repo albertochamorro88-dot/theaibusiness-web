@@ -115,32 +115,73 @@ export function useParalajeOrb(ready: boolean) {
   }, [ready]);
 }
 
-/* --------------------------------------------------- marquesina por scroll */
+/* ---------------------------------------------------------- la marquesina */
 
 /**
- * El titular que se desplaza en horizontal segun se baja.
+ * La cinta de titulares: desfila sola y el scroll la empuja.
  *
- * Atado al scroll, no a un reloj: en la referencia recorre 1584 px y se detiene
- * si el lector se detiene. Es la diferencia con una cinta normal, y se nota:
- * esta obedece, la otra desfila sola.
+ * La version anterior estaba atada al scroll y SOLO al scroll: una copia de la
+ * frase que recorria 1584 px entre que la franja entraba por abajo y salia por
+ * arriba. Medido sobre la pagina publicada, al llegar al final del documento el
+ * recorrido ya estaba agotado y la cinta se quedaba quieta enseñando su trozo
+ * central, cortado por los dos lados. Y ahi es justo donde se para el lector,
+ * porque debajo esta el formulario. No parecia una cinta: parecia un titular
+ * roto.
+ *
+ * Ahora la frase se repite y el carro va en bucle de 0 a -50 %: al terminar,
+ * la copia n+1 esta exactamente donde estaba la n, asi que el salto no existe.
+ * El scroll ya no la mueve, la ACELERA —y le da la vuelta si se sube—, que es
+ * lo que hace que responda sin depender de que quede pagina por delante.
  */
-export function useCintaScroll(ready: boolean) {
+export function useCinta(ready: boolean) {
   useEffect(() => {
-    if (!ready || reducido()) return;
+    if (!ready) return;
     registerGsap();
-    const piezas = [...document.querySelectorAll<HTMLElement>("[data-orb-cinta]")];
-    const tw = piezas.map((el) => {
-      const d = Number(el.dataset.orbCinta) || 1584;   // medido
-      return gsap.fromTo(el, { x: d / 2 }, {
-        x: -d / 2, ease: "none",
-        scrollTrigger: {
-          trigger: el.parentElement ?? el,
-          start: "top bottom", end: "bottom top",
-          scrub: true, invalidateOnRefresh: true,
-        },
-      });
+
+    const carros = [...document.querySelectorAll<HTMLElement>("[data-cinta]")];
+    if (!carros.length) return;
+
+    /* Con el movimiento reducido no desfila; pero tampoco se queda a medias:
+       se centra y se lee entera una copia. */
+    if (reducido()) {
+      carros.forEach((c) => c.classList.add("orb-cinta-quieta"));
+      return;
+    }
+
+    const VELOCIDAD = 62;                     // px por segundo de crucero
+    const bucles = carros.map((carro) =>
+      gsap.to(carro, {
+        xPercent: -50, ease: "none", repeat: -1,
+        /* Media cinta es un juego completo de copias: ese es el recorrido
+           real, y de el sale la duracion para que la velocidad no dependa
+           del tamano de la letra ni del ancho de la pantalla. */
+        duration: Math.max(10, carro.scrollWidth / 2 / VELOCIDAD),
+      }),
+    );
+
+    let sentido = 1;
+    let volver: ReturnType<typeof setTimeout> | undefined;
+    const empujar = (t: number, d: number) =>
+      bucles.forEach((b) => gsap.to(b, { timeScale: t, duration: d, overwrite: true }));
+
+    const st = ScrollTrigger.create({
+      start: 0, end: "max",
+      onUpdate: (self) => {
+        const v = self.getVelocity();
+        sentido = v < 0 ? -1 : 1;
+        /* El empujon se topa en 5x: mas alla la frase deja de leerse y el
+           efecto se convierte en una mancha. */
+        empujar(sentido * (1 + Math.min(Math.abs(v) / 500, 4)), 0.25);
+        clearTimeout(volver);
+        volver = setTimeout(() => empujar(sentido, 0.9), 200);
+      },
     });
-    return () => { tw.forEach((t) => { t.scrollTrigger?.kill(); t.kill(); }); };
+
+    return () => {
+      clearTimeout(volver);
+      st.kill();
+      bucles.forEach((b) => b.kill());
+    };
   }, [ready]);
 }
 

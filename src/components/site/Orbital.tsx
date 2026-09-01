@@ -12,7 +12,7 @@ import { useMenu } from "@/motion/useMenu";
 import { useNavLogo } from "@/motion/useNavLogo";
 import { useReveals, playIntroReveals } from "@/motion/useReveals";
 import { useSmoother } from "@/motion/useSmoother";
-import { useCintaScroll, useEntraDerecha, useHeroEntrada, useIncluye, useLetras, useCara, useMicro, useMiraPuntero, useParpadeo, useOrbita, useParalajeOrb, useTapado } from "@/motion/useOrbital";
+import { useCinta, useEntraDerecha, useHeroEntrada, useIncluye, useLetras, useCara, useMicro, useMiraPuntero, useParpadeo, useOrbita, useParalajeOrb, useTapado } from "@/motion/useOrbital";
 import { useRodillo } from "@/motion/useDonut";
 
 import "lenis/dist/lenis.css";
@@ -72,7 +72,7 @@ export default function Orbital() {
 
   useOrbita(true);
   useParalajeOrb(true);
-  useCintaScroll(true);
+  useCinta(true);
   useTapado(true);
   useLetras(true);
   useHeroEntrada(true);
@@ -346,9 +346,14 @@ Diagnóstico. <br />Diseño. <br />Desarrollo. <br />Online.
 
       {/* ---------------------------------------------------------- cierre */}
       <footer id="contacto" className="orb-cierre">
-        {/* Recorre 1584 px atado al scroll: si el lector para, para. */}
+        {/* Desfila en bucle y el scroll la acelera. Cuatro copias: media
+            cinta ya cubre cualquier pantalla, y por eso el salto no se ve. */}
         <div className="orb-cinta-w" aria-hidden="true">
-          <div className="orb-cinta" data-orb-cinta="1584">997 € — Cuéntanos tu caso —</div>
+          <div className="orb-cinta" data-cinta="">
+            {[0, 1, 2, 3].map((i) => (
+              <span key={i} className="orb-cinta-p">997 € — Cuéntanos tu caso —</span>
+            ))}
+          </div>
         </div>
 
         <div className="orb-marcos">
