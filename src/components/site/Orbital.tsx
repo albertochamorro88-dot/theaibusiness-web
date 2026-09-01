@@ -11,7 +11,7 @@ import { useMenu } from "@/motion/useMenu";
 import { useNavLogo } from "@/motion/useNavLogo";
 import { useReveals, playIntroReveals } from "@/motion/useReveals";
 import { useSmoother } from "@/motion/useSmoother";
-import { useCintaScroll, useOrbita, useParalajeOrb } from "@/motion/useOrbital";
+import { useCintaScroll, useLetras, useOrbita, useParalajeOrb, useTapado } from "@/motion/useOrbital";
 import { useRodillo } from "@/motion/useDonut";
 import { montarTilt } from "@/webgl/tilt";
 
@@ -54,6 +54,8 @@ export default function Orbital() {
   useOrbita(true);
   useParalajeOrb(true);
   useCintaScroll(true);
+  useTapado(true);
+  useLetras(true);
   useRodillo(true);
 
   useEffect(() => { playIntroReveals(); }, []);
@@ -72,7 +74,7 @@ export default function Orbital() {
       <header className="orb-hero">
         <canvas ref={lienzo} className="orb-lienzo" aria-hidden="true" />
         <div className="orb-hero-copy">
-          <h1 line="" className="orb-h1">
+          <h1 data-letras="" className="orb-h1">
             <span>Webs que convierten.</span>
             <span>Precio cerrado: <em className="orb-precio">997 €</em></span>
           </h1>
@@ -90,7 +92,7 @@ export default function Orbital() {
       <section className="orb-premisa">
         <div className="orb-cont">
           <div line="" className="orb-eti">( 01 — Premisa )</div>
-          <h2 line="" className="orb-h2">
+          <h2 data-letras="" className="orb-h2">
             No vendemos webs bonitas. Vendemos webs que venden.
           </h2>
           <figure className="orb-retrato">
@@ -105,7 +107,7 @@ export default function Orbital() {
       <section className="orb-galeria">
         <div className="orb-galeria-cab">
           <div className="orb-eti">( 02 — Trabajo )</div>
-          <h2 className="orb-h2-chico">{w.pilaTitulo.replace("\n", " ")}</h2>
+          <h2 data-letras="" className="orb-h2-chico">{w.pilaTitulo.replace("\n", " ")}</h2>
         </div>
         <div className="orb-pista">
           {muestras.map((m, i) => (
@@ -150,7 +152,7 @@ export default function Orbital() {
         </div>
 
         <div className="orb-cont orb-cierre-c">
-          <p line="" className="orb-cierre-p">{w.cierreApoyo}</p>
+          <p data-letras="" className="orb-cierre-p">{w.cierreApoyo}</p>
           <a
             opacity=""
             href={enlaces.email}

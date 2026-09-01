@@ -1827,3 +1827,39 @@ body:has(.webs){background:var(--fondo)}
 @media screen and (max-width:992px){
   .orb-lista-fija{grid-template-columns:1fr;gap:.5rem}
 }
+
+/* --- el encabezado se queda pegado y la seccion siguiente lo tapa --- */
+/* No se mueve nada a mano: basta con que el encabezado sea pegajoso y la
+   seccion de debajo vaya en una capa superior CON FONDO PROPIO. Sin fondo se
+   veria el encabezado a traves y el efecto se pierde. */
+.orb-hero{position:sticky;top:0;z-index:0}
+.orbital .orb-premisa,
+.orbital .orb-galeria,
+.orbital .orb-capacidad,
+.orbital .orb-cierre{position:relative;z-index:1;background:#0A0A0A}
+/* El canto que separa la tapa del encabezado: sin el, las dos superficies
+   negras se funden y no se percibe que una cubre a la otra. */
+/* El canto de la tapa. Sobre negro, una sombra y una linea gris no se ven:
+   hacen falta las tres cosas juntas —esquinas redondeadas, sombra profunda y
+   un filo de marca de 2 px— para que el ojo lea que una superficie ENTRA por
+   encima de otra y no que la pagina simplemente sigue. */
+.orbital .orb-premisa{
+  border-radius:1.75rem 1.75rem 0 0;
+  box-shadow:0 -1.5rem 5rem rgba(0,0,0,.9), 0 -1px 0 rgba(250,250,250,.14);
+  overflow:hidden
+}
+.orbital .orb-premisa::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,#FA4D4D,#5A70FA);
+  opacity:.9;z-index:2
+}
+/* El encabezado necesita margen inferior para que la tapa lo cubra desde
+   fuera de pantalla y no aparezca ya pegada a el. */
+.orb-hero{margin-bottom:0}
+.orb-lienzo,.orb-hero-copy,.orb-hero-pie{will-change:transform,opacity}
+
+/* --- las letras asoman desde debajo de su linea --- */
+/* La mascara es la linea, no la letra: recortando cada caracter por separado
+   se comen las tildes y los rabos de la g y la j. */
+.orb-linea{overflow:hidden;padding-bottom:.06em}
+[data-letras]{opacity:0}

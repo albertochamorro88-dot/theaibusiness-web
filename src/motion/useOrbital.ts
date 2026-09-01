@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { gsap, ScrollTrigger, registerGsap } from "./gsap";
+import { gsap, ScrollTrigger, SplitText, registerGsap } from "./gsap";
 
 /**
  * Los movimientos de la direccion orbital.
@@ -141,5 +141,112 @@ export function useCintaScroll(ready: boolean) {
       });
     });
     return () => { tw.forEach((t) => { t.scrollTrigger?.kill(); t.kill(); }); };
+  }, [ready]);
+}
+
+/* ---------------------------------------------------------------- tapado */
+
+/**
+ * La seccion siguiente sube y tapa al encabezado.
+ *
+ * El encabezado se queda pegado arriba y la seccion de debajo, que va en una
+ * capa superior con fondo propio, se le echa encima. No hay que mover nada: lo
+ * hace `position:sticky` con el orden de capas. Lo que si se anima es la
+ * despedida —el encabezado se aleja un poco y se apaga mientras lo cubren—,
+ * porque sin eso parece que la pagina se ha roto y hay dos cosas superpuestas.
+ *
+ * Se anima el CONTENIDO del encabezado, no el encabezado entero: escalar el
+ * contenedor escalaria tambien el lienzo WebGL, que tiene su propia resolucion
+ * y saldria borroso.
+ */
+export function useTapado(ready: boolean) {
+  useEffect(() => {
+    if (!ready) return;
+    registerGsap();
+
+    const hero = document.querySelector<HTMLElement>(".orb-hero");
+    const tapa = document.querySelector<HTMLElement>(".orb-premisa");
+    if (!hero || !tapa) return;
+    if (reducido()) return;
+
+    const dentro = hero.querySelectorAll<HTMLElement>(".orb-lienzo, .orb-hero-copy, .orb-hero-pie");
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: tapa,
+        start: "top bottom",
+        end: "top top",
+        scrub: true,
+        invalidateOnRefresh: true,
+      },
+    });
+    /* El encabezado RETROCEDE, no desaparece. Apagarlo a 0,35 contra una tapa
+       del mismo negro dejaba nada que ver siendo cubierto: parecia una pagina
+       oscura con una franja arriba. Se queda al 0,7 y se aleja un poco, que es
+       lo que da la sensacion de profundidad. */
+    tl.to(dentro, { scale: 0.94, yPercent: -6, opacity: 0.7, ease: "none" }, 0);
+
+    return () => { tl.scrollTrigger?.kill(); tl.kill(); };
+  }, [ready]);
+}
+
+/* ---------------------------------------------------------------- letras */
+
+/**
+ * Los titulares entran letra a letra desde debajo de su linea.
+ *
+ * Cada linea se envuelve en una mascara con `overflow:hidden` y las letras
+ * suben desde fuera: el texto no aparece, ASOMA. Es la diferencia entre un
+ * fundido y un movimiento, y es de donde sale el impacto.
+ *
+ * Entrada de una vez (`once`) en lugar de atada al scroll con `scrub`: un
+ * titular que se rehace cada vez que pasas por delante cansa, y a media
+ * animacion se lee a medias. Aqui el scroll DISPARA, no gobierna.
+ *
+ * `revert()` al desmontar: sin eso, cada remontaje volvia a partir un texto ya
+ * partido y las letras se anidaban unas dentro de otras.
+ */
+export function useLetras(ready: boolean) {
+  useEffect(() => {
+    if (!ready) return;
+    registerGsap();
+
+    const dianas = [...document.querySelectorAll<HTMLElement>("[data-letras]")];
+    if (!dianas.length) return;
+
+    if (reducido()) {
+      dianas.forEach((el) => { el.style.opacity = "1"; });
+      return;
+    }
+
+    const partidos: SplitText[] = [];
+    const tweens: gsap.core.Tween[] = [];
+
+    dianas.forEach((el) => {
+      el.style.opacity = "1";
+      const sp = new SplitText(el, {
+        type: "lines,chars",
+        linesClass: "orb-linea",
+      });
+      partidos.push(sp);
+      tweens.push(
+        gsap.from(sp.chars, {
+          yPercent: 118,
+          duration: 0.85,
+          ease: "power3.out",
+          stagger: { each: 0.014, from: "start" },
+          scrollTrigger: {
+            trigger: el,
+            start: "top 84%",
+            once: true,
+          },
+        }),
+      );
+    });
+
+    return () => {
+      tweens.forEach((t) => { t.scrollTrigger?.kill(); t.kill(); });
+      partidos.forEach((sp) => sp.revert());
+    };
   }, [ready]);
 }
