@@ -507,26 +507,49 @@ export function useCaida(ready: boolean) {
       return;
     }
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sec,
-        start: "top 72%",
-        end: "bottom 78%",
-        scrub: 0.6,
-        invalidateOnRefresh: true,
-      },
+    const mm = gsap.matchMedia();
+
+    mm.add(GRANDE, () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sec,
+          start: "top 72%",
+          end: "bottom 78%",
+          scrub: 0.6,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      tl.fromTo(filetes, { scaleX: 0 },
+        { scaleX: 1, duration: 0.35, ease: "power2.out", stagger: 0.05 }, 0);
+      tl.fromTo(otros,
+        { y: 0, opacity: 1 },
+        { y: 30, opacity: 0.3, duration: 1, ease: "power1.in", stagger: 0.06 }, 0.35);
+      if (nuestra) tl.fromTo(nuestra,
+        { y: 30, opacity: 0.45 },
+        { y: -10, opacity: 1, duration: 1, ease: "power2.out" }, 0.35);
+
+      return () => { tl.scrollTrigger?.kill(); tl.kill(); };
     });
 
-    tl.fromTo(filetes, { scaleX: 0 },
-      { scaleX: 1, duration: 0.35, ease: "power2.out", stagger: 0.05 }, 0);
-    tl.fromTo(otros,
-      { y: 0, opacity: 1 },
-      { y: 30, opacity: 0.3, duration: 1, ease: "power1.in", stagger: 0.06 }, 0.35);
-    if (nuestra) tl.fromTo(nuestra,
-      { y: 30, opacity: 0.45 },
-      { y: -10, opacity: 1, duration: 1, ease: "power2.out" }, 0.35);
+    /* En movil las cuatro van en columna y la caida no sirve: hundir a tres se
+       traduce en tres bloques ilegibles que hay que atravesar, y los diez
+       pixeles que sube el nuestro le meten el filete en el texto del de
+       arriba. La comparacion en columna la hace el orden, asi que aqui solo
+       entran de una en una. */
+    mm.add(CHICA, () => {
+      gsap.set(todas, { clearProps: "transform,opacity,filter" });
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: sec, start: "top 78%", once: true },
+      });
+      tl.fromTo(filetes, { scaleX: 0 },
+        { scaleX: 1, duration: 0.7, ease: "power2.out", stagger: 0.08 }, 0);
+      tl.fromTo(todas, { y: 26, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.7, ease: "power3.out", stagger: 0.08 }, 0);
+      return () => { tl.scrollTrigger?.kill(); tl.kill(); };
+    });
 
-    return () => { tl.scrollTrigger?.kill(); tl.kill(); };
+    return () => mm.revert();
   }, [ready]);
 }
 

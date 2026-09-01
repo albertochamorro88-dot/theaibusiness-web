@@ -2294,15 +2294,38 @@ body:has(.webs){background:var(--fondo)}
   .orb-tj-bajo{margin-top:1.25rem}
   .orb-just{max-width:none;font-size:.66rem;line-height:1.55}
   .orb-fases{display:none}
-  /* 14,3vw es el techo: a mas, "CONVIERTEN" no cabe en 390 px y como lleva
-     `nowrap` no rompe, se sale. */
-  .orb-h1{font-size:clamp(2.6rem,13.9vw,5.5rem)}
+  /* 13,9vw es el techo por ancho: a mas, "CONVIERTEN" no cabe en 390 px y
+     como lleva `nowrap` no rompe, se sale.
+     El `min` con 11vh es el techo por ALTO, y hace falta con el movil
+     tumbado: ahi sobra ancho y falta altura, el titular salia a 88 px, la
+     tarjeta pedia 600 px en una ventana de 390 y —siendo el encabezado
+     pegajoso— su mitad de abajo no se veia nunca. */
+  .orb-h1{font-size:clamp(2.6rem,min(13.9vw,11vh),5.5rem)}
   .orb-tj-rail{grid-column:auto;order:3;flex:0 0 auto;align-items:flex-end;
     padding:0 1.25rem 1.25rem}
   .orb-rail-nav{display:none}
   .orb-cifra{text-align:right}
   .orb-cifra-n{font-size:2.6rem}
   .orb-cifra-p{margin-top:.45rem}
+}
+
+/* --- movil tumbado ---
+   390 px de alto no dan para una tarjeta pensada en vertical: la pila pedia
+   unos 600 y el encabezado es PEGAJOSO, asi que la mitad de abajo —el boton y
+   la cifra— no se veia nunca, no es que hubiera que bajar a buscarla. Se
+   recorta a lo imprescindible: banda de video mas fina, titular atado tambien
+   al alto y fuera la ficha y la fila de la fecha, que es lo unico que se
+   puede leer despues. */
+@media screen and (max-width:900px) and (max-height:520px){
+  .orb-tj-lamina{flex:0 0 13vh;min-height:0}
+  .orb-tj-copy{padding:.7rem 1.25rem .25rem}
+  .orb-just,
+  .orb-par{display:none}
+  .orb-h1{font-size:clamp(1.9rem,min(13.9vw,9vh),5.5rem)}
+  .orb-tj-bajo{margin-top:.6rem}
+  .orb-tj-rail{padding:0 1.25rem 1rem}
+  .orb-cifra-n{font-size:1.6rem}
+  .orb-cifra-p{margin-top:.3rem}
 }
 
 /* Por debajo de 400 px el marco y el acolchado dejan de ser un detalle: son 62
@@ -2786,28 +2809,71 @@ body:has(.webs){background:var(--fondo)}
 .act-enviar{margin-top:1rem;align-self:flex-start;border:0;cursor:pointer;font:inherit}
 
 /* ==========================================================================
+   moviles en vertical · las dos fotos
+   Escaladas por el ancho dejaban una banda negra arriba y otra abajo: la foto
+   es apaisada y la pantalla no, asi que sobraba la mitad de la altura y la
+   escena parecia a medio hacer. Se escalan por el ALTO y se recortan los
+   lados, que es lo que hay que sacrificar cuando no cabe todo.
+   ========================================================================== */
+@media screen and (max-width:900px) and (max-aspect-ratio:3/2){
+  .act-escena,
+  .act-escenario{width:auto;height:100%;left:50%;top:50%;translate:-50% -50%}
+
+  /* Recortada por los lados, la foto es cinco veces mas ancha que la pantalla
+     y el margen izquierdo del panel cae fuera. El texto se descuelga del
+     panel EN HORIZONTAL —pasa a ocupar el ancho de la ventana— y se queda
+     dentro de su franja VERTICAL, que es lo que hace que siga leyendose como
+     escrito en el panel y no encima de la foto. */
+  .act-cartel,
+  .act-muro{left:calc(50% - 50vw);width:100vw}
+
+  /* --- el cartel --- */
+  .act-cartel{padding:0 5.5vw;gap:2.4cqw}
+  .act-cartel-eti{font-size:2.9cqw}
+  .act-sust-fuera{font-size:8.4cqw}
+  /* La frase va en una sola linea sin partir, asi que el cuerpo lo manda el
+     ancho disponible y no el gusto: a mas de 13,2 se sale. */
+  .act-sust-dentro{font-size:13.2cqw}
+
+  /* --- el muro ---
+     Se le recorta el alto en vez de reservar la franja de las siluetas con un
+     relleno: el relleno iba en cqw, y cqw ha dejado de medir el muro. Un 76 %
+     de su alto es justo lo que queda por encima de las cabezas. */
+  .act-muro{top:23.71%;height:40.1%;padding:0 5.5vw}
+  .act-muro-cab{gap:2.4cqw}
+  .act-muro-eti{font-size:2.9cqw}
+  .act-muro-h{font-size:5.4cqw}
+  .act-rail{margin-top:3.6cqw}
+  .act-vitrina{margin-top:3cqw}
+  .act-fecha{gap:2cqw}
+  .act-fecha-e{font-size:2.6cqw}
+  .act-fecha-f{font-size:13cqw}
+  .act-fecha-t{font-size:4.4cqw}
+  .act-fecha-n{font-size:3.4cqw}
+}
+
+/* ==========================================================================
    pantallas chicas
    Nada se clava por debajo de 900 px: robarle cuatro pantallas de scroll a un
    movil es secuestrarle la pagina. Cada escena degrada a su forma en columna.
    ========================================================================== */
-/* En un movil se probo a agrandar la foto para que el cartel llenase mas
-   pantalla, y no cabe: el cartel mide el 93 % del ancho de la foto, asi que
-   en cuanto la foto pasa del 107 % la frase se sale por los dos lados. La
-   marquesina se queda a tamano real y se compensa subiendola un poco. */
-@media screen and (max-width:620px){
-  .act-escena{top:46%}
-}
-
 @media screen and (max-width:900px){
-  /* La marquesina se mantiene: el cartel encoge con la pantalla y el texto
-     con el, porque va medido en unidades del propio cartel. Lo unico que
-     cambia es que la cita se pone debajo en columna. */
+  /* Los respiros entre secciones estaban medidos para una pantalla ancha.
+     Apilados en un movil sumaban pantalla y media de negro entre bloque y
+     bloque, y la pagina se leia como una sucesion de cosas sueltas en vez de
+     como un recorrido. */
+  .act-pila-pin,
+  .act-multa-pin{min-height:auto;padding:clamp(4rem,10vh,6rem) 0}
+  .act-banda{padding:clamp(2.5rem,6vh,4rem) 0}
+  .act-video{padding:clamp(4rem,10vh,6rem) 0 clamp(3rem,7vh,4.5rem)}
+  .act-rivales{padding:clamp(4rem,10vh,6rem) 0 clamp(3rem,7vh,4.5rem)}
+
+  /* --- 01 --- */
   .act-sust-bajo{flex-direction:column;align-items:flex-start;gap:1.25rem;
     bottom:clamp(3.5rem,10vh,5.5rem)}
   .act-sust-cita{max-width:none}
-  .act-cartel{gap:1.8cqw}
 
-  .act-pila-pin{min-height:auto;padding:clamp(5rem,14vh,8rem) 0}
+  /* --- 02: la pila se deshace en columna --- */
   .act-pila-cuerpo{grid-template-columns:1fr}
   .act-medidor{display:none}
   .act-pila-laminas{position:static;min-height:0;display:grid;gap:1rem}
@@ -2816,26 +2882,30 @@ body:has(.webs){background:var(--fondo)}
   .act-nivel-i{font-size:clamp(2.75rem,14vw,4.5rem)}
   .act-nivel-p{max-width:none}
 
-  /* El muro ocupa el 84 % del ancho de la foto, asi que la foto puede crecer
-     hasta el 118 % antes de que el muro se salga de la pantalla. Se agranda
-     hasta ahi: en un movil, lo que importa es lo que pone en el muro. */
-  .act-escenario{width:116%}
-  .act-muro{padding:4.2cqw 4.4cqw 12.5cqw}
-  .act-fecha-n{display:none}
+  /* --- 04: la cifra es el argumento, tiene que llenar el ancho --- */
+  .act-multa-n{font-size:clamp(5.5rem,31vw,21rem)}
+  /* Las dos de apoyo caben al lado; una debajo de otra dejaban media pantalla
+     en blanco antes de la seccion siguiente. */
+  .act-multa-lados{flex-direction:row;gap:clamp(1.25rem,6vw,3rem)}
+  .act-lado-e{letter-spacing:.1em}
 
-  .act-multa-pin{min-height:auto;padding:clamp(5rem,14vh,8rem) 0}
-  .act-multa-lados{flex-direction:column;gap:1.75rem}
-
+  /* --- 05 --- */
   .act-video-h{max-width:none}
   .act-autor{grid-template-columns:auto 1fr}
   .act-autor-b{grid-column:1/-1;margin-top:1.1rem}
 
+  /* --- 06 --- */
   .act-rivales-r{grid-template-columns:1fr;gap:1.75rem}
   .act-rival[data-nosotros]{padding-left:0}
 
   .act-banda-c{flex-direction:column;align-items:flex-start}
   .act-banda-l{max-width:none}
 
+  /* --- cierre --- */
   .act-cierre-r{grid-template-columns:1fr;gap:2.5rem}
   .act-cierre-h{font-size:clamp(1.9rem,8.4vw,2.6rem);max-width:none}
+  .act-cierre .orb-cinta-w{margin-bottom:clamp(1.5rem,4vh,2.5rem)}
+  /* La cinta corre en horizontal: a mas cuerpo, menos palabras caben en
+     pantalla, y lo unico que se leia era el trozo final de una. */
+  .act-cierre .orb-cinta{font-size:clamp(1.75rem,9vw,9rem)}
 }
