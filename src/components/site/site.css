@@ -2089,10 +2089,19 @@ body:has(.webs){background:var(--fondo)}
   .orb-hero-pie span:nth-child(2),
   .orb-hero-pie span:nth-child(3){display:none}
 
-  /* --- la galeria, a una columna ---
-     A dos columnas cada captura de web queda en 170 px de ancho: no se ve el
-     diseño, que es lo unico que la seccion tiene que enseñar. */
-  .orb-galeria.orb-plana .orb-pista{grid-template-columns:1fr;gap:2rem}
+  /* --- la galeria: carrusel de verdad, no una rejilla quieta ---
+     La orbita se apaga en movil a proposito —clavar 4500 px de scroll en un
+     telefono es secuestrar la pagina— pero lo que quedaba era una rejilla
+     inmovil. Aqui es un carrusel que se arrastra con el dedo y encaja pieza
+     a pieza. Se mueve, y no le roba un solo pixel de scroll a la pagina. */
+  .orb-galeria.orb-plana .orb-pista{display:flex;grid-template-columns:none;
+    overflow-x:auto;overflow-y:hidden;gap:1rem;padding:0 1.25rem;
+    scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none}
+  .orb-galeria.orb-plana .orb-pista::-webkit-scrollbar{display:none}
+  .orb-galeria.orb-plana .orb-pieza{flex:0 0 84%;scroll-snap-align:center;
+    transition:opacity .4s ease}
+  .orb-galeria.orb-plana .orb-pieza-marco{aspect-ratio:1.5}
 
   /* --- el proceso, apilado ---
      La composicion de escritorio no cabe: los bloques de texto van colocados
