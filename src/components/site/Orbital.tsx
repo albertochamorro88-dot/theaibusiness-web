@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import { MenuWrapper, Nav } from "./Chrome";
 import { reserva } from "./analytics";
@@ -50,6 +50,8 @@ const muestras = [
  * Ruta propia y sin indexar: es una propuesta para comparar, no un reemplazo.
  */
 export default function Orbital() {
+  const video1 = useRef<HTMLVideoElement>(null);
+
   useReveals(true);
   useHoverFx(true);
   useMenu(true);
@@ -69,6 +71,25 @@ export default function Orbital() {
   useRodillo(true);
 
   useEffect(() => { playIntroReveals(); }, []);
+
+  /* El video tiene `autoplay`, pero el navegador puede negarselo —ahorro de
+     bateria, pestaña en segundo plano, ajustes de reproduccion—. Se le pide
+     que arranque en cuanto hay datos y, si lo rechaza, se reintenta al primer
+     gesto del lector, que es cuando el permiso ya existe. */
+  useEffect(() => {
+    const v = video1.current;
+    if (!v) return;
+    const arrancar = () => { v.play().catch(() => {}); };
+    arrancar();
+    v.addEventListener("loadeddata", arrancar);
+    window.addEventListener("pointerdown", arrancar, { once: true });
+    window.addEventListener("scroll", arrancar, { once: true, passive: true });
+    return () => {
+      v.removeEventListener("loadeddata", arrancar);
+      window.removeEventListener("pointerdown", arrancar);
+      window.removeEventListener("scroll", arrancar);
+    };
+  }, []);
 
   return (
     <div className="orbital">
@@ -99,7 +120,9 @@ export default function Orbital() {
               Se quita la inclinacion hacia el cursor. */}
           <div className="orb-hero-panel">
             <video
+              ref={video1}
               className="orb-lienzo"
+              preload="auto"
               src={video.estudioHero}
               poster={img.estudioHeroPoster}
               autoPlay

@@ -1752,7 +1752,7 @@ body:has(.webs){background:var(--fondo)}
    de ancho— y esos 230 px salen de la columna del titular, que a cambio baja
    de 100 a 84 px. Es el intercambio, no hay mas sitio. */
 .orb-hero-fila{position:relative;z-index:1;width:100%;
-  display:grid;grid-template-columns:.414fr .586fr;
+  display:grid;grid-template-columns:.288fr .712fr;
   gap:clamp(2rem,4vw,3.5rem);align-items:center}
 @supports (height:100svh){ .orb-hero{min-height:100svh} }
 /* El video, a la derecha y SIN recuadro. No lleva borde, ni esquinas
@@ -1785,7 +1785,7 @@ body:has(.webs){background:var(--fondo)}
    caja alta forma una banda solida en vez de un perfil dentado. */
 .orb-h1{margin:0;display:flex;flex-direction:column;align-items:flex-start;
   opacity:0;text-transform:uppercase;
-  font-size:clamp(2.5rem,5.8vw,6rem);line-height:.9;letter-spacing:-.05em;font-weight:500}
+  font-size:clamp(2.25rem,4vw,4.5rem);line-height:.9;letter-spacing:-.05em;font-weight:500}
 /* Cada palabra es su propia mascara Y su propia perspectiva. La perspectiva
    solo alcanza a los HIJOS DIRECTOS: puesta en el h1 no llegaba a las letras,
    que cuelgan una generacion mas abajo, y `rotationX` se veia aplastado. */
@@ -1918,6 +1918,10 @@ body:has(.webs){background:var(--fondo)}
   animation:orb-bota 2.4s ease-in-out infinite}
 @keyframes orb-bota{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
 @media (prefers-reduced-motion:reduce){ .orb-flecha{animation:none} }
+/* El correo se alineaba por la LINEA BASE contra un boton que es una caja
+   alta: quedaba unos 25 px por encima de su centro. Los dos por el medio. */
+.orb-btn,
+.orb-mail{vertical-align:middle}
 .orb-mail{display:inline-block;margin-left:1.5rem;font-size:.9375rem;opacity:.7}
 .orb-pie{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;
   margin-top:clamp(3rem,8vh,5rem);font-size:.75rem;letter-spacing:.06em;opacity:.4}
@@ -2084,4 +2088,31 @@ body:has(.webs){background:var(--fondo)}
   .orb-hero-pie{padding-bottom:2rem}
   .orb-hero-pie span:nth-child(2),
   .orb-hero-pie span:nth-child(3){display:none}
+
+  /* --- la galeria, a una columna ---
+     A dos columnas cada captura de web queda en 170 px de ancho: no se ve el
+     diseño, que es lo unico que la seccion tiene que enseñar. */
+  .orb-galeria.orb-plana .orb-pista{grid-template-columns:1fr;gap:2rem}
+
+  /* --- el proceso, apilado ---
+     La composicion de escritorio no cabe: los bloques de texto van colocados
+     en los margenes que deja la maqueta, y en 390 px no hay margenes. Se
+     medio uno a x=-150, o sea fuera de la pantalla. Aqui el texto sale del
+     posicionamiento absoluto y se apila debajo de la maqueta. */
+  .orbital .orb-brecha{padding-top:clamp(4rem,12vh,7rem)}
+  .orbital .orb-brecha .glitch-img-w{height:auto;padding:0 0 2.5rem}
+  .orbital .orb-brecha .img-ascenseur{width:94%;height:auto;aspect-ratio:1600/1999}
+  .orbital .orb-brecha .glitch-text-w{position:relative;inset:auto;
+    display:block;padding:0 1.25rem 3rem}
+  .orbital .orb-brecha .glitch-text-sticky-w{position:static;display:block;
+    width:100%;min-height:0}
+  /* De los seis bloques se quedan dos: seis apilados son seis parrafos
+     iguales seguidos, y eso deja de ser un efecto para ser ruido. */
+  .orbital .orb-brecha .div-block-5{display:none}
+  .orbital .orb-brecha .div-block-5:nth-child(1),
+  .orbital .orb-brecha .div-block-5:nth-child(4){display:block}
+  .orbital .orb-brecha .text-block-6{position:static;inset:auto;
+    text-align:center;margin:0 0 .75rem;white-space:normal;font-size:.75rem}
+  .orbital .orb-brecha .finaltext{position:static;transform:none;
+    width:auto;margin:1.75rem 0 0;text-align:center}
 }

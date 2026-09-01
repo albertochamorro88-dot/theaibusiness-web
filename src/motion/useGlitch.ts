@@ -113,8 +113,18 @@ export function useGlitch(ready: boolean) {
 
       const onWheel = (e: WheelEvent) => { input += Math.abs(e.deltaY) * 0.002; };
       const onMove = (e: MouseEvent) => { input += (Math.abs(e.movementX) + Math.abs(e.movementY)) * 0.004; };
+      /* En un movil no hay rueda ni raton: sin esta tercera fuente el bloque
+         se queda completamente quieto, que es justo lo que pasaba. El scroll
+         existe en las dos, asi que sirve para todas. */
+      let ultimaY = window.scrollY;
+      const onScroll = () => {
+        const y = window.scrollY;
+        input += Math.abs(y - ultimaY) * 0.0025;
+        ultimaY = y;
+      };
       window.addEventListener("wheel", onWheel, { passive: true });
       window.addEventListener("mousemove", onMove, { passive: true });
+      window.addEventListener("scroll", onScroll, { passive: true });
       raf = requestAnimationFrame(tick);
 
       /* ---- scrubbed fall ---- */
@@ -176,6 +186,7 @@ export function useGlitch(ready: boolean) {
         cancelAnimationFrame(raf);
         window.removeEventListener("wheel", onWheel);
         window.removeEventListener("mousemove", onMove);
+        window.removeEventListener("scroll", onScroll);
         fallTl?.scrollTrigger?.kill();
         fallTl?.kill();
         triggers.forEach((t) => { t.animation?.kill(); t.kill(true); });
