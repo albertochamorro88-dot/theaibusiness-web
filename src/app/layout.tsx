@@ -10,7 +10,10 @@ import Tipografias, { PRE_FUENTES } from "@/components/site/Tipografias";
  */
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  /* La 300 entra por el cierre de la portada, que va en Light. Sin la cara
+     cargada el navegador finge el peso y el 300 se ve igual que el 400: el
+     cambio no se notaria y pareceria que no se ha aplicado. */
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
   variable: "--font-inter",
 });

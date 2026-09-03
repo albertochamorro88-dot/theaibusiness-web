@@ -34,14 +34,18 @@ type Fuente = {
 };
 
 const google = (familia: string) =>
-  `https://fonts.googleapis.com/css2?family=${familia.replace(/ /g, "+")}:wght@400;500;600;700&display=swap`;
+  `https://fonts.googleapis.com/css2?family=${familia.replace(/ /g, "+")}:wght@300;400;500;600;700&display=swap`;
 
 const fontshare = (slug: string) =>
-  `https://api.fontshare.com/v2/css?f%5B%5D=${slug}@400,500,600,700&display=swap`;
+  `https://api.fontshare.com/v2/css?f%5B%5D=${slug}@300,400,500,600,700&display=swap`;
 
 /**
- * El catalogo. Ordenado de lo mas cercano a lo que hay hoy a lo mas lejos, que
- * es el orden en el que se decide: primero se descarta que Inter valga.
+ * El catalogo: solo palo seco, y solo de la hornada actual. Ordenado de lo mas
+ * cercano a lo que hay hoy a lo mas lejos, que es el orden en el que se decide:
+ * primero se descarta que Inter valga.
+ *
+ * Fuera quedaron la serif y las dos mas vistas —DM Sans y Manrope—: la primera
+ * abria un debate distinto y las otras dos no distinguen a nadie.
  */
 const FUENTES: Fuente[] = [
   {
@@ -66,6 +70,12 @@ const FUENTES: Fuente[] = [
     nota: "Suiza moderna. Muy cerca de Inter pero con más vida en las curvas.",
   },
   {
+    nombre: "Host Grotesk",
+    pila: "'Host Grotesk', system-ui, sans-serif",
+    css: google("Host Grotesk"),
+    nota: "De 2024. Seca y de aperturas amplias: la más «de ahora» de la lista.",
+  },
+  {
     nombre: "Satoshi",
     pila: "'Satoshi', system-ui, sans-serif",
     css: fontshare("satoshi"),
@@ -78,10 +88,16 @@ const FUENTES: Fuente[] = [
     nota: "Neutra con un punto más cálido que Inter. Aguanta texto largo.",
   },
   {
+    nombre: "Supreme",
+    pila: "'Supreme', system-ui, sans-serif",
+    css: fontshare("supreme"),
+    nota: "Neogrotesca de cortes rectos. Suena a estudio, no a plantilla.",
+  },
+  {
     nombre: "Schibsted Grotesk",
     pila: "'Schibsted Grotesk', system-ui, sans-serif",
     css: google("Schibsted Grotesk"),
-    nota: "De prensa. Sobria y muy legible en párrafo.",
+    nota: "De prensa. Sobria y muy legible en párrafo largo.",
   },
   {
     nombre: "Instrument Sans",
@@ -90,10 +106,10 @@ const FUENTES: Fuente[] = [
     nota: "Más estrecha. Mete más palabras por línea sin apretar.",
   },
   {
-    nombre: "Archivo",
-    pila: "'Archivo', system-ui, sans-serif",
-    css: google("Archivo"),
-    nota: "Más robusta y ancha. Pega en titulares de pantalla completa.",
+    nombre: "Familjen Grotesk",
+    pila: "'Familjen Grotesk', system-ui, sans-serif",
+    css: google("Familjen Grotesk"),
+    nota: "Sueca y con carácter. Personalidad en titular sin levantar la voz.",
   },
   {
     nombre: "Space Grotesk",
@@ -102,52 +118,46 @@ const FUENTES: Fuente[] = [
     nota: "Técnica, con detalles raros. Suena a producto, no a consultora.",
   },
   {
+    nombre: "Clash Grotesk",
+    pila: "'Clash Grotesk', system-ui, sans-serif",
+    css: fontshare("clash-grotesk"),
+    nota: "Display ancha y contundente. El titular se planta; el texto, no.",
+  },
+  {
+    nombre: "Chillax",
+    pila: "'Chillax', system-ui, sans-serif",
+    css: fontshare("chillax"),
+    nota: "Geométrica de esquinas blandas. Moderna sin ponerse fría.",
+  },
+  {
     nombre: "Sora",
     pila: "'Sora', system-ui, sans-serif",
     css: google("Sora"),
     nota: "Geométrica. Titular limpísimo, texto algo frío.",
   },
   {
-    nombre: "Plus Jakarta Sans",
-    pila: "'Plus Jakarta Sans', system-ui, sans-serif",
-    css: google("Plus Jakarta Sans"),
-    nota: "Amable sin perder oficio. Baja un poco la dureza de la marca.",
-  },
-  {
-    nombre: "Manrope",
-    pila: "'Manrope', system-ui, sans-serif",
-    css: google("Manrope"),
-    nota: "Humanista y redonda. La más blanda de la lista.",
-  },
-  {
-    nombre: "DM Sans",
-    pila: "'DM Sans', system-ui, sans-serif",
-    css: google("DM Sans"),
-    nota: "Neutra y cómoda. También la más vista: no distingue.",
-  },
-  {
     nombre: "Onest",
     pila: "'Onest', system-ui, sans-serif",
     css: google("Onest"),
-    nota: "Suave y actual. Punto medio entre Inter y Manrope.",
+    nota: "Suave y actual. La más amable de las que quedan.",
+  },
+  {
+    nombre: "Archivo",
+    pila: "'Archivo', system-ui, sans-serif",
+    css: google("Archivo"),
+    nota: "Más robusta y ancha. Pega en titulares a pantalla completa.",
   },
   {
     nombre: "Bricolage Grotesque",
     pila: "'Bricolage Grotesque', system-ui, sans-serif",
     css: google("Bricolage Grotesque"),
-    nota: "Con carácter y algo desobediente. Para titulares, no para párrafo.",
+    nota: "Con carácter y algo desobediente. Titulares, no párrafo.",
   },
   {
     nombre: "Funnel Display",
     pila: "'Funnel Display', system-ui, sans-serif",
     css: google("Funnel Display"),
-    nota: "Display puro. Solo titulares; en texto pequeño se cae.",
-  },
-  {
-    nombre: "Instrument Serif",
-    pila: "'Instrument Serif', Georgia, serif",
-    css: google("Instrument Serif"),
-    nota: "Serif editorial. Solo para titulares, y el contraste es fuerte.",
+    nota: "Display puro. Solo titulares; en cuerpo pequeño se cae.",
   },
 ];
 

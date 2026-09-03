@@ -997,6 +997,15 @@ body{font-weight:400}
 .nav-cta:hover{opacity:1}
 
 .cierre-linea{max-width:34ch;color:var(--gris)}
+
+/* --- el cierre de la portada, con contraste de peso ---
+   Es la unica seccion de la web que se sale del 500 de titular y el 400 de
+   texto, y a proposito: aqui no hay nada que leer despues, asi que el titular
+   puede pesar todo lo que quiera y la bajada puede afinarse. 700 contra 300
+   son cuatro escalones de diferencia; con dos —600/400— el contraste se
+   pierde a esta escala y solo parece que el parrafo esta mal. */
+.section-footer .h1-home{font-weight:700}
+.section-footer .cierre-linea{font-weight:300}
 .riesgo-linea{
   font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)
 }
