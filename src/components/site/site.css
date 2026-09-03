@@ -8,7 +8,7 @@
    Ported verbatim from the live stylesheet:
    https://cdn.prod.website-files.com/6a0c501c42b9751b78a9d1a7/css/nothin-preprod...opt.min.css
    ============================================================ */
-:root{--white:#FFFFFF;--black:#000000;--gris:#D7D9E6;--rojo:#FA4D4D;--azul:#5A70FA;--degradado:linear-gradient(96deg,#FA4D4D 0%,#5A70FA 100%);--transparent:#0000;}body{background-color:var(--white);color:var(--black);font-family:var(--font-inter),Inter,system-ui,sans-serif;font-size:14px;font-weight:500;line-height:1.1}h1{letter-spacing:-.01em;margin-top:0;margin-bottom:0;font-size:5rem;font-weight:500;line-height:1}h2{letter-spacing:-.01em;margin-top:0;margin-bottom:0;font-size:3.75rem;font-weight:500;line-height:1}h3{letter-spacing:-.01em;margin-top:0;margin-bottom:0;font-size:2.5rem;font-weight:500;line-height:1}h4{margin-top:10px;margin-bottom:0;font-size:1.5625rem;font-weight:500;line-height:1.2}h5{margin-top:10px;margin-bottom:10px;font-size:1.25em;font-weight:500;line-height:1.2}p{margin-bottom:0;font-size:1rem;font-weight:400;line-height:1.4}a{color:inherit;text-decoration:none}strong{font-weight:600}
+:root{--white:#FFFFFF;--black:#000000;--gris:#D7D9E6;--rojo:#FA4D4D;--azul:#5A70FA;--degradado:linear-gradient(96deg,#FA4D4D 0%,#5A70FA 100%);--transparent:#0000;--tipo-texto:var(--fuente-texto,var(--font-inter),Inter,system-ui,sans-serif);}body{background-color:var(--white);color:var(--black);font-family:var(--tipo-texto);font-size:14px;font-weight:500;line-height:1.1}h1{letter-spacing:-.01em;margin-top:0;margin-bottom:0;font-size:5rem;font-weight:500;line-height:1}h2{letter-spacing:-.01em;margin-top:0;margin-bottom:0;font-size:3.75rem;font-weight:500;line-height:1}h3{letter-spacing:-.01em;margin-top:0;margin-bottom:0;font-size:2.5rem;font-weight:500;line-height:1}h4{margin-top:10px;margin-bottom:0;font-size:1.5625rem;font-weight:500;line-height:1.2}h5{margin-top:10px;margin-bottom:10px;font-size:1.25em;font-weight:500;line-height:1.2}p{margin-bottom:0;font-size:1rem;font-weight:400;line-height:1.4}a{color:inherit;text-decoration:none}strong{font-weight:600}
 .code-embed-css{pointer-events:none;width:0;height:0;font-size:var(--size-font);position:absolute;top:0;left:0;overflow:hidden}
 .container{z-index:1;width:100%;margin-left:auto;margin-right:auto;padding:1rem 1.25rem 1.625rem;position:relative}
 .container.is--full{max-width:100%}
@@ -28,7 +28,7 @@
 .btn.call{padding-left:1.25rem;padding-right:1.25rem}
 .btn.white{border-color:var(--black);background-color:var(--white);color:var(--black)}
 .btn.error-404{z-index:10;justify-content:center;align-items:center;margin-bottom:2rem;position:absolute;inset:auto auto 0%}
-.btn.view-all-btn{grid-column-gap:.5rem;grid-row-gap:.5rem;background-color:var(--transparent);color:var(--white);letter-spacing:-.01em;text-transform:none;border-style:none;border-radius:0;padding:0;font-family:var(--font-inter),Inter,system-ui,sans-serif;font-size:2.5rem;font-weight:500}
+.btn.view-all-btn{grid-column-gap:.5rem;grid-row-gap:.5rem;background-color:var(--transparent);color:var(--white);letter-spacing:-.01em;text-transform:none;border-style:none;border-radius:0;padding:0;font-family:var(--tipo-texto);font-size:2.5rem;font-weight:500}
 .btn.view-all-btn.black{color:var(--black)}
 .btn.black-blend{background-color:var(--white);color:var(--black)}
 .btn.email{padding-left:1.25rem;padding-right:1.25rem}
@@ -37,7 +37,7 @@
 .nav-boiler{z-index:1001;pointer-events:none;width:100vw;height:4rem;color:var(--white);mix-blend-mode:difference;justify-content:space-between;align-items:center;padding-top:1.28125rem;padding-left:1.25rem;padding-right:1.25rem;display:flex;position:fixed;inset:0% 0% auto}
 .h1-home{letter-spacing:-.01em;font-size:5rem;line-height:1}
 .p-m{font-size:1.125rem;font-weight:500;line-height:1.2}
-.p-s{font-family:var(--font-inter),Inter,system-ui,sans-serif;font-size:.875rem}
+.p-s{font-family:var(--tipo-texto);font-size:.875rem}
 .arrow-w{justify-content:flex-start;align-items:center;display:flex;position:relative}
 .line-arrow{background-color:var(--white);width:.82rem;height:1px;margin-top:.1px;margin-right:-.2px}
 .line-arrow.black{background-color:var(--black)}
@@ -106,12 +106,12 @@
 .titile-section-work{justify-content:flex-end;align-items:center;padding-right:3.125rem;display:flex}
 .titile-section-work.work-template{justify-content:space-between;align-items:center;padding-right:0}
 .space-87{padding-top:5.4375rem;padding-bottom:0}
-.title-work{color:#8e8e8e;letter-spacing:.03em;text-transform:uppercase;margin-bottom:1rem;font-family:var(--font-inter),Inter,system-ui,sans-serif;font-size:.75rem}
+.title-work{color:#8e8e8e;letter-spacing:.03em;text-transform:uppercase;margin-bottom:1rem;font-family:var(--tipo-texto);font-size:.75rem}
 .img-work-w{border-radius:.25rem;overflow:hidden}
 .img-work{object-fit:cover;border-radius:.25rem;width:100%}
 .short-p-work{margin-bottom:1.25rem;font-size:1.5625rem;font-weight:500;line-height:1}
 .work_list{grid-column-gap:1rem;grid-row-gap:14.375rem;grid-template-rows:auto auto;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;grid-auto-columns:1fr;display:grid}
-.cursor-work{grid-column-gap:.375rem;grid-row-gap:.375rem;background-color:var(--black);letter-spacing:.03em;text-transform:uppercase;border-radius:100px;justify-content:flex-start;align-items:center;padding:.125rem .75rem;font-family:var(--font-inter),Inter,system-ui,sans-serif;font-size:12px;display:inline-flex;position:absolute}
+.cursor-work{grid-column-gap:.375rem;grid-row-gap:.375rem;background-color:var(--black);letter-spacing:.03em;text-transform:uppercase;border-radius:100px;justify-content:flex-start;align-items:center;padding:.125rem .75rem;font-family:var(--tipo-texto);font-size:12px;display:inline-flex;position:absolute}
 .work-link{position:relative;overflow:hidden}
 .work-view-all-w{justify-content:space-between;align-items:flex-end;display:flex}
 .nbr-works-w{font-size:1.125rem;line-height:1}
@@ -171,7 +171,7 @@
 .glitch-text-sticky-w{grid-column-gap:0px;grid-row-gap:0px;grid-template-rows:auto auto;grid-template-columns:1fr 1fr 1fr;grid-auto-columns:1fr;width:100vw;min-height:100vh;display:grid;position:sticky;top:0}
 .div-block-5{grid-column-gap:16px;grid-row-gap:16px;grid-template-rows:auto auto;grid-template-columns:1fr;grid-auto-columns:1fr;display:block;position:relative}
 .div-block-5.none{opacity:0;opacity:0}
-.text-block-6{font-family:var(--font-inter),Inter,system-ui,sans-serif;font-size:1.125rem;font-weight:400;line-height:1}
+.text-block-6{font-family:var(--tipo-texto);font-size:1.125rem;font-weight:400;line-height:1}
 .text-block-6.final{position:absolute;inset:50% auto auto 50%;transform:translate(-50%,-50%)}
 .text-block-6._1{position:absolute;inset:23% auto auto -18%}
 .text-block-6._6{position:absolute;inset:9% auto auto 36%}
@@ -179,7 +179,7 @@
 .text-block-6._3{position:absolute;inset:auto 29% 23% auto}
 .text-block-6._4{position:absolute;inset:6% 0% auto auto}
 .img-ascenseur{opacity:.8;width:100%}
-.finaltext{font-family:var(--font-inter),Inter,system-ui,sans-serif;font-size:1.125rem;font-weight:400;line-height:1;position:absolute;top:35%;left:50%;transform:translate(-50%,-50%)}
+.finaltext{font-family:var(--tipo-texto);font-size:1.125rem;font-weight:400;line-height:1;position:absolute;top:35%;left:50%;transform:translate(-50%,-50%)}
 .finaltext._1{position:absolute;inset:23% auto auto -18%}
 .finaltext._6{position:absolute;inset:9% auto auto 36%}
 .finaltext._2{position:absolute;inset:40% auto auto 23%}
@@ -1672,6 +1672,57 @@ body:has(.webs){background:var(--fondo)}
 .denfoque-t{margin:0;font-size:clamp(1.4rem,3.2vw,2.75rem);line-height:1.18;letter-spacing:-.02em;font-weight:400}
 .denfoque-fig{margin:0;overflow:hidden;border-radius:.5rem;aspect-ratio:.7}
 .denfoque-fig img{display:block;width:100%;height:112%;object-fit:cover}
+
+/* ==========================================================================
+   probador de tipografias
+   Toda la web se compone con `--font-inter`, asi que cambiar la tipografia de
+   texto es cambiar UNA variable. Los titulares llevan la suya propia para
+   poder probar parejas; mientras `--fuente-tit` no exista, esta regla resuelve
+   exactamente a lo que habia antes y no cambia nada.
+   ========================================================================== */
+h1,h2,h3,h4,h5,h6,
+.btn.view-all-btn{
+  font-family:var(--fuente-tit, var(--tipo-texto))}
+
+.tipo-panel{position:fixed;left:1rem;bottom:1rem;z-index:2200;width:17.5rem;
+  color:#FAFAFA;font-family:var(--font-inter),Inter,system-ui,sans-serif;  /* el panel no cambia */
+  background:rgba(12,12,16,.92);backdrop-filter:blur(14px);
+  border:1px solid rgba(250,250,250,.14);border-radius:.85rem;
+  box-shadow:0 1.5rem 3rem rgba(0,0,0,.5);overflow:hidden}
+.tipo-cab{display:flex;align-items:center;justify-content:space-between;gap:.5rem;
+  padding:.6rem .75rem;border-bottom:1px solid rgba(250,250,250,.1)}
+.tipo-plegar{display:flex;align-items:center;gap:.45rem;padding:0;
+  background:none;border:0;color:inherit;font:inherit;cursor:pointer;
+  font-size:.62rem;letter-spacing:.14em;text-transform:uppercase}
+.tipo-punto{width:.4rem;height:.4rem;border-radius:50%;
+  background:linear-gradient(135deg,#FA4D4D,#5A70FA)}
+.tipo-par{font-size:.62rem;opacity:.45;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:8.5rem}
+/* Plegado se queda solo la barra: ocupa una linea y no tapa la pagina. */
+.tipo-panel[data-plegado] .tipo-cuerpo{display:none}
+.tipo-panel[data-plegado] .tipo-cab{border-bottom:0}
+
+.tipo-cuerpo{padding:.85rem .75rem 1rem}
+.tipo-campo{display:flex;flex-direction:column;gap:.35rem;margin-bottom:.2rem}
+.tipo-campo>span{font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;opacity:.45}
+.tipo-campo select{width:100%;padding:.45rem .5rem;color:inherit;font:inherit;font-size:.82rem;
+  background:rgba(250,250,250,.06);border:1px solid rgba(250,250,250,.14);
+  border-radius:.4rem;outline:none;cursor:pointer}
+.tipo-campo select:focus{border-color:#5A70FA}
+.tipo-campo option{background:#12121A;color:#FAFAFA}
+.tipo-nota{margin:.35rem 0 .8rem;font-size:.7rem;line-height:1.35;opacity:.5}
+.tipo-track input{width:100%;accent-color:#5A70FA;margin:.15rem 0 0}
+.tipo-botones{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.9rem}
+.tipo-botones button{flex:1 1 auto;padding:.4rem .55rem;color:inherit;font:inherit;
+  font-size:.68rem;background:rgba(250,250,250,.06);
+  border:1px solid rgba(250,250,250,.14);border-radius:.4rem;cursor:pointer;
+  transition:background .2s ease,border-color .2s ease}
+.tipo-botones button:hover{background:rgba(250,250,250,.12);border-color:rgba(250,250,250,.28)}
+.tipo-aviso{margin:.75rem 0 0;font-size:.62rem;line-height:1.35;opacity:.35}
+
+@media screen and (max-width:640px){
+  .tipo-panel{left:.5rem;right:.5rem;bottom:.5rem;width:auto}
+}
 
 /* --- cierre --- */
 .dcierre-c{padding:clamp(4rem,9vh,7rem) clamp(1.25rem,3vw,3rem) 0;text-align:center}

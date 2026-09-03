@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
+import Tipografias, { PRE_FUENTES } from "@/components/site/Tipografias";
+
 /**
  * Shell deliberadamente desnudo: sin preflight de Tailwind ni tokens de
  * plantilla, para que nada altere la hoja de estilos de la marca.
@@ -28,7 +30,18 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es" className={inter.variable}>
-      <body>{children}</body>
+      <head>
+        {/* El probador de tipografias vuelve a poner la fuente elegida ANTES de
+            pintar. Los titulares se parten en lineas al montar la pagina, asi
+            que una fuente aplicada despues deja las lineas medidas con la
+            anterior. Sin eleccion guardada esto no hace nada. */}
+        <script dangerouslySetInnerHTML={{ __html: PRE_FUENTES }} />
+      </head>
+      <body>
+        {children}
+        {/* Solo se dibuja si la URL lleva ?fuentes */}
+        <Tipografias />
+      </body>
     </html>
   );
 }
