@@ -1683,6 +1683,81 @@ body:has(.webs){background:var(--fondo)}
 .denfoque-fig img{display:block;width:100%;height:112%;object-fit:cover}
 
 /* ==========================================================================
+   muestrario · /tipografias
+   Pagina para decidir, no para navegar. Fondo negro y texto blanco porque es
+   el fondo del cierre real: juzgar una letra sobre blanco y luego ponerla
+   sobre negro es juzgar otra cosa —el peso aparente cambia, y en una Light
+   cambia mucho.
+   ========================================================================== */
+.mues{min-height:100vh;padding:clamp(3rem,9vh,6rem) clamp(1.25rem,4vw,4rem) clamp(4rem,10vh,7rem);
+  background:#0A0A0A;color:#FAFAFA;
+  font-family:var(--font-inter),Inter,system-ui,sans-serif}
+.mues-cab{max-width:96rem;margin:0 auto clamp(2.5rem,6vh,4rem)}
+.mues-eti{margin:0 0 1rem;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;opacity:.45}
+.mues-tit{margin:0 0 1rem;max-width:20ch;font-size:clamp(2.25rem,6vw,4rem);line-height:1;
+  letter-spacing:-.03em;font-weight:700}
+.mues-intro{margin:0 0 1.5rem;max-width:46ch;font-size:1rem;line-height:1.5;font-weight:300;opacity:.65}
+.mues-conmuta{display:inline-flex;align-items:center;gap:.55rem;
+  font-size:.8rem;opacity:.7;cursor:pointer}
+.mues-conmuta input{accent-color:#5A70FA;width:.95rem;height:.95rem;cursor:pointer}
+
+.mues-rejilla{display:grid;gap:clamp(1rem,2.5vw,1.75rem);
+  grid-template-columns:repeat(auto-fill,minmax(30rem,1fr));
+  max-width:96rem;margin:0 auto}
+/* De una en una: la comparacion fina se hace a tamano grande, y de dos en dos
+   no cabe. Las dos vistas son necesarias — la rejilla descarta, la columna
+   decide. */
+.mues-rejilla[data-solas]{grid-template-columns:minmax(0,1fr);max-width:64rem}
+
+.mues-ficha{display:flex;flex-direction:column;
+  border:1px solid rgba(250,250,250,.12);border-radius:1rem;overflow:hidden;
+  background:rgba(250,250,250,.02);
+  transition:border-color .3s ease}
+.mues-ficha:hover{border-color:rgba(250,250,250,.28)}
+.mues-ficha-cab{display:flex;align-items:baseline;gap:.7rem;
+  padding:.85rem 1.15rem;border-bottom:1px solid rgba(250,250,250,.1)}
+.mues-n{font-size:.65rem;letter-spacing:.06em;font-variant-numeric:tabular-nums;
+  background:linear-gradient(90deg,#FA4D4D,#5A70FA);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.mues-nombre{margin:0;font-size:.9rem;font-weight:500;letter-spacing:-.01em}
+.mues-actual{margin-left:auto;padding:.14rem .5rem;border-radius:100px;
+  border:1px solid rgba(250,250,250,.2);
+  font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;opacity:.55}
+
+/* La muestra. Aqui manda la fuente de la ficha, no la de la pagina. */
+.mues-lienzo{flex:1;padding:clamp(1.5rem,3vw,2.5rem) clamp(1.15rem,2.5vw,2rem)}
+.mues-h{margin:0 0 .7rem;font-size:clamp(1.8rem,3.1vw,2.6rem);line-height:1.02;
+  letter-spacing:-.03em}
+.mues-rejilla[data-solas] .mues-h{font-size:clamp(2.25rem,5.2vw,4.25rem)}
+.mues-p{margin:0 0 1.4rem;max-width:34ch;
+  font-size:clamp(.95rem,1.15vw,1.12rem);line-height:1.28;
+  letter-spacing:-.01em;color:#D7D9E6}
+.mues-rejilla[data-solas] .mues-p{font-size:clamp(1.05rem,1.7vw,1.5rem)}
+.mues-botones{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1.1rem}
+.mues-btn{padding:.55rem 1.05rem;border:1px solid rgba(250,250,250,.32);border-radius:100px;
+  font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.mues-micro{margin:0;font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;
+  color:#D7D9E6;opacity:.55}
+
+.mues-pie{display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:.85rem 1.15rem;border-top:1px solid rgba(250,250,250,.1)}
+.mues-nota{margin:0;max-width:34ch;font-size:.72rem;line-height:1.35;opacity:.45}
+.mues-abrir{flex:0 0 auto;font-size:.72rem;color:inherit;text-decoration:none;
+  border-bottom:1px solid rgba(250,250,250,.3);padding-bottom:.1rem;
+  transition:border-color .25s ease,opacity .25s ease;opacity:.8}
+.mues-abrir:hover{opacity:1;border-bottom-color:#5A70FA}
+
+.mues-final{max-width:96rem;margin:clamp(3rem,8vh,5rem) auto 0;
+  display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:1rem;
+  padding-top:clamp(1.5rem,4vh,2.5rem);border-top:1px solid rgba(250,250,250,.12)}
+.mues-final p{margin:0;max-width:46ch;font-size:.82rem;line-height:1.45;font-weight:300;opacity:.5}
+
+@media screen and (max-width:640px){
+  .mues-rejilla{grid-template-columns:minmax(0,1fr)}
+  .mues-pie{flex-direction:column;align-items:flex-start;gap:.6rem}
+}
+
+/* ==========================================================================
    probador de tipografias
    Toda la web se compone con `--font-inter`, asi que cambiar la tipografia de
    texto es cambiar UNA variable. Los titulares llevan la suya propia para

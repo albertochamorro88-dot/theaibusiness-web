@@ -25,7 +25,7 @@ import { useCallback, useEffect, useState } from "react";
  *    el script, recargar da el render honesto.
  */
 
-type Fuente = {
+export type Fuente = {
   nombre: string;
   pila: string;
   /** Hoja que hay que cargar. Inter no la necesita: ya viene con la pagina. */
@@ -47,7 +47,7 @@ const fontshare = (slug: string) =>
  * Fuera quedaron la serif y las dos mas vistas —DM Sans y Manrope—: la primera
  * abria un debate distinto y las otras dos no distinguen a nadie.
  */
-const FUENTES: Fuente[] = [
+export const FUENTES: Fuente[] = [
   {
     /* Inter no lleva pila: elegirla es QUITAR el override, no ponerle uno.
        La pagina la sirve `next/font` con un nombre de familia generado
@@ -179,7 +179,7 @@ type Guardado = {
  */
 export const PRE_FUENTES = `try{var s=localStorage.getItem(${JSON.stringify(LLAVE)});if(s){var c=JSON.parse(s),d=document,r=d.documentElement;[c.texto,c.titulares].forEach(function(f){if(f&&f.css&&!d.querySelector('link[data-fuente="'+f.css+'"]')){var l=d.createElement('link');l.rel='stylesheet';l.href=f.css;l.setAttribute('data-fuente',f.css);d.head.appendChild(l);}});if(c.texto&&c.texto.pila)r.style.setProperty('--fuente-texto',c.texto.pila);if(c.titulares&&c.titulares.pila)r.style.setProperty('--fuente-tit',c.titulares.pila);if(c.track)r.style.setProperty('--fuente-track',c.track);}}catch(e){}`;
 
-const cargar = (css?: string) => {
+export const cargar = (css?: string) => {
   if (!css || typeof document === "undefined") return;
   if (document.querySelector(`link[data-fuente="${css}"]`)) return;
   const l = document.createElement("link");
@@ -210,8 +210,18 @@ export default function Tipografias() {
   /* Solo aparece si lo has pedido por la URL. */
   useEffect(() => {
     const q = new URLSearchParams(window.location.search);
-    if (!q.has("fuentes") && !q.has("fonts")) return;
+    /* `?fuente=Satoshi` llega desde el muestrario: deja la web entera puesta
+       en esa familia y abre el panel para poder seguir cambiando. */
+    const pedida = q.get("fuente");
+    if (!q.has("fuentes") && !q.has("fonts") && !pedida) return;
     setAbierto(true);
+
+    if (pedida && FUENTES.some((f) => f.nombre === pedida)) {
+      setTexto(pedida);
+      setTitulares(pedida);
+      return;
+    }
+
     const g = leer();
     if (g.texto?.nombre) setTexto(g.texto.nombre);
     if (g.titulares?.nombre) setTitulares(g.titulares.nombre);
